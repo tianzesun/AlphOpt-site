@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlphOpt — AI signals for stocks &amp; options</title>
+  <meta name="description" content="AlphOpt scans the market with AI and turns what it finds into clear, explainable stock and options signals. Know what to watch, why, and how much risk you're taking.">
+  <meta property="og:title" content="AlphOpt — AI signals for stocks & options">
+  <meta property="og:description" content="Clear, explainable AI trade signals for stocks and options.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0a0e17">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a class="brand" href="#top" aria-label="AlphOpt home">
+        <img src="assets/favicon.svg" alt="" width="28" height="28">
+        <span>Alph<strong>Opt</strong></span>
+      </a>
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="nav-links" aria-label="Primary">
+        <a href="#how">How it works</a>
+        <a href="#signals">Signals</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn--sm btn--primary" href="#waitlist">Get early access</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> AI market scanner · stocks &amp; options</p>
+          <h1>Know <span class="grad">what to trade</span> and <span class="grad">why</span>, in seconds.</h1>
+          <p class="lead">
+            AlphOpt's AI reads price action, options flow, volatility and news across thousands of tickers,
+            then hands you a short list of clear signals. Each one comes with an entry, a target, a stop and
+            a plain-English reason.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary btn--lg" href="#waitlist">Get early access</a>
+            <a class="btn btn--ghost btn--lg" href="#signals">See sample signals →</a>
+          </div>
+          <ul class="hero__points">
+            <li>No charts to decode</li>
+            <li>Every signal explained</li>
+            <li>Risk shown up front</li>
+          </ul>
+        </div>
+
+        <div class="hero__visual">
+          <article class="phone" aria-label="Example AlphOpt signal">
+            <div class="phone__bar">
+              <span>Today's top signal</span>
+              <span class="tag tag--live">LIVE</span>
+            </div>
+            <div class="sig-hero">
+              <div class="sig-hero__head">
+                <div>
+                  <div class="sig-hero__ticker">NVDA</div>
+                  <div class="muted small">Call option · 30 DTE</div>
+                </div>
+                <span class="dir dir--bull">▲ Bullish</span>
+              </div>
+              <svg class="sig-hero__chart" id="hero-chart" viewBox="0 0 300 110" preserveAspectRatio="none" role="img" aria-label="Upward-trending sample price chart"></svg>
+              <div class="sig-hero__stats">
+                <div><span class="muted small">Entry</span><strong>$4.20</strong></div>
+                <div><span class="muted small">Target</span><strong class="up">$6.80</strong></div>
+                <div><span class="muted small">Stop</span><strong class="down">$3.10</strong></div>
+              </div>
+              <div class="confidence">
+                <div class="confidence__label"><span>AI confidence</span><strong>82%</strong></div>
+                <div class="confidence__track"><div class="confidence__fill" style="--v:82%"></div></div>
+              </div>
+              <p class="sig-hero__why"><strong>Why:</strong> unusual call volume at 3× average, breakout above 20-day range, IV still below its 6-month median.</p>
+            </div>
+            <p class="phone__note">Sample data for illustration</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="ticker" aria-label="Sample signal feed">
+        <div class="ticker__track" id="ticker-track"></div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">How it works</p>
+          <h2>From market noise to a short list in three steps</h2>
+        </header>
+        <ol class="steps">
+          <li class="step">
+            <div class="step__num">1</div>
+            <h3>Scan</h3>
+            <p>Our models watch price, volume, options flow, implied volatility, earnings calendars and news sentiment across U.S. equities and their option chains.</p>
+          </li>
+          <li class="step">
+            <div class="step__num">2</div>
+            <h3>Score</h3>
+            <p>Each setup is scored on confidence and risk/reward. Weak or crowded ideas are filtered out, so you see a handful of signals each day, not hundreds.</p>
+          </li>
+          <li class="step">
+            <div class="step__num">3</div>
+            <h3>Act</h3>
+            <p>You get a ready-to-read card: ticker, direction, suggested contract or shares, entry, target, stop, and the reasons behind it. The final call is always yours.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Signal board -->
+    <section class="section section--alt" id="signals">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Signal board</p>
+          <h2>See what a day of signals looks like</h2>
+          <p class="muted">Filter by asset or direction, then click any card to see the AI's reasoning. <em>All tickers and figures below are sample data, not live recommendations.</em></p>
+        </header>
+
+        <div class="filters" role="toolbar" aria-label="Filter signals">
+          <div class="seg" data-filter="asset">
+            <button class="seg__btn is-active" data-value="all" aria-pressed="true">All</button>
+            <button class="seg__btn" data-value="stock" aria-pressed="false">Stocks</button>
+            <button class="seg__btn" data-value="option" aria-pressed="false">Options</button>
+          </div>
+          <div class="seg" data-filter="dir">
+            <button class="seg__btn is-active" data-value="all" aria-pressed="true">Any direction</button>
+            <button class="seg__btn" data-value="bull" aria-pressed="false">▲ Bullish</button>
+            <button class="seg__btn" data-value="bear" aria-pressed="false">▼ Bearish</button>
+          </div>
+          <label class="sort">
+            <span class="muted small">Sort by</span>
+            <select id="sort-select">
+              <option value="confidence">Confidence</option>
+              <option value="rr">Risk / reward</option>
+              <option value="ticker">Ticker</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="board" id="board" aria-live="polite"></div>
+        <p class="board__empty muted" id="board-empty" hidden>No signals match these filters.</p>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Why AlphOpt</p>
+          <h2>Built for investors who don't live in front of a screen</h2>
+        </header>
+        <div class="features">
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
+            <h3>Explainable AI</h3>
+            <p>No black box. Every signal lists the factors that drove it, so you can learn the "why" and decide whether you agree.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+            <h3>Options made simple</h3>
+            <p>We suggest a specific strike and expiry, and translate the Greeks into plain language: how much you can lose, and what has to happen to win.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <h3>Risk first</h3>
+            <p>Each card shows the stop, maximum loss and risk/reward ratio before anything else. Position sizing hints help keep any single idea small.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
+            <h3>Smart alerts</h3>
+            <p>Get notified when a new signal matches your watchlist, or when an open idea hits its target or stop.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V11M13 17V7M18 17v-4"/></svg></div>
+            <h3>Honest track record</h3>
+            <p>Every past signal stays on the record, winners and losers alike, so you can judge the system on its results.</p>
+          </article>
+          <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+            <h3>Web &amp; mobile</h3>
+            <p>Check the day's list over coffee on your phone, then dig into details on desktop. Your watchlist and alerts follow you.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section section--alt" id="pricing">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Pricing</p>
+          <h2>Start free. Upgrade when it earns its keep.</h2>
+          <div class="billing" role="group" aria-label="Billing period">
+            <button class="billing__btn is-active" data-billing="monthly" aria-pressed="true">Monthly</button>
+            <button class="billing__btn" data-billing="yearly" aria-pressed="false">Yearly <span class="tag">2 months free</span></button>
+          </div>
+        </header>
+        <div class="plans">
+          <article class="plan">
+            <h3>Starter</h3>
+            <p class="plan__price"><span class="plan__amt" data-monthly="0" data-yearly="0">$0</span><span class="muted">/mo</span></p>
+            <p class="muted">Get a feel for AI signals.</p>
+            <ul>
+              <li>3 stock signals per day</li>
+              <li>Delayed by 30 minutes</li>
+              <li>Signal explanations</li>
+              <li>Public track record</li>
+            </ul>
+            <a class="btn btn--ghost btn--block" href="#waitlist">Join free</a>
+          </article>
+          <article class="plan plan--featured">
+            <span class="plan__badge">Most popular</span>
+            <h3>Pro</h3>
+            <p class="plan__price"><span class="plan__amt" data-monthly="29" data-yearly="24">$29</span><span class="muted">/mo</span></p>
+            <p class="muted">For active stock &amp; options investors.</p>
+            <ul>
+              <li>All stock &amp; options signals</li>
+              <li>Real-time delivery</li>
+              <li>Suggested strikes &amp; expiries</li>
+              <li>Watchlist alerts (push &amp; email)</li>
+              <li>Position-sizing helper</li>
+            </ul>
+            <a class="btn btn--primary btn--block" href="#waitlist">Get early access</a>
+          </article>
+          <article class="plan">
+            <h3>Elite</h3>
+            <p class="plan__price"><span class="plan__amt" data-monthly="79" data-yearly="66">$79</span><span class="muted">/mo</span></p>
+            <p class="muted">Deeper data for power users.</p>
+            <ul>
+              <li>Everything in Pro</li>
+              <li>Multi-leg options strategies</li>
+              <li>Custom scanners &amp; filters</li>
+              <li>Signal export &amp; API access</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn--ghost btn--block" href="#waitlist">Join waitlist</a>
+          </article>
+        </div>
+        <p class="muted small center">Prices in USD. Cancel any time.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container container--narrow">
+        <header class="section__head">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions, answered</h2>
+        </header>
+        <div class="faq">
+          <details>
+            <summary>Is AlphOpt financial advice?</summary>
+            <p>No. AlphOpt provides research signals and educational information. It does not know your finances, goals or risk tolerance. Always do your own research, and consider speaking with a licensed advisor before investing.</p>
+          </details>
+          <details>
+            <summary>Do I need to understand options to use it?</summary>
+            <p>No. You can stick to stock signals. When you're ready for options, every options card explains the contract in plain language: what you pay, the most you can lose, and what the stock needs to do for the trade to work.</p>
+          </details>
+          <details>
+            <summary>How does the AI choose signals?</summary>
+            <p>Models trained on historical market data score each setup using technical patterns, options-market activity, volatility, and news and earnings context. Only setups that clear confidence and risk/reward thresholds are published, each with the top factors behind it.</p>
+          </details>
+          <details>
+            <summary>Does AlphOpt place trades for me?</summary>
+            <p>No. AlphOpt never touches your brokerage account. You read the signal and decide whether to act on it with your own broker.</p>
+          </details>
+          <details>
+            <summary>Which markets are covered?</summary>
+            <p>At launch, AlphOpt covers U.S.-listed stocks and ETFs and their listed options. More markets are on the roadmap.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Waitlist -->
+    <section class="section cta" id="waitlist">
+      <div class="container container--narrow center">
+        <h2>Be first in line when AlphOpt launches</h2>
+        <p class="lead">Join the waitlist to get early access and a free month of Pro.</p>
+        <form class="waitlist" id="waitlist-form" novalidate>
+          <label class="visually-hidden" for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="btn btn--primary" type="submit">Join waitlist</button>
+        </form>
+        <p class="waitlist__msg" id="waitlist-msg" role="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <a class="brand" href="#top">
+          <img src="assets/favicon.svg" alt="" width="24" height="24">
+          <span>Alph<strong>Opt</strong></span>
+        </a>
+        <nav class="footer__links" aria-label="Footer">
+          <a href="#how">How it works</a>
+          <a href="#signals">Signals</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </div>
+      <p class="disclaimer">
+        <strong>Risk disclosure:</strong> Investing in stocks and options involves substantial risk of loss and is not suitable for every investor.
+        Options can expire worthless, and you may lose your entire investment. AlphOpt provides information for educational and research purposes only
+        and is not investment, tax or legal advice. Past performance does not guarantee future results. Signals and figures shown on this site are samples for illustration.
+      </p>
+      <p class="muted small">© <span id="year"></span> AlphOpt. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Signal detail dialog -->
+  <dialog class="modal" id="signal-modal" aria-labelledby="modal-title">
+    <form method="dialog" class="modal__close-form">
+      <button class="modal__close" aria-label="Close">×</button>
+    </form>
+    <div class="modal__body">
+      <div class="modal__head">
+        <div>
+          <h3 id="modal-title"></h3>
+          <p class="muted small" id="modal-sub"></p>
+        </div>
+        <span class="dir" id="modal-dir"></span>
+      </div>
+      <svg class="modal__chart" id="modal-chart" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="modal__stats" id="modal-stats"></div>
+      <h4>Why the AI flagged it</h4>
+      <ul class="factors" id="modal-factors"></ul>
+      <p class="muted small">Sample signal for illustration only. Not a recommendation.</p>
+    </div>
+  </dialog>
+</body>
+</html>
