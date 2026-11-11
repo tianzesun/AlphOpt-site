@@ -310,6 +310,7 @@ button { font: inherit; cursor: pointer; }
   border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit;
 }
 .waitlist input:focus { outline: none; border-color: var(--brand); }
+.waitlist .btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
 .waitlist input[aria-invalid="true"] { border-color: var(--down); }
 .waitlist__msg { min-height: 1.5em; font-size: 0.95rem; }
 .waitlist__msg.is-ok { color: var(--brand); }

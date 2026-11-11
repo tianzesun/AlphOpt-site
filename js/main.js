@@ -268,12 +268,13 @@ function initBilling() {
 }
 
 /* ---------- Waitlist ---------- */
-// Set to your form backend (e.g. a serverless function) to collect sign-ups.
-const WAITLIST_ENDPOINT = "";
+// Formspree form ID (the part after /f/ in the form's endpoint URL).
+const FORMSPREE_ID = "xljbelzj";
 
 function initWaitlist() {
   const form = $("#waitlist-form");
   const input = $("#email");
+  const button = $("button[type=submit]", form);
   const msg = $("#waitlist-msg");
 
   const show = (text, ok) => {
@@ -291,21 +292,27 @@ function initWaitlist() {
     }
     input.removeAttribute("aria-invalid");
 
-    if (WAITLIST_ENDPOINT) {
-      try {
-        const res = await fetch(WAITLIST_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: input.value.trim() }),
-        });
-        if (!res.ok) throw new Error(String(res.status));
-      } catch {
-        show("Something went wrong. Please try again later.", false);
-        return;
-      }
+    if (!FORMSPREE_ID) {
+      show("Sign-ups open soon. Please check back shortly.", false);
+      return;
     }
-    form.reset();
-    show("You're on the list! We'll be in touch soon.", true);
+
+    button.disabled = true;
+    try {
+      // Formspree returns JSON instead of redirecting when sent FormData with this Accept header.
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      show("You're on the list! We'll be in touch soon.", true);
+    } catch {
+      show("Something went wrong. Please try again later.", false);
+    } finally {
+      button.disabled = false;
+    }
   });
 }
 

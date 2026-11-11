@@ -296,9 +296,12 @@
         <form class="waitlist" id="waitlist-form" novalidate>
           <label class="visually-hidden" for="email">Email address</label>
           <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          <!-- Honeypot: hidden from people, filled in by bots; Formspree discards these. -->
+          <input class="visually-hidden" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="btn btn--primary" type="submit">Join waitlist</button>
         </form>
         <p class="waitlist__msg" id="waitlist-msg" role="status"></p>
+        <p class="muted small">We'll only use your email to send AlphOpt launch updates. Unsubscribe any time.</p>
       </div>
     </section>
   </main>
