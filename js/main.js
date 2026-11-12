@@ -252,105 +252,33 @@ function initModal() {
   modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
 }
 
-/* ---------- Income calculator ---------- */
-// Normal quantiles for 12 equally likely months: a bumpy path that still ends exactly at
-// the chosen 12-month move, so the call cap bites in the big up-months as it would in reality.
-const MONTH_Z = [-1.732, -1.15, -0.812, -0.549, -0.319, -0.105, 0.105, 0.319, 0.549, 0.812, 1.15, 1.732];
+/* ---------- Signal replays ---------- */
+// Real events with actual daily closes, as traded before later splits (Yahoo Finance).
+// Implied volatility per session is an assumption; premiums and Greeks come from Black-Scholes.
+const RULES = { target: 0.5, stop: -0.35, maxSessions: 5 };
 
-// Simplified 12-month model: each month a one-month call is sold at `strike` above the
-// price, capping that month's gain, and the premium is reinvested. Ignores dividends,
-// taxes, commissions and early assignment.
-function incomeScenario({ amount, gic, premium, strike, vol, move }) {
-  const drift = Math.log(1 + move) / 12;
-  const monthlyVol = vol / Math.sqrt(12);
-  let coveredCall = amount;
-  for (const z of MONTH_Z) {
-    coveredCall *= Math.min(Math.exp(drift + monthlyVol * z), 1 + strike) + premium;
-  }
-  return [
-    ["GIC", amount * gic],
-    ["Covered call", coveredCall - amount],
-    ["Stock only", amount * move],
-  ];
-}
-
-function initIncomeCalc() {
-  const form = $("#calc-form");
-  const range = $("#calc-move");
-  const presets = $$(".calc__presets button");
-  const fmt = (n) => (n < 0 ? "−" : "+") + "$" + Math.round(Math.abs(n)).toLocaleString("en-CA");
-  const pct = (n) => (n < 0 ? "−" : "+") + Math.abs(n * 100).toFixed(1) + "%";
-
-  const render = () => {
-    const num = (name, fallback) => {
-      const v = parseFloat(form.elements[name].value);
-      return Number.isFinite(v) && v >= 0 ? v : fallback;
-    };
-    const inputs = {
-      amount: num("amount", 0),
-      gic: num("gic", 0) / 100,
-      premium: num("premium", 0) / 100,
-      strike: num("strike", 0) / 100,
-      vol: num("vol", 0) / 100,
-      move: Number(range.value) / 100,
-    };
-    $("#calc-move-out").textContent = (inputs.move > 0 ? "+" : "") + range.value + "%";
-    presets.forEach((b) => b.classList.toggle("is-active", b.dataset.move === range.value));
-
-    const results = incomeScenario(inputs);
-    const maxAbs = Math.max(...results.map(([, v]) => Math.abs(v)), 1);
-    $("#calc-bars").replaceChildren(...results.map(([label, value]) => {
-      const share = inputs.amount ? value / inputs.amount : 0;
-      const text = `${fmt(value)} (${pct(share)})`;
-      return el("li", { class: "bar", title: `${label}: ${text}` },
-        el("span", { class: "bar__label" }, label),
-        el("span", { class: "bar__track" },
-          el("span", { class: `bar__fill bar__fill--${value < 0 ? "loss" : "gain"}`, style: `width:${(Math.abs(value) / maxAbs) * 50}%` })),
-        el("span", { class: "bar__value" }, text)
-      );
-    }));
-
-    const [[, gicGain], [, ccGain], [, stockGain]] = results;
-    const diff = ccGain - gicGain;
-    const summary = [
-      "In this scenario, covered calls ",
-      el("strong", {}, diff >= 0 ? `earn ${fmt(diff).slice(1)} more` : `earn ${fmt(diff).slice(1)} less`),
-      " than the GIC",
-    ];
-    if (ccGain < 0) summary.push(" and lose money: the premium only partly offsets the stock's fall");
-    else if (stockGain > ccGain) summary.push(", but trail simply holding the stock because the upside is capped");
-    summary.push(".");
-    $("#calc-summary").replaceChildren(...summary);
-  };
-
-  form.addEventListener("input", render);
-  form.addEventListener("submit", (e) => e.preventDefault());
-  presets.forEach((b) => b.addEventListener("click", () => { range.value = b.dataset.move; render(); }));
-  render();
-}
-
-/* ---------- Case studies ---------- */
-// Real events and real daily closes (as traded, before later splits). The implied
-// volatilities are assumptions; premiums and Greeks come from the Black-Scholes model.
-const CASES = [
-  { ticker: "NVDA", dir: "bull", outcome: "win", put: false, strike: 400, expiry: "Jun 16, 2023",
-    news: { date: "May 24, 2023, after the close", text: "NVIDIA guides next-quarter revenue to about $11 billion, roughly $4 billion above Wall Street estimates, on AI data-centre demand. The stock gaps up 24% the next day." },
-    signal: "Post-earnings drift: price holds the gap all day, call volume stays heavy, and IV is already falling after the event, so calls are cheaper than they were the day before.",
-    entry: { date: "May 25", spot: 379.8, dte: 22, iv: 0.5 },
-    exit: { date: "May 30", spot: 401.11, dte: 17, iv: 0.48, reason: "Target hit as NVIDIA briefly tops a $1 trillion market value" },
-    lesson: "Delta did the work: the stock's $21 rise far outweighed five days of theta and a small dip in IV. Buying after the gap, once IV had already come down, kept vega from hurting much." },
-  { ticker: "CRWD", dir: "bear", outcome: "win", put: true, strike: 290, expiry: "Aug 16, 2024",
-    news: { date: "July 19, 2024, before the open", text: "A faulty CrowdStrike Falcon update crashes about 8.5 million Windows computers worldwide, grounding flights and disrupting banks and hospitals. The stock falls 11%." },
-    signal: "Negative-news momentum: the sell-off closes near the day's low, put volume surges, and the headline risk (lawsuits, customer losses) is still unpriced.",
-    entry: { date: "July 19", spot: 304.96, dte: 28, iv: 0.55 },
-    exit: { date: "July 22", spot: 263.92, dte: 25, iv: 0.65, reason: "Target hit as the stock drops another 13% on Monday" },
-    lesson: "Two Greeks paid at once: negative delta profited from the drop, and rising fear lifted IV, so vega added to the gain." },
-  { ticker: "META", dir: "bull", outcome: "loss", put: false, strike: 195, expiry: "Feb 17, 2023",
-    news: { date: "Feb 1, 2023, after the close", text: "Meta calls 2023 its “year of efficiency”, cuts its cost outlook and adds $40 billion to its share buyback. The stock jumps 23% the next day." },
-    signal: "Same post-earnings drift setup as NVDA: strong close at the highs and heavy call buying.",
-    entry: { date: "Feb 2", spot: 188.77, dte: 15, iv: 0.45 },
-    exit: { date: "Feb 6", spot: 186.06, dte: 11, iv: 0.42, reason: "Time stop: no follow-through after two sessions" },
-    lesson: "The stock slipped only 1.4%, yet the call lost about half its value: delta, four days of theta and a dip in IV all worked against it. Short-dated calls need the move to come quickly, and the time stop cut the loss at about half the premium instead of letting it run toward zero." },
+const REPLAYS = [
+  { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bull", put: false, strike: 400, expiry: "2023-06-16",
+    newsDate: "2023-05-24", entryDate: "2023-05-25",
+    news: { src: "NVIDIA Q1 FY2024 results · May 24, 2023 · after the close", text: "Guides next-quarter revenue to about $11 billion, roughly $4 billion above analyst estimates, on AI data-centre demand." },
+    why: ["Earnings gap held: closed +24.4% at $379.80", "Volume 3.7× its recent daily average", "Guidance beat, not just an earnings beat", ["Closed mid-range, below the $394.80 high", "warn"]],
+    iv: [0.5, 0.49, 0.48, 0.48, 0.47, 0.47],
+    lesson: "Delta did the work. The stock's $21 rise outweighed five calendar days of theta and a small IV dip; buying after the event, when IV had already come down, kept vega from hurting much.",
+    closes: [["2023-05-01", 289.1], ["2023-05-02", 282.1], ["2023-05-03", 278.02], ["2023-05-04", 275.62], ["2023-05-05", 286.8], ["2023-05-08", 291.51], ["2023-05-09", 285.71], ["2023-05-10", 288.85], ["2023-05-11", 285.78], ["2023-05-12", 283.4], ["2023-05-15", 289.53], ["2023-05-16", 292.13], ["2023-05-17", 301.78], ["2023-05-18", 316.78], ["2023-05-19", 312.64], ["2023-05-22", 311.76], ["2023-05-23", 306.88], ["2023-05-24", 305.38], ["2023-05-25", 379.8], ["2023-05-26", 389.46], ["2023-05-30", 401.11], ["2023-05-31", 378.34], ["2023-06-01", 397.7], ["2023-06-02", 393.27]] },
+  { ticker: "CRWD", name: "CrowdStrike Holdings", dir: "bear", put: true, strike: 290, expiry: "2024-08-16",
+    newsDate: "2024-07-19", entryDate: "2024-07-19",
+    news: { src: "Global IT outage · July 19, 2024 · before the open", text: "A faulty CrowdStrike Falcon update crashes about 8.5 million Windows computers, grounding flights and disrupting banks and hospitals." },
+    why: ["Fell 11.1% to $304.96 on the outage", "Volume 13.3× its recent daily average", "Already down 9.1% in the three sessions before", "Fallout (customer claims, lawsuits) still unknown"],
+    iv: [0.55, 0.65, 0.63, 0.62, 0.6, 0.58],
+    lesson: "Two Greeks paid at once: negative delta profited from Monday's 13% drop, and rising fear lifted IV, so vega added to the gain.",
+    closes: [["2024-07-01", 392.15], ["2024-07-02", 385.05], ["2024-07-03", 387.18], ["2024-07-05", 389.68], ["2024-07-08", 390.71], ["2024-07-09", 385.88], ["2024-07-10", 374.45], ["2024-07-11", 370.43], ["2024-07-12", 371.32], ["2024-07-15", 377.37], ["2024-07-16", 369.05], ["2024-07-17", 354.94], ["2024-07-18", 343.05], ["2024-07-19", 304.96], ["2024-07-22", 263.91], ["2024-07-23", 268.88], ["2024-07-24", 258.14], ["2024-07-25", 254.15], ["2024-07-26", 256.16]] },
+  { ticker: "META", name: "Meta Platforms", dir: "bull", put: false, strike: 195, expiry: "2023-02-17",
+    newsDate: "2023-02-01", entryDate: "2023-02-02",
+    news: { src: "Meta Q4 2022 results · Feb 1, 2023 · after the close", text: "Calls 2023 its “year of efficiency”, cuts its expense outlook and adds $40 billion to its share buyback." },
+    why: ["Earnings gap held: closed +23.3% at $188.77", "Volume 5.2× its recent daily average", ["Closed mid-range, well below the $197.16 high", "warn"], ["Short-dated: 15 days to expiry, heavy theta", "warn"]],
+    iv: [0.45, 0.44, 0.42, 0.41, 0.4, 0.4],
+    lesson: "The stock slipped only 1.4%, yet the call lost about half its value: delta, theta and a dip in IV all worked against it. Short-dated calls need the move to come fast, and the stop kept it from running toward zero.",
+    closes: [["2023-01-12", 136.71], ["2023-01-13", 136.98], ["2023-01-17", 135.36], ["2023-01-18", 133.02], ["2023-01-19", 136.15], ["2023-01-20", 139.37], ["2023-01-23", 143.27], ["2023-01-24", 143.14], ["2023-01-25", 141.5], ["2023-01-26", 147.3], ["2023-01-27", 151.74], ["2023-01-30", 147.06], ["2023-01-31", 148.97], ["2023-02-01", 153.12], ["2023-02-02", 188.77], ["2023-02-03", 186.53], ["2023-02-06", 186.06], ["2023-02-07", 191.62], ["2023-02-08", 183.43], ["2023-02-09", 177.92], ["2023-02-10", 174.15]] },
 ];
 
 // Standard normal CDF (Abramowitz-Stegun 7.1.26), accurate to about 1e-7.
@@ -379,54 +307,156 @@ function blackScholes({ spot, strike, dte, iv, put, rate = 0.05 }) {
   };
 }
 
-function caseCard(c) {
-  const opt = (leg) => blackScholes({ ...leg, strike: c.strike, put: c.put });
-  const [start, end] = [opt(c.entry), opt(c.exit)];
-  const perContract = (end.price - start.price) * 100;
-  const ret = end.price / start.price - 1;
-  const stockMove = c.exit.spot / c.entry.spot - 1;
-  const signed = (n, digits = 2) => (n < 0 ? "−" : "+") + Math.abs(n).toFixed(digits);
-  const usd = (n) => (n < 0 ? "−" : "+") + "$" + Math.round(Math.abs(n)).toLocaleString("en-CA");
-  const side = c.put ? "put" : "call";
+const DAY_MS = 86400000;
+const shortDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-CA", { month: "short", day: "numeric", timeZone: "UTC" });
+const longDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+const signed = (n, digits = 2) => (n < 0 ? "−" : "+") + Math.abs(n).toFixed(digits);
+const usd = (n) => (n < 0 ? "−$" : "+$") + Math.round(Math.abs(n)).toLocaleString("en-CA");
 
-  const greek = (sym, name, value, plain) =>
-    el("li", { class: "greek" },
-      el("span", { class: "greek__sym", title: name }, sym),
-      el("span", { class: "greek__val" }, value),
-      el("span", { class: "greek__plain" }, plain));
-
-  const step = (label, date, body) =>
-    el("li", {}, el("span", { class: "case__when" }, label, " · ", date), el("p", {}, body));
-
-  return el("article", { class: `case case--${c.outcome}` },
-    el("div", { class: "case__head" },
-      el("div", {},
-        el("div", { class: "case__ticker" }, c.ticker),
-        el("div", { class: "muted small" }, `$${c.strike} ${side} · expires ${c.expiry} · ${c.entry.dte} DTE at entry`)),
-      dirBadge(c.dir)),
-    el("ol", { class: "case__timeline" },
-      step("News", c.news.date, c.news.text),
-      step("Signal", `${c.entry.date} close, stock ${money(c.entry.spot)}`,
-        `${c.signal} Buy the $${c.strike} ${side} at about ${money(start.price)} (${money(start.price * 100)} per contract).`),
-      step("Exit", `${c.exit.date} close, stock ${money(c.exit.spot)}`,
-        `${c.exit.reason}. The ${side} is worth about ${money(end.price)}.`)),
-    el("h4", {}, "Greeks at entry"),
-    el("ul", { class: "greeks" },
-      greek("Δ", "Delta", signed(start.delta), `Option moves about ${money(Math.abs(start.delta))} per $1 move in the stock`),
-      greek("Γ", "Gamma", start.gamma.toFixed(3), `Delta changes by ${start.gamma.toFixed(3)} per $1 move, so gains speed up if the stock keeps going`),
-      greek("Θ", "Theta", signed(start.theta), `Loses about ${money(Math.abs(start.theta) * 100)} per contract each day from time decay`),
-      greek("ν", "Vega", signed(start.vega), `Changes by ${money(start.vega * 100)} per contract for each 1-point change in IV`),
-      greek("IV", "Implied volatility", `${Math.round(c.entry.iv * 100)}% → ${Math.round(c.exit.iv * 100)}%`, "Assumed implied volatility at entry and exit")),
-    el("div", { class: "case__result" },
-      el("div", {}, el("span", {}, "Stock"), el("strong", { class: stockMove < 0 ? "down" : "up" }, `${signed(stockMove * 100, 1)}%`)),
-      el("div", {}, el("span", {}, "Option"), el("strong", { class: ret < 0 ? "down" : "up" }, `${signed(ret * 100, 0)}%`)),
-      el("div", {}, el("span", {}, "Per contract"), el("strong", { class: perContract < 0 ? "down" : "up" }, usd(perContract)))),
-    el("p", { class: "case__lesson" }, el("strong", {}, "Lesson: "), c.lesson)
-  );
+// Walk the position close by close and exit on the first target, stop or time limit.
+function runReplay(r) {
+  const start = r.closes.findIndex(([d]) => d === r.entryDate);
+  const expiry = Date.parse(r.expiry + "T00:00:00Z");
+  const sessions = [];
+  for (let i = 0; i <= RULES.maxSessions && start + i < r.closes.length; i++) {
+    const [date, spot] = r.closes[start + i];
+    const dte = Math.round((expiry - Date.parse(date + "T00:00:00Z")) / DAY_MS);
+    const opt = blackScholes({ spot, strike: r.strike, dte, iv: r.iv[i], put: r.put });
+    const ret = i ? opt.price / sessions[0].price - 1 : 0;
+    const exit = i === 0 ? null : ret >= RULES.target ? "Target" : ret <= RULES.stop ? "Stop" : i === RULES.maxSessions ? "Time" : null;
+    sessions.push({ date, spot, dte, iv: r.iv[i], ret, exit, ...opt });
+    if (exit) break;
+  }
+  return { start, sessions, first: sessions[0], last: sessions[sessions.length - 1] };
 }
 
-function initCases() {
-  $("#case-list").replaceChildren(...CASES.map(caseCard));
+function replayChart(r, run) {
+  const [w, h, padL, padR, padT, padB] = [640, 230, 8, 52, 22, 26];
+  const prices = r.closes.map(([, c]) => c);
+  const min = Math.min(...prices) * 0.98, max = Math.max(...prices) * 1.02;
+  const x = (i) => padL + (i / (r.closes.length - 1)) * (w - padL - padR);
+  const y = (v) => padT + (1 - (v - min) / (max - min)) * (h - padT - padB);
+  const node = (tag, attrs) => {
+    const n = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    return n;
+  };
+  const text = (attrs, str) => Object.assign(node("text", attrs), { textContent: str });
+
+  const svg = node("svg", { class: "replay__chart", viewBox: `0 0 ${w} ${h}`, role: "img",
+    "aria-label": `${r.ticker} daily closes from ${longDate(r.closes[0][0])} to ${longDate(r.closes.at(-1)[0])}` });
+  const endIdx = run.start + run.sessions.length - 1;
+  const accent = run.last.ret < 0 ? "#f87171" : "#22c55e";
+
+  for (let k = 0; k <= 3; k++) {
+    const v = min + ((max - min) * k) / 3;
+    svg.append(node("line", { x1: padL, x2: w - padR, y1: y(v), y2: y(v), stroke: "#243049", "stroke-width": 1 }),
+      text({ x: w - padR + 6, y: y(v) + 4 }, "$" + Math.round(v)));
+  }
+  for (const i of [0, Math.floor((r.closes.length - 1) / 2), r.closes.length - 1])
+    svg.append(text({ x: x(i), y: h - 6, "text-anchor": i === 0 ? "start" : i === r.closes.length - 1 ? "end" : "middle" }, shortDate(r.closes[i][0])));
+
+  svg.append(node("rect", { x: x(run.start), y: padT, width: Math.max(x(endIdx) - x(run.start), 2), height: h - padT - padB, fill: accent, opacity: 0.1 }));
+  const newsIdx = r.closes.findIndex(([d]) => d === r.newsDate);
+  svg.append(node("line", { x1: x(newsIdx), x2: x(newsIdx), y1: padT - 8, y2: h - padB, stroke: "#6c8cff", "stroke-dasharray": "4 4" }),
+    text({ x: x(newsIdx) - 4, y: padT - 10, "text-anchor": "end", class: "lbl", fill: "#6c8cff" }, "News"));
+
+  const line = prices.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  svg.append(node("path", { d: line, fill: "none", stroke: "#e8ecf5", "stroke-width": 2, "stroke-linejoin": "round" }));
+  svg.append(node("path", { d: line.split(" ").slice(run.start, endIdx + 1).join(" ").replace(/^L/, "M"), fill: "none", stroke: accent, "stroke-width": 3.5, "stroke-linejoin": "round" }));
+
+  for (const [i, label, color] of [[run.start, "Entry", "#22d3a6"], [endIdx, "Exit", accent]]) {
+    // Label the higher point above and the lower one below so the two never collide.
+    const above = prices[i] === Math.max(prices[run.start], prices[endIdx]);
+    svg.append(node("circle", { cx: x(i), cy: y(prices[i]), r: 5, fill: color, stroke: "#0a0e17", "stroke-width": 2 }),
+      text({ x: x(i) + (label === "Exit" ? -8 : 8), y: y(prices[i]) + (above ? -10 : 18), "text-anchor": label === "Exit" ? "end" : "start", class: "lbl", fill: color },
+        `${label} $${prices[i].toFixed(2)}`));
+  }
+  return svg;
+}
+
+function renderReplay(r) {
+  const run = runReplay(r);
+  const { first, last, sessions } = run;
+  const side = r.put ? "put" : "call";
+  const contract = `$${r.strike} ${side} · ${shortDate(r.expiry)} expiry`;
+  const pnl = (last.price - first.price) * 100;
+  const cls = (n) => (n < 0 ? "down" : "up");
+  const exitText = { Target: `Target hit (+${RULES.target * 100}%)`, Stop: `Stop hit (${RULES.stop * 100}%)`, Time: "Time stop" }[last.exit];
+
+  const phone = el("article", { class: "phone", "aria-label": `${r.ticker} replayed alert` },
+    el("div", { class: "phone__bar" }, el("span", {}, longDate(r.entryDate)), el("span", { class: "tag" }, "REPLAY")),
+    el("div", { class: "push" },
+      el("img", { src: "assets/favicon.svg", alt: "", width: 36, height: 36 }),
+      el("div", {},
+        el("div", { class: "push__top" }, el("span", {}, "AlphOpt"), el("span", {}, "At the close")),
+        el("p", { class: "push__title" }, `${r.dir === "bull" ? "▲" : "▼"} ${r.ticker} ${contract}`),
+        el("p", { class: "push__body" }, `New ${r.dir === "bull" ? "bullish" : "bearish"} options signal. Entry about ${money(first.price)}.`))),
+    el("div", { class: "sig-hero" },
+      el("div", { class: "sig-hero__head" },
+        el("div", {}, el("div", { class: "sig-hero__ticker" }, r.ticker), el("div", { class: "muted small" }, contract)),
+        dirBadge(r.dir)),
+      el("div", { class: "news" }, el("div", { class: "news__src" }, r.news.src), el("p", {}, r.news.text)),
+      el("div", { class: "sig-hero__stats", style: "margin-top:0.9rem" },
+        el("div", {}, el("span", { class: "muted small" }, "Entry"), el("strong", {}, money(first.price))),
+        el("div", {}, el("span", { class: "muted small" }, "Target"), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
+        el("div", {}, el("span", { class: "muted small" }, "Stop"), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop))))),
+      el("ul", { class: "why-list" }, ...r.why.map((w) => Array.isArray(w) ? el("li", { class: w[1] }, w[0]) : el("li", {}, w)))));
+
+  const greekRow = (sym, name, key, fmt) =>
+    el("tr", {}, el("td", {}, `${sym} ${name}`), ...sessions.map((s) => el("td", {}, fmt(s[key]))));
+  const ledger = el("table", { class: "ledger" },
+    el("thead", {}, el("tr", {}, el("th", { scope: "col" }, "At the close"), ...sessions.map((s) => el("th", { scope: "col" }, shortDate(s.date))))),
+    el("tbody", {},
+      el("tr", {}, el("td", {}, "Stock"), ...sessions.map((s) => el("td", {}, money(s.spot)))),
+      el("tr", {}, el("td", {}, "Option"), ...sessions.map((s) => el("td", {}, money(s.price)))),
+      el("tr", {}, el("td", {}, "Position P&L"), ...sessions.map((s) =>
+        el("td", { class: s.ret ? cls(s.ret) : "" }, s.ret ? `${signed(s.ret * 100, 0)}%` : "Open",
+          s.exit ? el("span", { class: `tag${s.exit === "Stop" ? " tag--stop" : ""}` }, s.exit.toUpperCase()) : null))),
+      greekRow("Δ", "Delta", "delta", (v) => signed(v)),
+      greekRow("Γ", "Gamma", "gamma", (v) => v.toFixed(3)),
+      greekRow("Θ", "Theta / day", "theta", (v) => signed(v * 100, 0)),
+      greekRow("ν", "Vega / IV pt", "vega", (v) => signed(v * 100, 0)),
+      greekRow("", "IV (assumed)", "iv", (v) => `${Math.round(v * 100)}%`),
+      el("tr", {}, el("td", {}, "Days to expiry"), ...sessions.map((s) => el("td", {}, s.dte)))));
+
+  const main = el("div", { class: "replay__main" },
+    el("section", { class: "panel" },
+      el("div", { class: "panel__head" },
+        el("h3", {}, `${r.ticker} · ${r.name}`),
+        el("div", { class: "legend" },
+          el("span", {}, el("i", { style: "background:#6c8cff" }), "News"),
+          el("span", {}, el("i", { style: `background:${last.ret < 0 ? "#f87171" : "#22c55e"}` }), "Position held"))),
+      replayChart(r, run),
+      el("div", { class: "result" },
+        el("div", {}, el("span", {}, "Stock"), el("strong", { class: cls(last.spot - first.spot) }, `${signed((last.spot / first.spot - 1) * 100, 1)}%`)),
+        el("div", {}, el("span", {}, "Option"), el("strong", { class: cls(last.ret) }, `${signed(last.ret * 100, 0)}%`)),
+        el("div", { class: "result__big" }, el("span", {}, "P&L per contract"), el("strong", { class: cls(pnl) }, usd(pnl))),
+        el("div", {}, el("span", {}, "Exit"), el("strong", { style: "font-size:0.95rem" }, `${exitText}, ${shortDate(last.date)}`)))),
+    el("section", { class: "panel" },
+      el("div", { class: "panel__head" }, el("h3", {}, "Position and Greeks, close by close"),
+        el("span", { class: "muted small" }, "Theta and vega in $ per contract")),
+      el("div", { class: "ledger-wrap" }, ledger),
+      el("p", { class: "replay__lesson" }, el("strong", {}, "What the Greeks show: "), r.lesson)));
+
+  $("#replay").replaceChildren(phone, main);
+}
+
+function initReplays() {
+  const tabs = REPLAYS.map((r, i) => {
+    const { first, last } = runReplay(r);
+    const pnl = (last.price - first.price) * 100;
+    const tab = el("button", { class: "replay-tab", type: "button", role: "tab", "aria-selected": String(i === 0), "aria-controls": "replay" },
+      el("span", {}, el("b", {}, r.ticker), el("small", {}, `${longDate(r.newsDate)} · ${r.put ? "Put" : "Call"}`)),
+      el("strong", { class: pnl < 0 ? "down" : "up" }, usd(pnl)));
+    tab.addEventListener("click", () => {
+      $$(".replay-tab").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+      renderReplay(r);
+    });
+    return tab;
+  });
+  $("#replay-tabs").replaceChildren(...tabs);
+  renderReplay(REPLAYS[0]);
 }
 
 /* ---------- Pricing toggle ---------- */
@@ -495,7 +525,7 @@ function initWaitlist() {
 
 /* ---------- Scroll reveal ---------- */
 function initReveal() {
-  const targets = $$(".section__head, .step, .strategy, .case, .feature, .plan, .faq details");
+  const targets = $$(".section__head, .step, .feature, .plan, .faq details");
   if (!("IntersectionObserver" in window)) return;
   targets.forEach((t) => t.classList.add("reveal"));
   const io = new IntersectionObserver((entries) => {
@@ -514,8 +544,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHero();
   initBoard();
-  initIncomeCalc();
-  initCases();
+  initReplays();
   initModal();
   initBilling();
   initWaitlist();
