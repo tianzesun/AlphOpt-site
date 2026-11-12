@@ -52,7 +52,7 @@
           </p>
           <div class="hero__cta">
             <a class="btn btn--primary btn--lg" href="#waitlist">Get early access</a>
-            <a class="btn btn--ghost btn--lg" href="#signals">See sample signals →</a>
+            <a class="btn btn--ghost btn--lg" href="#signals">See past signals →</a>
           </div>
           <ul class="hero__points">
             <li>No charts to decode</li>
@@ -124,15 +124,15 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow">Signal board</p>
-          <h2>See what a day of signals looks like</h2>
-          <p class="muted">Filter by asset or direction, then click any card to see the AI's reasoning. <em>All tickers and figures below are sample data, not live recommendations.</em></p>
+          <h2>Every replayed signal, at a glance</h2>
+          <p class="muted">Filter by result or direction, then open any card for the full replay with its Greeks. <em>Replays of past events, not live recommendations.</em></p>
         </header>
 
         <div class="filters" role="toolbar" aria-label="Filter signals">
-          <div class="seg" data-filter="asset">
+          <div class="seg" data-filter="result">
             <button class="seg__btn is-active" data-value="all" aria-pressed="true">All</button>
-            <button class="seg__btn" data-value="stock" aria-pressed="false">Stocks</button>
-            <button class="seg__btn" data-value="option" aria-pressed="false">Options</button>
+            <button class="seg__btn" data-value="win" aria-pressed="false">Wins</button>
+            <button class="seg__btn" data-value="loss" aria-pressed="false">Losses</button>
           </div>
           <div class="seg" data-filter="dir">
             <button class="seg__btn is-active" data-value="all" aria-pressed="true">Any direction</button>
@@ -142,8 +142,8 @@
           <label class="sort">
             <span class="muted small">Sort by</span>
             <select id="sort-select">
-              <option value="confidence">Confidence</option>
-              <option value="rr">Risk / reward</option>
+              <option value="date">Newest</option>
+              <option value="pnl">P&amp;L</option>
               <option value="ticker">Ticker</option>
             </select>
           </label>
@@ -340,31 +340,11 @@
       <p class="disclaimer">
         <strong>Risk disclosure:</strong> Investing in stocks and options involves substantial risk of loss and is not suitable for every investor.
         Options can expire worthless, and you may lose your entire investment. AlphOpt provides information for educational and research purposes only
-        and is not investment, tax or legal advice. Past performance does not guarantee future results. Signals and figures shown on this site are samples for illustration; signal replays show how past events would have played out and are not signals AlphOpt actually published.
+        and is not investment, tax or legal advice. Past performance does not guarantee future results. The signals shown on this site are replays of past events: they show how those events would have played out under AlphOpt's rules and are not signals AlphOpt actually published. Option premiums and Greeks in them are model estimates.
       </p>
       <p class="muted small">© <span id="year"></span> AlphOpt. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Signal detail dialog -->
-  <dialog class="modal" id="signal-modal" aria-labelledby="modal-title">
-    <form method="dialog" class="modal__close-form">
-      <button class="modal__close" aria-label="Close">×</button>
-    </form>
-    <div class="modal__body">
-      <div class="modal__head">
-        <div>
-          <h3 id="modal-title"></h3>
-          <p class="muted small" id="modal-sub"></p>
-        </div>
-        <span class="dir" id="modal-dir"></span>
-      </div>
-      <svg class="modal__chart" id="modal-chart" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"></svg>
-      <div class="modal__stats" id="modal-stats"></div>
-      <h4>Why the AI flagged it</h4>
-      <ul class="factors" id="modal-factors"></ul>
-      <p class="muted small">Sample signal for illustration only. Not a recommendation.</p>
-    </div>
-  </dialog>
 </body>
 </html>

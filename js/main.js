@@ -1,27 +1,5 @@
 "use strict";
 
-// Sample data for the showcase. Replace with a real API feed when available.
-const SIGNALS = [
-  { ticker: "NVDA", name: "NVIDIA Corp.", asset: "option", dir: "bull", contract: "Call · $145 strike · 30 DTE", entry: 4.2, target: 6.8, stop: 3.1, confidence: 82, horizon: "2–4 weeks",
-    factors: [["Unusual call volume (3× 20-day avg.)", 31], ["Breakout above 20-day range", 26], ["IV below 6-month median", 18], ["Positive analyst revision trend", 7]] },
-  { ticker: "AAPL", name: "Apple Inc.", asset: "stock", dir: "bull", contract: "Shares", entry: 228.5, target: 246, stop: 219, confidence: 74, horizon: "3–6 weeks",
-    factors: [["Higher lows on rising volume", 28], ["Sector relative strength turning up", 22], ["Supportive news sentiment", 14], ["Earnings drift pattern", 10]] },
-  { ticker: "TSLA", name: "Tesla Inc.", asset: "option", dir: "bear", contract: "Put · $230 strike · 21 DTE", entry: 7.6, target: 12.4, stop: 5.2, confidence: 68, horizon: "1–3 weeks",
-    factors: [["Failed retest of resistance", 27], ["Put/call skew rising", 21], ["Negative momentum divergence", 13], ["Heavy call open interest above price", 7]] },
-  { ticker: "MSFT", name: "Microsoft Corp.", asset: "stock", dir: "bull", contract: "Shares", entry: 418, target: 448, stop: 404, confidence: 79, horizon: "4–8 weeks",
-    factors: [["Trend continuation after pullback", 30], ["Institutional accumulation signal", 24], ["Low realized volatility", 15], ["Cloud segment sentiment", 10]] },
-  { ticker: "AMD", name: "Advanced Micro Devices", asset: "option", dir: "bull", contract: "Call · $160 strike · 45 DTE", entry: 6.1, target: 9.9, stop: 4.3, confidence: 71, horizon: "3–6 weeks",
-    factors: [["Bullish options sweep activity", 29], ["Reclaimed 50-day moving average", 22], ["Peer group momentum", 12], ["IV rank moderate", 8]] },
-  { ticker: "XOM", name: "Exxon Mobil Corp.", asset: "stock", dir: "bear", contract: "Short / avoid", entry: 112.4, target: 104, stop: 116.5, confidence: 63, horizon: "2–4 weeks",
-    factors: [["Lower highs on declining volume", 24], ["Weak commodity correlation", 19], ["Sector rotation outflows", 13], ["Bearish news sentiment", 7]] },
-  { ticker: "SPY", name: "S&P 500 ETF", asset: "option", dir: "bull", contract: "Call spread · $585/$595 · 28 DTE", entry: 3.4, target: 6.2, stop: 2.1, confidence: 66, horizon: "2–4 weeks",
-    factors: [["Market breadth improving", 25], ["VIX term structure normalizing", 20], ["Seasonal tendency", 12], ["Dealer gamma supportive", 9]] },
-  { ticker: "META", name: "Meta Platforms", asset: "stock", dir: "bull", contract: "Shares", entry: 586, target: 632, stop: 562, confidence: 77, horizon: "4–6 weeks",
-    factors: [["Cup-and-handle completion", 29], ["Strong relative strength vs. index", 23], ["Ad-market sentiment improving", 15], ["Options positioning bullish", 10]] },
-  { ticker: "BA", name: "Boeing Co.", asset: "option", dir: "bear", contract: "Put · $170 strike · 35 DTE", entry: 5.3, target: 8.9, stop: 3.8, confidence: 61, horizon: "2–5 weeks",
-    factors: [["Breakdown below support", 23], ["Rising put open interest", 19], ["Negative headline flow", 12], ["Weak sector breadth", 7]] },
-];
-
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -41,20 +19,6 @@ function el(tag, attrs = {}, ...children) {
 }
 
 const money = (n) => "$" + n.toLocaleString("en-CA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const riskReward = (s) => Math.abs(s.target - s.entry) / Math.abs(s.entry - s.stop);
-
-// Deterministic pseudo-random walk so each ticker always draws the same chart.
-function seededSeries(seed, points, trend) {
-  let h = 0;
-  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  const rand = () => {
-    h = (h * 1664525 + 1013904223) >>> 0;
-    return h / 4294967296;
-  };
-  const out = [50];
-  for (let i = 1; i < points; i++) out.push(out[i - 1] + (rand() - 0.5) * 6 + trend);
-  return out;
-}
 
 function drawChart(svg, series, color, { fill = true } = {}) {
   svg.replaceChildren();
@@ -95,8 +59,6 @@ function drawChart(svg, series, color, { fill = true } = {}) {
   svg.append(path);
 }
 
-const colorFor = (dir) => (dir === "bull" ? "#22c55e" : "#f87171");
-const seriesFor = (s, points = 40) => seededSeries(s.ticker, points, s.dir === "bull" ? 0.9 : -0.9);
 const dirBadge = (dir) =>
   el("span", { class: `dir dir--${dir}` }, dir === "bull" ? "▲ Bullish" : "▼ Bearish");
 
@@ -173,55 +135,63 @@ function initHero() {
 }
 
 /* ---------- Signal board ---------- */
-const state = { asset: "all", dir: "all", sort: "confidence" };
+const state = { result: "all", dir: "all", sort: "date" };
 
-function signalCard(s) {
+function signalCard(r, run) {
+  const { start, sessions, first, last } = run;
+  const pnl = (last.price - first.price) * 100;
+  const cls = pnl < 0 ? "down" : "up";
+  const side = r.put ? "put" : "call";
+  const exitText = { Target: "Target hit", Stop: "Stop hit", Time: "Time stop" }[last.exit];
+
   const spark = document.createElementNS(SVG_NS, "svg");
   spark.setAttribute("class", "card__spark");
   spark.setAttribute("viewBox", "0 0 300 110");
   spark.setAttribute("preserveAspectRatio", "none");
   spark.setAttribute("aria-hidden", "true");
-  drawChart(spark, seriesFor(s, 30), colorFor(s.dir));
+  drawChart(spark, r.closes.slice(0, start + sessions.length + 2).map(([, c]) => c), pnl < 0 ? "#f87171" : "#22c55e");
 
-  const card = el("button", { class: "card", type: "button", "aria-haspopup": "dialog",
-      "aria-label": `${s.ticker} ${s.dir === "bull" ? "bullish" : "bearish"} ${s.asset} signal, ${s.confidence}% confidence. View details.` },
+  const card = el("button", { class: "card", type: "button",
+      "aria-label": `${r.ticker} ${side} replay from ${longDate(r.newsDate)}, ${signed(last.ret * 100, 0)}%. Open the full replay.` },
     el("div", { class: "card__head" },
       el("div", {},
-        el("div", { class: "card__ticker" }, s.ticker),
-        el("div", { class: "card__name" }, s.name)
+        el("div", { class: "card__ticker" }, r.ticker),
+        el("div", { class: "card__name" }, r.name)
       ),
-      dirBadge(s.dir)
+      dirBadge(r.dir)
     ),
     spark,
-    el("div", { class: "card__setup" }, s.contract),
-    el("div", { class: "card__row" }, el("span", {}, "Entry"), el("strong", {}, money(s.entry))),
-    el("div", { class: "card__row" }, el("span", {}, "Target"), el("strong", { class: "up" }, money(s.target))),
-    el("div", { class: "card__row" }, el("span", {}, "Stop"), el("strong", { class: "down" }, money(s.stop))),
-    el("div", { class: "confidence" },
-      el("div", { class: "confidence__label" }, el("span", {}, "AI confidence"), el("strong", {}, `${s.confidence}%`)),
-      el("div", { class: "confidence__track" }, el("div", { class: "confidence__fill", style: `--v:${s.confidence}%` }))
+    el("div", { class: "card__setup" }, `$${r.strike} ${side} · ${shortDate(r.expiry)} expiry`),
+    el("div", { class: "card__row" }, el("span", {}, "Entry"), el("strong", {}, money(first.price))),
+    el("div", { class: "card__row" }, el("span", {}, "Target"), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
+    el("div", { class: "card__row" }, el("span", {}, "Stop"), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop)))),
+    el("div", { class: "card__result" },
+      el("strong", { class: cls }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`),
+      el("span", {}, `${exitText}, ${shortDate(last.date)}`)
     ),
     el("div", { class: "card__foot" },
-      el("span", { class: "chip" }, s.asset === "option" ? "Option" : "Stock"),
-      el("span", {}, `R/R ${riskReward(s).toFixed(1)}×`),
-      el("span", { class: "link" }, "Why? →")
+      el("span", { class: "chip" }, side),
+      el("span", {}, longDate(r.newsDate)),
+      el("span", { class: "link" }, "Full replay →")
     )
   );
-  card.addEventListener("click", () => openSignal(s));
+  card.addEventListener("click", () => showReplay(r));
   return card;
 }
 
 function renderBoard() {
-  const list = SIGNALS
-    .filter((s) => state.asset === "all" || s.asset === state.asset)
-    .filter((s) => state.dir === "all" || s.dir === state.dir)
+  const list = REPLAYS
+    .map((r) => ({ r, run: runReplay(r) }))
+    .map((x) => ({ ...x, pnl: (x.run.last.price - x.run.first.price) * 100 }))
+    .filter(({ pnl }) => state.result === "all" || (state.result === "win" ? pnl > 0 : pnl <= 0))
+    .filter(({ r }) => state.dir === "all" || r.dir === state.dir)
     .sort((a, b) => {
-      if (state.sort === "ticker") return a.ticker.localeCompare(b.ticker);
-      if (state.sort === "rr") return riskReward(b) - riskReward(a);
-      return b.confidence - a.confidence;
+      if (state.sort === "ticker") return a.r.ticker.localeCompare(b.r.ticker) || b.r.newsDate.localeCompare(a.r.newsDate);
+      if (state.sort === "pnl") return b.pnl - a.pnl;
+      return b.r.newsDate.localeCompare(a.r.newsDate);
     });
 
-  $("#board").replaceChildren(...list.map(signalCard));
+  $("#board").replaceChildren(...list.map(({ r, run }) => signalCard(r, run)));
   $("#board-empty").hidden = list.length > 0;
 }
 
@@ -244,44 +214,6 @@ function initBoard() {
     renderBoard();
   });
   renderBoard();
-}
-
-/* ---------- Signal modal ---------- */
-function openSignal(s) {
-  const modal = $("#signal-modal");
-  $("#modal-title").textContent = s.ticker;
-  $("#modal-sub").textContent = `${s.name} · ${s.contract}`;
-  $("#modal-dir").replaceWith(Object.assign(dirBadge(s.dir), { id: "modal-dir" }));
-  drawChart($("#modal-chart"), seriesFor(s, 60), colorFor(s.dir));
-
-  const stat = (label, value, cls = "") => el("div", {}, el("span", {}, label), el("strong", { class: cls }, value));
-  $("#modal-stats").replaceChildren(
-    stat("Entry", money(s.entry)),
-    stat("Target", money(s.target), "up"),
-    stat("Stop", money(s.stop), "down"),
-    stat("Confidence", `${s.confidence}%`),
-    stat("Risk / reward", `${riskReward(s).toFixed(1)}×`),
-    stat("Horizon", s.horizon),
-    stat("Type", s.asset === "option" ? "Option" : "Stock"),
-    stat("Direction", s.dir === "bull" ? "Bullish" : "Bearish", s.dir === "bull" ? "up" : "down")
-  );
-
-  const maxWeight = Math.max(...s.factors.map(([, w]) => w));
-  $("#modal-factors").replaceChildren(...s.factors.map(([label, weight]) =>
-    el("li", { class: "factor" },
-      el("span", {}, label),
-      el("span", { class: "factor__w" }, `+${weight} pts`),
-      el("span", { class: "factor__bar" }, el("i", { style: `--v:${(weight / maxWeight) * 100}%` }))
-    )
-  ));
-
-  modal.showModal();
-}
-
-function initModal() {
-  const modal = $("#signal-modal");
-  // Close when clicking the backdrop.
-  modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
 }
 
 /* ---------- Signal replays ---------- */
@@ -527,6 +459,13 @@ function initReplays() {
   renderReplay(REPLAYS[0]);
 }
 
+function showReplay(r) {
+  const tab = $$(".replay-tab")[REPLAYS.indexOf(r)];
+  tab.click();
+  tab.focus({ preventScroll: true });
+  $("#replay-tabs").scrollIntoView({ block: "start" });
+}
+
 /* ---------- Pricing toggle ---------- */
 function initBilling() {
   $$(".billing__btn").forEach((btn) => {
@@ -613,7 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initHero();
   initBoard();
   initReplays();
-  initModal();
   initBilling();
   initWaitlist();
   initReveal();
