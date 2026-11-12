@@ -27,7 +27,9 @@
       </button>
       <nav class="nav__links" id="nav-links" aria-label="Primary">
         <a href="#how">How it works</a>
+        <a href="#income">Income vs GIC</a>
         <a href="#signals">Signals</a>
+        <a href="#cases">Case studies</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
@@ -42,7 +44,7 @@
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="container hero__grid">
         <div class="hero__copy">
-          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> AI market scanner · stocks &amp; options</p>
+          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> AI signals · covered calls · stocks &amp; options</p>
           <h1>Know <span class="grad">what to trade</span> and <span class="grad">why</span>, in seconds.</h1>
           <p class="lead">
             AlphOpt's AI reads price action, options flow, volatility and news across thousands of tickers,
@@ -56,6 +58,7 @@
           <ul class="hero__points">
             <li>No charts to decode</li>
             <li>Every signal explained</li>
+            <li>Covered-call income ideas</li>
             <li>Risk shown up front</li>
           </ul>
         </div>
@@ -123,8 +126,107 @@
       </div>
     </section>
 
+    <!-- Income strategies -->
+    <section class="section section--alt" id="income">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Income strategies</p>
+          <h2>Covered calls: earn income from stocks you already own</h2>
+          <p class="muted">AlphOpt's focus is option-income strategies. The AI picks which stocks to use, which strike and which expiry, aiming for steady premium income while keeping risk visible.</p>
+        </header>
+
+        <div class="strategies">
+          <article class="strategy">
+            <h3>Covered call</h3>
+            <p>You own 100 shares and sell someone the right to buy them at a higher price (the strike) by a set date. You're paid a premium up front, and you keep it no matter what.</p>
+            <dl>
+              <div><dt>You get</dt><dd>Premium income every month, on top of any dividends</dd></div>
+              <div><dt>You give up</dt><dd>Gains above the strike. If the stock rallies past it, your shares are sold at the strike</dd></div>
+              <div><dt>Main risk</dt><dd>You still own the stock. If it falls, the premium only cushions the loss</dd></div>
+            </dl>
+          </article>
+          <article class="strategy">
+            <h3>Cash-secured put</h3>
+            <p>You set aside cash and agree to buy a stock you like at a lower price (the strike). You're paid a premium for making that promise.</p>
+            <dl>
+              <div><dt>You get</dt><dd>Premium income, and the chance to buy shares below today's price</dd></div>
+              <div><dt>You give up</dt><dd>Gains beyond the premium if the stock rises</dd></div>
+              <div><dt>Main risk</dt><dd>If the stock drops below the strike, you must buy it at the strike anyway</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <h3 class="subhead">How it compares with a GIC</h3>
+        <div class="table-wrap">
+          <table class="compare">
+            <caption class="visually-hidden">Comparison of a GIC, covered calls, cash-secured puts and holding stock</caption>
+            <thead>
+              <tr><th scope="col"></th><th scope="col">GIC (1-year)</th><th scope="col">Covered call</th><th scope="col">Cash-secured put</th><th scope="col">Just holding stock</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Income comes from</th><td>Interest paid by the bank</td><td>Option premium, plus dividends</td><td>Option premium, plus interest on the cash</td><td>Dividends and price gains</td></tr>
+              <tr><th scope="row">Typical income</th><td>Fixed. About 2.5–4% a year (Nov 2026)</td><td>Premiums often 0.5–1.5% of share value per month. Varies with volatility; not guaranteed</td><td>Similar to covered calls</td><td>Dividends often 0–3% a year, plus or minus price changes</td></tr>
+              <tr><th scope="row">Upside</th><td>Fixed rate only</td><td>Capped at the strike, plus premium</td><td>Capped at the premium</td><td>Unlimited</td></tr>
+              <tr><th scope="row">If the market falls 20%</th><td class="pos">Unaffected. You get your money back plus interest</td><td class="neg">You lose on the shares; the premium offsets part of it</td><td class="neg">You may have to buy shares above market price; the premium offsets part of it</td><td class="neg">You lose about 20%</td></tr>
+              <tr><th scope="row">Principal protected</th><td class="pos">Yes</td><td class="neg">No</td><td class="neg">No</td><td class="neg">No</td></tr>
+              <tr><th scope="row">Deposit insurance</th><td class="pos">CDIC, up to $100,000 per category at member institutions</td><td>None for investment losses</td><td>None for investment losses</td><td>None for investment losses</td></tr>
+              <tr><th scope="row">Access to your money</th><td>Usually locked until maturity</td><td>Any trading day</td><td>Any trading day</td><td>Any trading day</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subhead">Try a scenario</h3>
+        <div class="calc" id="income-calc">
+          <form class="calc__inputs" id="calc-form">
+            <label>
+              <span>Amount invested</span>
+              <span class="calc__field"><span>$</span><input type="number" name="amount" value="50000" min="1000" step="1000" inputmode="numeric"></span>
+            </label>
+            <label>
+              <span>GIC rate (per year)</span>
+              <span class="calc__field"><input type="number" name="gic" value="3.8" min="0" max="10" step="0.05" inputmode="decimal"><span>%</span></span>
+            </label>
+            <label>
+              <span>Call premium (per month)</span>
+              <span class="calc__field"><input type="number" name="premium" value="1" min="0" max="5" step="0.1" inputmode="decimal"><span>%</span></span>
+            </label>
+            <label>
+              <span>Strike above price</span>
+              <span class="calc__field"><input type="number" name="strike" value="3" min="0" max="20" step="0.5" inputmode="decimal"><span>%</span></span>
+            </label>
+            <label>
+              <span>Stock volatility (per year)</span>
+              <span class="calc__field"><input type="number" name="vol" value="16" min="0" max="100" step="1" inputmode="decimal"><span>%</span></span>
+            </label>
+            <div class="calc__scenario">
+              <label for="calc-move">Stock over the next 12 months: <strong id="calc-move-out">0%</strong></label>
+              <input type="range" id="calc-move" name="move" min="-40" max="40" step="1" value="0">
+              <div class="calc__presets" role="group" aria-label="Scenario presets">
+                <button type="button" data-move="-20">Sell-off −20%</button>
+                <button type="button" data-move="0">Flat</button>
+                <button type="button" data-move="8">Steady +8%</button>
+                <button type="button" data-move="30">Rally +30%</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="calc__results">
+            <p class="calc__title">Estimated 12-month gain or loss</p>
+            <ul class="bars" id="calc-bars"></ul>
+            <p class="calc__summary" id="calc-summary" role="status"></p>
+          </div>
+        </div>
+        <p class="muted small calc__note">
+          Simplified illustration, not a forecast. The stock follows an up-and-down monthly path at the volatility shown that ends at the chosen 12-month move; a one-month call is sold each month at the strike shown, and premiums are reinvested.
+          Bumpier stocks pay higher premiums but get capped more often; large blue-chip stocks are often 15–25% volatile.
+          It ignores dividends, taxes, commissions and early assignment. Real premiums change with volatility, and real stocks don't move in straight lines.
+          GIC rates are typical published 1-year rates as of November 2026; check your bank's current rate.
+        </p>
+      </div>
+    </section>
+
     <!-- Signal board -->
-    <section class="section section--alt" id="signals">
+    <section class="section" id="signals">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow">Signal board</p>
@@ -155,6 +257,24 @@
 
         <div class="board" id="board" aria-live="polite"></div>
         <p class="board__empty muted" id="board-empty" hidden>No signals match these filters.</p>
+      </div>
+    </section>
+
+    <!-- Case studies -->
+    <section class="section section--alt" id="cases">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Case studies</p>
+          <h2>Real headlines, replayed through the Greeks</h2>
+          <p class="muted">Three real market events. For each, we show the options signal our approach looks for, the contract, its Greeks at entry, and how the trade would have finished, including one that lost money.
+            <em>These are hypothetical replays, not trades AlphOpt actually published.</em></p>
+        </header>
+        <div class="cases" id="case-list"></div>
+        <p class="muted small cases__note">
+          Stock prices are actual daily closes as traded at the time, before later stock splits (source: Yahoo Finance).
+          Option premiums and Greeks are model estimates (Black-Scholes, 5% interest rate) using the implied volatility shown, which is our assumption, not a recorded quote.
+          Real fills would differ because of bid-ask spreads, intraday timing and commissions. Results are per contract (100 shares). Past results do not guarantee future results.
+        </p>
       </div>
     </section>
 
@@ -269,6 +389,10 @@
             <p>No. AlphOpt provides research signals and educational information. It does not know your finances, goals or risk tolerance. Always do your own research, and consider speaking with a licensed advisor before investing.</p>
           </details>
           <details>
+            <summary>Are covered calls safer than a GIC?</summary>
+            <p>No. A GIC guarantees your principal and is CDIC-insured within limits. A covered call is stock ownership plus extra income: it can earn more than a GIC in flat or gently rising markets, but if the stock falls you lose money, cushioned only by the premium you collected. Think of it as a way to earn more from stocks you're comfortable owning, not as a replacement for guaranteed savings.</p>
+          </details>
+          <details>
             <summary>Do I need to understand options to use it?</summary>
             <p>No. You can stick to stock signals. When you're ready for options, every options card explains the contract in plain language: what you pay, the most you can lose, and what the stock needs to do for the trade to work.</p>
           </details>
@@ -315,7 +439,9 @@
         </a>
         <nav class="footer__links" aria-label="Footer">
           <a href="#how">How it works</a>
+          <a href="#income">Income vs GIC</a>
           <a href="#signals">Signals</a>
+          <a href="#cases">Case studies</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </nav>
@@ -323,7 +449,7 @@
       <p class="disclaimer">
         <strong>Risk disclosure:</strong> Investing in stocks and options involves substantial risk of loss and is not suitable for every investor.
         Options can expire worthless, and you may lose your entire investment. AlphOpt provides information for educational and research purposes only
-        and is not investment, tax or legal advice. Past performance does not guarantee future results. Signals and figures shown on this site are samples for illustration.
+        and is not investment, tax or legal advice. Past performance does not guarantee future results. Signals and figures shown on this site are samples for illustration; case studies are hypothetical replays of past events, not actual AlphOpt signals.
       </p>
       <p class="muted small">© <span id="year"></span> AlphOpt. All rights reserved.</p>
     </div>
