@@ -63,32 +63,26 @@
         </div>
 
         <div class="hero__visual">
-          <article class="phone" aria-label="Example AlphOpt signal">
+          <article class="phone" aria-label="Replayed AlphOpt signal">
             <div class="phone__bar">
-              <span>Today's top signal</span>
-              <span class="tag tag--live">LIVE</span>
+              <span id="hero-date">Signal replay</span>
+              <span class="tag">REPLAY</span>
             </div>
             <div class="sig-hero">
               <div class="sig-hero__head">
                 <div>
-                  <div class="sig-hero__ticker">NVDA</div>
-                  <div class="muted small">Call option · 30 DTE</div>
+                  <div class="sig-hero__ticker" id="hero-ticker"></div>
+                  <div class="muted small" id="hero-contract"></div>
                 </div>
-                <span class="dir dir--bull">▲ Bullish</span>
+                <span class="dir" id="hero-dir"></span>
               </div>
-              <svg class="sig-hero__chart" id="hero-chart" viewBox="0 0 300 110" preserveAspectRatio="none" role="img" aria-label="Upward-trending sample price chart"></svg>
-              <div class="sig-hero__stats">
-                <div><span class="muted small">Entry</span><strong>$4.20</strong></div>
-                <div><span class="muted small">Target</span><strong class="up">$6.80</strong></div>
-                <div><span class="muted small">Stop</span><strong class="down">$3.10</strong></div>
-              </div>
-              <div class="confidence">
-                <div class="confidence__label"><span>AI confidence</span><strong>82%</strong></div>
-                <div class="confidence__track"><div class="confidence__fill" style="--v:82%"></div></div>
-              </div>
-              <p class="sig-hero__why"><strong>Why:</strong> unusual call volume at 3× average, breakout above 20-day range, IV still below its 6-month median.</p>
+              <svg class="sig-hero__chart" id="hero-chart" viewBox="0 0 300 110" preserveAspectRatio="none" role="img"></svg>
+              <p class="sig-hero__caption muted" id="hero-caption"></p>
+              <div class="sig-hero__stats" id="hero-stats"></div>
+              <div class="hero-result" id="hero-result"></div>
+              <p class="sig-hero__why" id="hero-why"></p>
             </div>
-            <p class="phone__note">Sample data for illustration</p>
+            <p class="phone__note">Replay of a past event, not a live signal. <a href="#cases">See all replays →</a></p>
           </article>
         </div>
       </div>

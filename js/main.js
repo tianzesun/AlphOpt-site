@@ -120,8 +120,35 @@ function initNav() {
 }
 
 /* ---------- Hero ---------- */
+// The hero card shows one real replay (NVIDIA's May 2023 guidance beat) rather than sample data.
 function initHero() {
-  drawChart($("#hero-chart"), seededSeries("hero-nvda", 48, 1.1), "#22d3a6");
+  const r = REPLAYS.find((x) => x.ticker === "NVDA" && x.newsDate === "2023-05-24");
+  const { start, sessions, first, last } = runReplay(r);
+  const side = r.put ? "put" : "call";
+  const pnl = (last.price - first.price) * 100;
+  const cls = pnl < 0 ? "down" : "up";
+  const exitText = { Target: "Target hit", Stop: "Stop hit", Time: "Time stop" }[last.exit];
+  const shown = r.closes.slice(0, start + sessions.length + 2);
+
+  $("#hero-date").textContent = `Signal replay · ${longDate(r.entryDate)}`;
+  $("#hero-ticker").textContent = r.ticker;
+  $("#hero-contract").textContent = `$${r.strike} ${side} · ${shortDate(r.expiry)} expiry`;
+  $("#hero-dir").replaceWith(Object.assign(dirBadge(r.dir), { id: "hero-dir" }));
+  const chart = $("#hero-chart");
+  drawChart(chart, shown.map(([, c]) => c), pnl < 0 ? "#f87171" : "#22d3a6");
+  chart.setAttribute("aria-label", `${r.ticker} daily closes, ${shortDate(shown[0][0])} to ${shortDate(shown.at(-1)[0])}`);
+  $("#hero-caption").textContent = `Daily closes · bought ${shortDate(r.entryDate)} at ${money(first.spot)}, sold ${shortDate(last.date)} at ${money(last.spot)}`;
+
+  const stat = (label, value, c = "") => el("div", {}, el("span", { class: "muted small" }, label), el("strong", { class: c }, value));
+  $("#hero-stats").replaceChildren(
+    stat("Entry", money(first.price)),
+    stat("Target", money(first.price * (1 + RULES.target)), "up"),
+    stat("Stop", money(first.price * (1 + RULES.stop)), "down"));
+  $("#hero-result").replaceChildren(
+    el("span", {}, `${exitText}, ${shortDate(last.date)}`),
+    el("strong", { class: cls }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`));
+  $("#hero-why").replaceChildren(el("strong", {}, "Why: "),
+    r.why.filter((w) => !Array.isArray(w)).map((w) => w.charAt(0).toLowerCase() + w.slice(1)).join("; ") + ".");
 
   const track = $("#ticker-track");
   const items = SIGNALS.map((s) =>
