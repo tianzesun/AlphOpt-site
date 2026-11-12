@@ -134,6 +134,34 @@ function initHero() {
   }));
 }
 
+/* ---------- How it works ---------- */
+// Fill each step's example from the CRWD replay so the numbers match the rest of the page.
+function initSteps() {
+  const r = REPLAYS.find((x) => x.ticker === "CRWD");
+  const { start, first, last } = runReplay(r);
+  const prev = r.closes[start - 1][1];
+  const pnl = (last.price - first.price) * 100;
+  const list = (label, rows) => [
+    el("p", { class: "step__ex-label" }, label),
+    el("dl", {}, ...rows.map(([dt, dd, cls = ""]) => el("div", {}, el("dt", {}, dt), el("dd", { class: cls }, dd)))),
+  ];
+  $("#step-ex-1").replaceChildren(...list(`Spotted · ${longDate(r.newsDate)}`, [
+    ["News", "Global IT outage"],
+    ["Stock", `${signed((first.spot / prev - 1) * 100, 1)}% to ${money(first.spot)}`, "down"],
+    ["Volume", r.why[1].match(/[\d.]+×/)[0] + " normal"],
+  ]));
+  $("#step-ex-2").replaceChildren(...list("Picked", [
+    ["Contract", `$${r.strike} put · ${shortDate(r.expiry)}`],
+    ["Delta", `${signed(first.delta)} per $1`],
+    ["Theta", `${usd(first.theta * 100)} / day`],
+  ]));
+  $("#step-ex-3").replaceChildren(...list("Alerted at the close", [
+    ["Entry → target", `${money(first.price)} → ${money(first.price * (1 + RULES.target))}`],
+    ["Stop", money(first.price * (1 + RULES.stop)), "down"],
+    ["Result", `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`, pnl < 0 ? "down" : "up"],
+  ]));
+}
+
 /* ---------- Signal board ---------- */
 const state = { result: "all", dir: "all", sort: "date" };
 
@@ -439,11 +467,14 @@ function initReplays() {
   const tabs = REPLAYS.map((r, i) => {
     const { first, last } = runReplay(r);
     const pnl = (last.price - first.price) * 100;
-    const tab = el("button", { class: "replay-tab", type: "button", role: "tab", "aria-selected": String(i === 0), "aria-controls": "replay" },
+    const tab = el("button", { class: "replay-tab", type: "button", role: "tab", "aria-selected": String(i === 0), "aria-controls": "replay", tabindex: i === 0 ? "0" : "-1" },
       el("span", {}, el("b", {}, r.ticker), el("small", {}, `${longDate(r.newsDate)} · ${r.put ? "Put" : "Call"}`)),
       el("strong", { class: pnl < 0 ? "down" : "up" }, usd(pnl)));
     tab.addEventListener("click", () => {
-      $$(".replay-tab").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+      $$(".replay-tab").forEach((t) => {
+        t.setAttribute("aria-selected", String(t === tab));
+        t.tabIndex = t === tab ? 0 : -1;
+      });
       renderReplay(r);
     });
     return tab;
@@ -457,6 +488,16 @@ function initReplays() {
     el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), " losses"),
     el("span", {}, "Net ", el("strong", { class: net < 0 ? "down" : "up" }, usd(net)), " per contract"));
   $("#replay-tabs").replaceChildren(...tabs);
+  // Arrow keys, Home and End move between tabs, as for any ARIA tablist.
+  $("#replay-tabs").addEventListener("keydown", (e) => {
+    const i = tabs.indexOf(document.activeElement);
+    const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+    if (i < 0 || next === undefined) return;
+    e.preventDefault();
+    const tab = tabs[(next + tabs.length) % tabs.length];
+    tab.click();
+    tab.focus();
+  });
   renderReplay(REPLAYS[0]);
 }
 
@@ -680,6 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#year").textContent = new Date().getFullYear();
   initNav();
   initHero();
+  initSteps();
   initBoard();
   initReplays();
   initLab();
