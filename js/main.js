@@ -258,13 +258,27 @@ function initModal() {
 const RULES = { target: 0.5, stop: -0.35, maxSessions: 5 };
 
 const REPLAYS = [
-  { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bull", put: false, strike: 400, expiry: "2023-06-16",
-    newsDate: "2023-05-24", entryDate: "2023-05-25",
-    news: { src: "NVIDIA Q1 FY2024 results · May 24, 2023 · after the close", text: "Guides next-quarter revenue to about $11 billion, roughly $4 billion above analyst estimates, on AI data-centre demand." },
-    why: ["Earnings gap held: closed +24.4% at $379.80", "Volume 3.7× its recent daily average", "Guidance beat, not just an earnings beat", ["Closed mid-range, below the $394.80 high", "warn"]],
-    iv: [0.5, 0.49, 0.48, 0.48, 0.47, 0.47],
-    lesson: "Delta did the work. The stock's $21 rise outweighed five calendar days of theta and a small IV dip; buying after the event, when IV had already come down, kept vega from hurting much.",
-    closes: [["2023-05-01", 289.1], ["2023-05-02", 282.1], ["2023-05-03", 278.02], ["2023-05-04", 275.62], ["2023-05-05", 286.8], ["2023-05-08", 291.51], ["2023-05-09", 285.71], ["2023-05-10", 288.85], ["2023-05-11", 285.78], ["2023-05-12", 283.4], ["2023-05-15", 289.53], ["2023-05-16", 292.13], ["2023-05-17", 301.78], ["2023-05-18", 316.78], ["2023-05-19", 312.64], ["2023-05-22", 311.76], ["2023-05-23", 306.88], ["2023-05-24", 305.38], ["2023-05-25", 379.8], ["2023-05-26", 389.46], ["2023-05-30", 401.11], ["2023-05-31", 378.34], ["2023-06-01", 397.7], ["2023-06-02", 393.27]] },
+  { ticker: "SPY", name: "SPDR S&P 500 ETF", dir: "bear", put: true, strike: 510, expiry: "2025-05-16",
+    newsDate: "2025-04-02", entryDate: "2025-04-03", ivSource: "VIX close",
+    news: { src: "U.S. tariff announcement · Apr 2, 2025 · after the close", text: "The White House announces a 10% baseline tariff on imports plus much higher rates on dozens of countries. The S&P 500 has its worst day since 2020." },
+    why: ["Fell 4.9% to $536.70", "Closed at the day's low", "VIX jumped from 21.5 to 30.0", "Volume 1.9× its recent daily average"],
+    iv: [0.3002, 0.4531, 0.4698, 0.5233, 0.3362, 0.4072],
+    lesson: "China retaliated the next morning and SPY fell another 5.9%. Delta paid, and the VIX surging to 45 lifted the put further through vega. Three sessions after the exit, a tariff pause sent SPY up 10.5%, so holding past the target would have given the whole gain back.",
+    closes: [["2025-03-12", 558.87], ["2025-03-13", 551.42], ["2025-03-14", 562.81], ["2025-03-17", 567.15], ["2025-03-18", 561.02], ["2025-03-19", 567.13], ["2025-03-20", 565.49], ["2025-03-21", 563.98], ["2025-03-24", 574.08], ["2025-03-25", 575.46], ["2025-03-26", 568.59], ["2025-03-27", 567.08], ["2025-03-28", 555.66], ["2025-03-31", 559.39], ["2025-04-01", 560.97], ["2025-04-02", 564.52], ["2025-04-03", 536.7], ["2025-04-04", 505.28], ["2025-04-07", 504.38], ["2025-04-08", 496.48], ["2025-04-09", 548.62], ["2025-04-10", 524.58], ["2025-04-11", 533.94], ["2025-04-14", 539.12], ["2025-04-15", 537.61]] },
+  { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bear", put: true, strike: 110, expiry: "2025-02-21",
+    newsDate: "2025-01-27", entryDate: "2025-01-27",
+    news: { src: "DeepSeek sell-off · Jan 27, 2025 · before the open", text: "Chinese start-up DeepSeek's low-cost R1 AI model tops app-store charts, raising doubts about AI chip spending. NVIDIA posts the largest one-day loss of market value in U.S. history." },
+    why: ["Fell 17.0% to $118.42", "Volume 3.7× its recent daily average", "Closed near the low (bottom 15% of the day's range)", ["IV spiked after the crash, so puts were expensive", "warn"]],
+    iv: [0.6, 0.56, 0.55, 0.54, 0.53, 0.52],
+    lesson: "Buying puts after a crash means paying for fear. NVIDIA rebounded 8.9% the next day, and the put lost on delta and on falling IV at once. The move came overnight, so a close-based stop could only exit at −69%, well past −35%.",
+    closes: [["2025-01-02", 138.31], ["2025-01-03", 144.47], ["2025-01-06", 149.43], ["2025-01-07", 140.14], ["2025-01-08", 140.11], ["2025-01-10", 135.91], ["2025-01-13", 133.23], ["2025-01-14", 131.76], ["2025-01-15", 136.24], ["2025-01-16", 133.57], ["2025-01-17", 137.71], ["2025-01-21", 140.83], ["2025-01-22", 147.07], ["2025-01-23", 147.22], ["2025-01-24", 142.62], ["2025-01-27", 118.42], ["2025-01-28", 128.99], ["2025-01-29", 123.7], ["2025-01-30", 124.65], ["2025-01-31", 120.07], ["2025-02-03", 116.66], ["2025-02-04", 118.65]] },
+  { ticker: "TSLA", name: "Tesla Inc.", dir: "bull", put: false, strike: 280, expiry: "2024-11-15",
+    newsDate: "2024-10-23", entryDate: "2024-10-24",
+    news: { src: "Tesla Q3 2024 results · Oct 23, 2024 · after the close", text: "Profit beats estimates, and Elon Musk forecasts 20–30% vehicle sales growth in 2025. The stock jumps 22%, its best day since 2013." },
+    why: ["Earnings gap: closed +21.9% at $260.48", "Closed near the high (top 8% of the day's range)", "Volume 2.8× its recent daily average", ["Short-dated: 22 days to expiry, strike 7.5% away", "warn"]],
+    iv: [0.55, 0.53, 0.52, 0.51, 0.5, 0.5],
+    lesson: "The call was up 34% after one day but short of the +50% target. The stock then gave back the rally and ended almost flat (−0.4%), yet the call lost 37%: delta reversed and theta charged about $30 a day. Gains on short-dated calls can vanish fast.",
+    closes: [["2024-10-01", 258.02], ["2024-10-02", 249.02], ["2024-10-03", 240.66], ["2024-10-04", 250.08], ["2024-10-07", 240.83], ["2024-10-08", 244.5], ["2024-10-09", 241.05], ["2024-10-10", 238.77], ["2024-10-11", 217.8], ["2024-10-14", 219.16], ["2024-10-15", 219.57], ["2024-10-16", 221.33], ["2024-10-17", 220.89], ["2024-10-18", 220.7], ["2024-10-21", 218.85], ["2024-10-22", 217.97], ["2024-10-23", 213.65], ["2024-10-24", 260.48], ["2024-10-25", 269.19], ["2024-10-28", 262.51], ["2024-10-29", 259.52], ["2024-10-30", 257.55], ["2024-10-31", 249.85], ["2024-11-01", 248.98], ["2024-11-04", 242.84]] },
   { ticker: "CRWD", name: "CrowdStrike Holdings", dir: "bear", put: true, strike: 290, expiry: "2024-08-16",
     newsDate: "2024-07-19", entryDate: "2024-07-19",
     news: { src: "Global IT outage · July 19, 2024 · before the open", text: "A faulty CrowdStrike Falcon update crashes about 8.5 million Windows computers, grounding flights and disrupting banks and hospitals." },
@@ -272,6 +286,20 @@ const REPLAYS = [
     iv: [0.55, 0.65, 0.63, 0.62, 0.6, 0.58],
     lesson: "Two Greeks paid at once: negative delta profited from Monday's 13% drop, and rising fear lifted IV, so vega added to the gain.",
     closes: [["2024-07-01", 392.15], ["2024-07-02", 385.05], ["2024-07-03", 387.18], ["2024-07-05", 389.68], ["2024-07-08", 390.71], ["2024-07-09", 385.88], ["2024-07-10", 374.45], ["2024-07-11", 370.43], ["2024-07-12", 371.32], ["2024-07-15", 377.37], ["2024-07-16", 369.05], ["2024-07-17", 354.94], ["2024-07-18", 343.05], ["2024-07-19", 304.96], ["2024-07-22", 263.91], ["2024-07-23", 268.88], ["2024-07-24", 258.14], ["2024-07-25", 254.15], ["2024-07-26", 256.16]] },
+  { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bull", put: false, strike: 400, expiry: "2023-06-16",
+    newsDate: "2023-05-24", entryDate: "2023-05-25",
+    news: { src: "NVIDIA Q1 FY2024 results · May 24, 2023 · after the close", text: "Guides next-quarter revenue to about $11 billion, roughly $4 billion above analyst estimates, on AI data-centre demand." },
+    why: ["Earnings gap held: closed +24.4% at $379.80", "Volume 3.7× its recent daily average", "Guidance beat, not just an earnings beat", ["Closed mid-range, below the $394.80 high", "warn"]],
+    iv: [0.5, 0.49, 0.48, 0.48, 0.47, 0.47],
+    lesson: "Delta did the work. The stock's $21 rise outweighed five calendar days of theta and a small IV dip; buying after the event, when IV had already come down, kept vega from hurting much.",
+    closes: [["2023-05-01", 289.1], ["2023-05-02", 282.1], ["2023-05-03", 278.02], ["2023-05-04", 275.62], ["2023-05-05", 286.8], ["2023-05-08", 291.51], ["2023-05-09", 285.71], ["2023-05-10", 288.85], ["2023-05-11", 285.78], ["2023-05-12", 283.4], ["2023-05-15", 289.53], ["2023-05-16", 292.13], ["2023-05-17", 301.78], ["2023-05-18", 316.78], ["2023-05-19", 312.64], ["2023-05-22", 311.76], ["2023-05-23", 306.88], ["2023-05-24", 305.38], ["2023-05-25", 379.8], ["2023-05-26", 389.46], ["2023-05-30", 401.11], ["2023-05-31", 378.34], ["2023-06-01", 397.7], ["2023-06-02", 393.27]] },
+  { ticker: "KRE", name: "SPDR S&P Regional Banking ETF", dir: "bear", put: true, strike: 50, expiry: "2023-04-21",
+    newsDate: "2023-03-08", entryDate: "2023-03-09",
+    news: { src: "SVB Financial · Mar 8, 2023 · after the close", text: "Silicon Valley Bank sells $21 billion of securities at a $1.8 billion loss and seeks to raise $2.25 billion, sparking fears of deposit runs at regional banks." },
+    why: ["Fell 8.1% to $53.02 as SVB's losses spread to regional banks", "Closed at the day's low", "Volume 7.5× its recent daily average", "Fifth drop in six sessions"],
+    iv: [0.4, 0.5, 0.65, 0.6, 0.6, 0.55],
+    lesson: "Delta and vega together: regulators shut SVB the next day, KRE fell another 4.4%, and rising fear pushed IV up, doubling a cheap put in one session.",
+    closes: [["2023-02-15", 64.01], ["2023-02-16", 62.88], ["2023-02-17", 63.2], ["2023-02-21", 61.73], ["2023-02-22", 61.43], ["2023-02-23", 61.67], ["2023-02-24", 61.68], ["2023-02-27", 61.66], ["2023-02-28", 61.56], ["2023-03-01", 61.19], ["2023-03-02", 59.64], ["2023-03-03", 60.38], ["2023-03-06", 59.93], ["2023-03-07", 58.0], ["2023-03-08", 57.7], ["2023-03-09", 53.02], ["2023-03-10", 50.69], ["2023-03-13", 44.45], ["2023-03-14", 45.38], ["2023-03-15", 44.64], ["2023-03-16", 46.21], ["2023-03-17", 43.44], ["2023-03-20", 43.56], ["2023-03-21", 46.07]] },
   { ticker: "META", name: "Meta Platforms", dir: "bull", put: false, strike: 195, expiry: "2023-02-17",
     newsDate: "2023-02-01", entryDate: "2023-02-02",
     news: { src: "Meta Q4 2022 results · Feb 1, 2023 · after the close", text: "Calls 2023 its “year of efficiency”, cuts its expense outlook and adds $40 billion to its share buyback." },
@@ -417,7 +445,7 @@ function renderReplay(r) {
       greekRow("Γ", "Gamma", "gamma", (v) => v.toFixed(3)),
       greekRow("Θ", "Theta / day", "theta", (v) => signed(v * 100, 0)),
       greekRow("ν", "Vega / IV pt", "vega", (v) => signed(v * 100, 0)),
-      greekRow("", "IV (assumed)", "iv", (v) => `${Math.round(v * 100)}%`),
+      greekRow("", `IV (${r.ivSource || "assumed"})`, "iv", (v) => `${Math.round(v * 100)}%`),
       el("tr", {}, el("td", {}, "Days to expiry"), ...sessions.map((s) => el("td", {}, s.dte)))));
 
   const main = el("div", { class: "replay__main" },
@@ -455,6 +483,14 @@ function initReplays() {
     });
     return tab;
   });
+  const results = REPLAYS.map((r) => { const { first, last } = runReplay(r); return (last.price - first.price) * 100; });
+  const wins = results.filter((v) => v > 0).length;
+  const net = results.reduce((a, b) => a + b, 0);
+  $("#replay-record").replaceChildren(
+    el("span", {}, el("strong", {}, REPLAYS.length), " replays"),
+    el("span", {}, el("strong", { class: "up" }, wins), " wins"),
+    el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), " losses"),
+    el("span", {}, "Net ", el("strong", { class: net < 0 ? "down" : "up" }, usd(net)), " per contract"));
   $("#replay-tabs").replaceChildren(...tabs);
   renderReplay(REPLAYS[0]);
 }

@@ -168,12 +168,13 @@
           <h2>Real headlines, replayed in AlphOpt</h2>
           <p class="muted">Pick an event to see the alert, the contract, the Greeks and how the position moved, close by close.</p>
         </header>
+        <p class="replay-record" id="replay-record" aria-label="Replay record"></p>
         <div class="replay-tabs" role="tablist" aria-label="Signal replays" id="replay-tabs"></div>
         <div class="replay" id="replay" role="tabpanel" aria-live="polite"></div>
         <p class="muted small replay__note">
           Replays of past events using AlphOpt's signal rules; AlphOpt had not launched and did not publish these signals.
-          Stock prices, volumes and ranges are actual daily data as traded at the time, before later stock splits (Yahoo Finance).
-          Option premiums and Greeks are Black-Scholes estimates (5% rate) from the implied volatility shown, which is assumed, not a recorded quote.
+          Stock prices, volumes and ranges are actual daily data as traded at the time, before later stock splits (Yahoo Finance). Every replay uses the same rules, and losses are kept on the record.
+          Option premiums and Greeks are Black-Scholes estimates (5% rate) from the implied volatility shown: the VIX close for SPY, and an assumption for the others, not a recorded quote.
           Exits are checked at each close, so real fills, spreads and intraday moves would differ. Per contract = 100 shares. Past results do not guarantee future results.
         </p>
       </div>

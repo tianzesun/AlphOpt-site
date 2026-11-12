@@ -246,10 +246,14 @@ button { font: inherit; cursor: pointer; }
 .chip { font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 6px; background: var(--surface-2); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* Signal replays */
-.replay-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+.replay-record { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.75rem; margin: 0 0 1.25rem; color: var(--muted); font-size: 0.95rem; }
+.replay-record strong { font-family: var(--mono); font-size: 1.1rem; color: var(--text); }
+.replay-record strong.up { color: var(--up); }
+.replay-record strong.down { color: var(--down); }
+.replay-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; margin-bottom: 1.25rem; }
 .replay-tab {
-  display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; text-align: left;
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; color: var(--muted);
+  display: flex; flex-direction: column; gap: 0.3rem; text-align: left;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 0.85rem; color: var(--muted);
 }
 .replay-tab:hover { border-color: var(--brand); }
 .replay-tab[aria-selected="true"] { border-color: var(--brand); background: var(--surface-2); color: var(--text); box-shadow: 0 0 0 1px var(--brand); }
@@ -286,7 +290,8 @@ button { font: inherit; cursor: pointer; }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; }
 .replay__chart { width: 100%; height: auto; overflow: visible; }
 .replay__chart text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
-.replay__chart .lbl { font-family: var(--font); font-size: 11px; font-weight: 700; }
+/* A halo in the panel colour keeps marker labels legible where they cross the price line. */
+.replay__chart .lbl { font-family: var(--font); font-size: 11px; font-weight: 700; paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
 
 .result { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
 .result div { background: var(--bg-alt); border-radius: 10px; padding: 0.6rem 0.75rem; display: flex; flex-direction: column; }
@@ -439,7 +444,8 @@ button { font: inherit; cursor: pointer; }
   .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .section { padding: 4.5rem 0; }
   .steps, .features { grid-template-columns: 1fr; }
-  .replay-tabs { grid-template-columns: 1fr; }
+  .replay-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.4rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .replay-tab { flex: 0 0 140px; scroll-snap-align: start; }
   .result { grid-template-columns: repeat(2, 1fr); }
   /* The chart scales down with its viewBox, so enlarge its text to stay readable on phones. */
   .replay__chart text, .replay__chart .lbl { font-size: 19px; }
