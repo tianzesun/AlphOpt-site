@@ -8,6 +8,13 @@
   <meta property="og:title" content="AlphOpt — AI options signals, Greeks explained">
   <meta property="og:description" content="Clear, explainable AI options signals, with the Greeks in plain English.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tianzesun.github.io/AlphOpt-site/">
+  <meta property="og:image" content="https://tianzesun.github.io/AlphOpt-site/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="AlphOpt: real headlines, the Greeks explained. A CRWD put replay that hit its target for +205%.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://tianzesun.github.io/AlphOpt-site/">
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
@@ -251,16 +258,19 @@
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
             <h3>Explainable AI</h3>
             <p>No black box. Every signal lists the factors that drove it, so you can learn the "why" and decide whether you agree.</p>
+            <a class="feature__proof" href="#cases" data-open-replay="2024-07-19">See why the CRWD put fired →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
             <h3>Options made simple</h3>
             <p>We suggest a specific strike and expiry, and translate the Greeks into plain language: how much you can lose, and what has to happen to win.</p>
+            <a class="feature__proof" href="#lab">Move the stock in the Greeks lab →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
             <h3>Risk first</h3>
             <p>Each card shows the stop, maximum loss and risk/reward ratio before anything else. Position sizing hints help keep any single idea small.</p>
+            <a class="feature__proof" href="#cases" data-open-replay="2023-02-01">See the stop that capped META's loss →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
@@ -270,7 +280,8 @@
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V11M13 17V7M18 17v-4"/></svg></div>
             <h3>Honest track record</h3>
-            <p>Every signal stays on the record, winners and losers alike. Our replays show three losses out of seven, <a class="link" href="#cases">with the Greeks that caused them</a>.</p>
+            <p>Every signal stays on the record, winners and losers alike. Our replays show three losses out of seven, with the Greeks that caused them.</p>
+            <a class="feature__proof" href="#signals">See all seven, losses included →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
@@ -377,8 +388,9 @@
     <!-- Waitlist -->
     <section class="section cta" id="waitlist">
       <div class="container container--narrow center">
-        <h2>Be first in line when AlphOpt launches</h2>
-        <p class="lead">Join the waitlist to get early access and a free month of Pro.</p>
+        <h2>Get the next signal when it fires</h2>
+        <p class="lead">Join the waitlist for early access to AlphOpt and a free month of Pro.</p>
+        <p class="replay-record waitlist__record" id="waitlist-record" aria-label="Replay record"></p>
         <form class="waitlist" id="waitlist-form" novalidate>
           <label class="visually-hidden" for="email">Email address</label>
           <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>

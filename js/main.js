@@ -482,11 +482,13 @@ function initReplays() {
   const results = REPLAYS.map((r) => { const { first, last } = runReplay(r); return (last.price - first.price) * 100; });
   const wins = results.filter((v) => v > 0).length;
   const net = results.reduce((a, b) => a + b, 0);
-  $("#replay-record").replaceChildren(
-    el("span", {}, el("strong", {}, REPLAYS.length), " replays"),
-    el("span", {}, el("strong", { class: "up" }, wins), " wins"),
-    el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), " losses"),
-    el("span", {}, "Net ", el("strong", { class: net < 0 ? "down" : "up" }, usd(net)), " per contract"));
+  for (const id of ["#replay-record", "#waitlist-record"]) {
+    $(id).replaceChildren(
+      el("span", {}, el("strong", {}, REPLAYS.length), " replays"),
+      el("span", {}, el("strong", { class: "up" }, wins), " wins"),
+      el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), " losses"),
+      el("span", {}, "Net ", el("strong", { class: net < 0 ? "down" : "up" }, usd(net)), " per contract"));
+  }
   $("#replay-tabs").replaceChildren(...tabs);
   // Arrow keys, Home and End move between tabs, as for any ARIA tablist.
   $("#replay-tabs").addEventListener("keydown", (e) => {
@@ -499,6 +501,18 @@ function initReplays() {
     tab.focus();
   });
   renderReplay(REPLAYS[0]);
+}
+
+// Links elsewhere on the page can open a specific replay by its news date.
+function initReplayLinks() {
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-open-replay]");
+    if (!link) return;
+    const r = REPLAYS.find((x) => x.newsDate === link.dataset.openReplay);
+    if (!r) return;
+    e.preventDefault();
+    showReplay(r);
+  });
 }
 
 function showReplay(r) {
@@ -724,6 +738,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSteps();
   initBoard();
   initReplays();
+  initReplayLinks();
   initLab();
   initBilling();
   initWaitlist();

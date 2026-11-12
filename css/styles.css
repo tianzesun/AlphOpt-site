@@ -369,7 +369,9 @@ button { font: inherit; cursor: pointer; }
 }
 .feature:hover { border-color: rgba(34, 211, 166, 0.5); }
 .feature p { color: var(--muted); margin: 0; }
-.feature .link { color: var(--brand); font-weight: 600; }
+.feature { display: flex; flex-direction: column; }
+.feature__proof { margin-top: auto; padding-top: 1rem; font-size: 0.88rem; font-weight: 600; color: var(--brand); }
+.feature__proof:hover { text-decoration: underline; }
 .feature__icon {
   width: 48px; height: 48px; display: grid; place-items: center; color: var(--brand);
   background: var(--surface-2); border-radius: 12px; margin-bottom: 1rem;
@@ -421,6 +423,7 @@ button { font: inherit; cursor: pointer; }
     radial-gradient(600px 250px at 50% 0%, rgba(34, 211, 166, 0.15), transparent 70%),
     var(--bg);
 }
+.waitlist__record { margin: 1.25rem 0 0; }
 .waitlist { display: flex; gap: 0.6rem; max-width: 480px; margin: 2rem auto 0.75rem; }
 .waitlist input {
   flex: 1; min-width: 0; padding: 0.8rem 1rem; border-radius: 10px;
