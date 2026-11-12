@@ -151,16 +151,21 @@ function initHero() {
     r.why.filter((w) => !Array.isArray(w)).map((w) => w.charAt(0).toLowerCase() + w.slice(1)).join("; ") + ".");
 
   const track = $("#ticker-track");
-  const items = SIGNALS.map((s) =>
-    el("span", { class: "ticker__item" },
-      el("b", {}, s.ticker),
-      el("span", { class: s.dir === "bull" ? "up" : "down" }, s.dir === "bull" ? "▲ BUY" : "▼ SELL"),
-      el("span", { class: "muted" }, s.asset === "option" ? "OPT" : "STK"),
-      el("span", { class: "muted" }, `${s.confidence}%`)
-    )
-  );
+  const items = REPLAYS.map((x) => {
+    const { first, last } = runReplay(x);
+    const pnl = (last.price - first.price) * 100;
+    return el("span", { class: "ticker__item" },
+      el("b", {}, x.ticker),
+      el("span", { class: x.dir === "bull" ? "up" : "down" }, `${x.dir === "bull" ? "▲" : "▼"} ${x.put ? "PUT" : "CALL"}`),
+      el("span", { class: "muted" }, longDate(x.newsDate)),
+      el("span", { class: pnl < 0 ? "down" : "up" }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`)
+    );
+  });
+  // Seven replays are narrower than wide screens, so each marquee half holds the list twice.
+  const half = [...items, ...items.map((n) => n.cloneNode(true))];
+  half.slice(items.length).forEach((n) => n.setAttribute("aria-hidden", "true"));
   // Duplicate the list so the CSS marquee loops seamlessly.
-  track.append(...items, ...items.map((n) => {
+  track.append(...half, ...half.map((n) => {
     const clone = n.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
     return clone;

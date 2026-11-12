@@ -188,7 +188,7 @@ button { font: inherit; cursor: pointer; }
   overflow: hidden; padding: 0.85rem 0;
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
-.ticker__track { display: flex; gap: 2.5rem; width: max-content; animation: scroll 40s linear infinite; }
+.ticker__track { display: flex; gap: 2.5rem; width: max-content; animation: scroll 60s linear infinite; }
 .ticker:hover .ticker__track { animation-play-state: paused; }
 .ticker__item { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.9rem; white-space: nowrap; }
 .ticker__item b { font-weight: 700; }
