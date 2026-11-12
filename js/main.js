@@ -303,7 +303,7 @@ const DAY_MS = 86400000;
 const shortDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-CA", { month: "short", day: "numeric", timeZone: "UTC" });
 const longDate = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const signed = (n, digits = 2) => (n < 0 ? "−" : "+") + Math.abs(n).toFixed(digits);
-const usd = (n) => (n < 0 ? "−$" : "+$") + Math.round(Math.abs(n)).toLocaleString("en-CA");
+const usd = (n) => (Math.round(n) === 0 ? "$" : n < 0 ? "−$" : "+$") + Math.round(Math.abs(n)).toLocaleString("en-CA");
 
 // Walk the position close by close and exit on the first target, stop or time limit.
 function runReplay(r) {
@@ -429,7 +429,8 @@ function renderReplay(r) {
       el("div", { class: "panel__head" }, el("h3", {}, "Position and Greeks, close by close"),
         el("span", { class: "muted small" }, "Theta and vega in $ per contract")),
       el("div", { class: "ledger-wrap" }, ledger),
-      el("p", { class: "replay__lesson" }, el("strong", {}, "What the Greeks show: "), r.lesson)));
+      el("p", { class: "replay__lesson" }, el("strong", {}, "What the Greeks show: "), r.lesson),
+      el("a", { class: "btn btn--ghost btn--sm replay__lab", href: "#lab", "data-replay": REPLAYS.indexOf(r) }, "Try this contract in the Greeks lab →")));
 
   $("#replay").replaceChildren(phone, main);
 }
@@ -464,6 +465,135 @@ function showReplay(r) {
   tab.click();
   tab.focus({ preventScroll: true });
   $("#replay-tabs").scrollIntoView({ block: "start" });
+}
+
+/* ---------- Greeks lab ---------- */
+// Reprices a replay's contract as the stock, time and IV move, and splits the change by Greek.
+function labChart(svg, base, now, cur, put) {
+  const [w, h, padL, padR, padT, padB] = [640, 240, 8, 56, 12, 26];
+  const lo = base.spot * 0.7, hi = base.spot * 1.3, steps = 80;
+  const xs = Array.from({ length: steps + 1 }, (_, i) => lo + ((hi - lo) * i) / steps);
+  const expiry = xs.map((v) => Math.max(put ? base.strike - v : v - base.strike, 0));
+  const today = xs.map((v) => blackScholes({ ...cur.inputs, spot: v }).price);
+  const maxY = Math.max(...expiry, ...today) * 1.08;
+  const x = (v) => padL + ((v - lo) / (hi - lo)) * (w - padL - padR);
+  const y = (v) => padT + (1 - v / maxY) * (h - padT - padB);
+  const node = (tag, attrs) => {
+    const n = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+    return n;
+  };
+  const text = (attrs, str) => Object.assign(node("text", attrs), { textContent: str });
+  const path = (vals) => vals.map((v, i) => `${i ? "L" : "M"}${x(xs[i]).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+
+  svg.replaceChildren();
+  for (let k = 0; k <= 3; k++) {
+    const v = (maxY * k) / 3;
+    svg.append(node("line", { x1: padL, x2: w - padR, y1: y(v), y2: y(v), stroke: "#243049" }),
+      text({ x: w - padR + 6, y: y(v) + 4 }, "$" + v.toFixed(v < 10 ? 1 : 0)));
+  }
+  for (const [v, label, anchor] of [[lo, "$" + Math.round(lo), "start"], [base.strike, `Strike $${base.strike}`, "middle"], [hi, "$" + Math.round(hi), "end"]])
+    svg.append(text({ x: x(v), y: h - 6, "text-anchor": anchor }, label));
+  svg.append(node("line", { x1: x(base.spot), x2: x(base.spot), y1: padT, y2: h - padB, stroke: "#6c8cff", "stroke-dasharray": "4 4" }),
+    text({ x: x(base.spot) + 5, y: padT + 10, fill: "#6c8cff" }, "Entry"));
+  svg.append(node("path", { d: path(expiry), fill: "none", stroke: "#94a0b8", "stroke-width": 1.5, "stroke-dasharray": "5 5" }));
+  svg.append(node("path", { d: path(today), fill: "none", stroke: "#22d3a6", "stroke-width": 2.5 }));
+  svg.append(node("line", { x1: padL, x2: w - padR, y1: y(now.price), y2: y(now.price), stroke: "#e8ecf5", "stroke-opacity": 0.25, "stroke-dasharray": "2 4" }));
+  svg.append(node("circle", { cx: x(cur.inputs.spot), cy: y(cur.price), r: 6, fill: cur.price >= now.price ? "#22c55e" : "#f87171", stroke: "#0a0e17", "stroke-width": 2 }));
+  svg.setAttribute("aria-label", `Option value from $${Math.round(lo)} to $${Math.round(hi)} stock price; currently ${money(cur.price)} at ${money(cur.inputs.spot)}`);
+}
+
+function initLab() {
+  const select = $("#lab-contract");
+  const [spotIn, daysIn, ivIn] = [$("#lab-spot"), $("#lab-days"), $("#lab-iv")];
+  const contracts = REPLAYS.map((r) => {
+    const { first, last } = runReplay(r);
+    return {
+      r,
+      base: { spot: first.spot, strike: r.strike, dte: first.dte, iv: first.iv, put: r.put },
+      // Slider positions that reproduce the replay's actual exit.
+      actual: { spot: (last.spot / first.spot - 1) * 100, days: first.dte - last.dte, iv: (last.iv - first.iv) * 100 },
+    };
+  });
+  const presets = $$("[data-preset]");
+  select.replaceChildren(...contracts.map(({ r }, i) =>
+    el("option", { value: i }, `${r.ticker} $${r.strike} ${r.put ? "put" : "call"} · ${longDate(r.entryDate)}`)));
+
+  const render = () => {
+    const { r, base } = contracts[select.value];
+    const side = r.put ? "put" : "call";
+    const now = blackScholes(base);
+    const move = Number(spotIn.value) / 100, days = Number(daysIn.value), ivPts = Number(ivIn.value);
+    const inputs = { ...base, spot: base.spot * (1 + move), dte: base.dte - days, iv: Math.max(0.05, base.iv + ivPts / 100) };
+    const cur = { ...blackScholes(inputs), inputs };
+
+    $("#lab-spot-out").textContent = `${money(inputs.spot)} (${signed(move * 100, 1)}%)`;
+    $("#lab-days-out").textContent = `${days} · ${inputs.dte} left`;
+    $("#lab-iv-out").textContent = `${Math.round(inputs.iv * 100)}%`;
+
+    const pnl = (cur.price - now.price) * 100;
+    const ret = cur.price / now.price - 1;
+    const cls = (n) => (n < 0 ? "down" : n > 0 ? "up" : "");
+    $("#lab-result").replaceChildren(
+      el("div", {}, el("span", {}, `${r.ticker} stock`), el("strong", {}, money(inputs.spot))),
+      el("div", {}, el("span", {}, `Option (entry ${money(now.price)})`), el("strong", {}, money(cur.price))),
+      el("div", { class: "result__big" }, el("span", {}, "P&L per contract"), el("strong", { class: cls(pnl) }, usd(pnl))),
+      el("div", {}, el("span", {}, "Return"), el("strong", { class: cls(ret) }, `${signed(ret * 100, 0)}%`)));
+
+    labChart($("#lab-chart"), base, now, cur, r.put);
+
+    const dollar = (n) => money(Math.abs(n));
+    const rises = cur.delta >= 0 ? "gains" : "loses";
+    $("#lab-greeks").replaceChildren(
+      el("li", {}, el("b", {}, "Δ"), el("strong", {}, signed(cur.delta)), el("span", {}, `If ${r.ticker} rises $1, this ${side} ${rises} about ${dollar(cur.delta)}`)),
+      el("li", {}, el("b", {}, "Γ"), el("strong", {}, cur.gamma.toFixed(3)), el("span", {}, `Each $1 move shifts delta by ${cur.gamma.toFixed(3)}`)),
+      el("li", {}, el("b", {}, "Θ"), el("strong", {}, signed(cur.theta)), el("span", {}, `Time decay costs about ${dollar(cur.theta * 100)} per contract per day`)),
+      el("li", {}, el("b", {}, "ν"), el("strong", {}, signed(cur.vega)), el("span", {}, `Each 1-point change in IV moves it ${dollar(cur.vega * 100)} per contract`)));
+
+    // Second-order Taylor expansion from the entry Greeks; whatever it misses is shown as "Other".
+    const dS = inputs.spot - base.spot;
+    const parts = [
+      ["Δ Delta", now.delta * dS * 100],
+      ["Γ Gamma", 0.5 * now.gamma * dS * dS * 100],
+      ["Θ Theta", now.theta * days * 100],
+      ["ν Vega", now.vega * ivPts * 100],
+    ];
+    parts.push(["Other", pnl - parts.reduce((a, [, v]) => a + v, 0)]);
+    const maxAbs = Math.max(...parts.map(([, v]) => Math.abs(v)), Math.abs(pnl), 1);
+    const row = (label, v, extra = "") =>
+      el("li", { class: `driver ${extra}` },
+        el("span", {}, label),
+        el("span", { class: "driver__track" },
+          el("span", { class: `driver__fill driver__fill--${v < 0 ? "loss" : "gain"}`, style: `width:${(Math.abs(v) / maxAbs) * 50}%` })),
+        el("span", { class: `driver__val ${cls(Math.round(v))}` }, usd(v)));
+    $("#lab-drivers").replaceChildren(...parts.map(([l, v]) => row(l, v)), row("Total", pnl, "driver--total"));
+  };
+
+  const applyPreset = (name) => {
+    const { base, actual } = contracts[select.value];
+    daysIn.max = base.dte - 1;
+    const v = name === "actual" ? actual : { spot: 0, days: 0, iv: 0 };
+    [spotIn.value, daysIn.value, ivIn.value] = [v.spot, v.days, v.iv];
+    presets.forEach((b) => b.classList.toggle("is-active", b.dataset.preset === name));
+    render();
+  };
+  const reset = () => applyPreset("actual");
+  presets.forEach((b) => b.addEventListener("click", () => applyPreset(b.dataset.preset)));
+  select.addEventListener("change", reset);
+  // "Try this contract" links in the replays preselect their contract here.
+  $("#replay").addEventListener("click", (e) => {
+    const link = e.target.closest("[data-replay]");
+    if (!link) return;
+    select.value = link.dataset.replay;
+    reset();
+  });
+  $("#lab-form").addEventListener("input", (e) => {
+    if (e.target === select) return;
+    presets.forEach((b) => b.classList.remove("is-active"));
+    render();
+  });
+  $("#lab-form").addEventListener("submit", (e) => e.preventDefault());
+  reset();
 }
 
 /* ---------- Pricing toggle ---------- */
@@ -552,6 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHero();
   initBoard();
   initReplays();
+  initLab();
   initBilling();
   initWaitlist();
   initReveal();

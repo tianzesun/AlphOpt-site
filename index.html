@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AlphOpt — AI signals for stocks &amp; options</title>
-  <meta name="description" content="AlphOpt scans the market with AI and turns what it finds into clear, explainable stock and options signals. Know what to watch, why, and how much risk you're taking.">
-  <meta property="og:title" content="AlphOpt — AI signals for stocks & options">
-  <meta property="og:description" content="Clear, explainable AI trade signals for stocks and options.">
+  <title>AlphOpt — AI options signals, Greeks explained</title>
+  <meta name="description" content="AlphOpt reads the news, price action and options market with AI and turns it into clear options signals: the contract, entry, target and stop, with the Greeks in plain English.">
+  <meta property="og:title" content="AlphOpt — AI options signals, Greeks explained">
+  <meta property="og:description" content="Clear, explainable AI options signals, with the Greeks in plain English.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0a0e17">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -29,6 +29,7 @@
         <a href="#how">How it works</a>
         <a href="#signals">Signals</a>
         <a href="#cases">Replays</a>
+        <a href="#lab">Greeks lab</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
@@ -46,9 +47,9 @@
           <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> AI options signals · Greeks explained</p>
           <h1>Know <span class="grad">what to trade</span> and <span class="grad">why</span>, in seconds.</h1>
           <p class="lead">
-            AlphOpt's AI reads price action, options flow, volatility and news across thousands of tickers,
-            then hands you a short list of clear signals. Each one comes with an entry, a target, a stop and
-            a plain-English reason.
+            When the news hits, AlphOpt's AI reads price action, volume, volatility and the option chain,
+            then hands you a short list of options signals. Each names the contract, the entry, target and stop,
+            and explains the Greeks in plain English.
           </p>
           <div class="hero__cta">
             <a class="btn btn--primary btn--lg" href="#waitlist">Get early access</a>
@@ -113,7 +114,7 @@
           <li class="step">
             <div class="step__num">3</div>
             <h3>Act</h3>
-            <p>You get a ready-to-read card: ticker, direction, suggested contract or shares, entry, target, stop, and the reasons behind it. The final call is always yours.</p>
+            <p>You get a ready-to-read card: ticker, direction, suggested strike and expiry, entry, target, stop, the Greeks, and the reasons behind it. The final call is always yours.</p>
           </li>
         </ol>
       </div>
@@ -174,8 +175,68 @@
       </div>
     </section>
 
+    <!-- Greeks lab -->
+    <section class="section section--alt" id="lab">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Greeks lab</p>
+          <h2>See what moves your option before you buy it</h2>
+          <p class="muted">Pick a contract from the replays, then move the stock, the clock and volatility. Watch its price and Greeks respond, and see which Greek made or lost the money.</p>
+        </header>
+        <div class="lab">
+          <form class="lab__controls" id="lab-form">
+            <label class="lab__field">
+              <span>Contract</span>
+              <select id="lab-contract"></select>
+            </label>
+            <label class="lab__field">
+              <span>Stock price <strong id="lab-spot-out"></strong></span>
+              <input type="range" id="lab-spot" min="-25" max="25" step="any" value="0">
+            </label>
+            <label class="lab__field">
+              <span>Days passed <strong id="lab-days-out"></strong></span>
+              <input type="range" id="lab-days" min="0" max="20" step="1" value="0">
+            </label>
+            <label class="lab__field">
+              <span>Implied volatility <strong id="lab-iv-out"></strong></span>
+              <input type="range" id="lab-iv" min="-25" max="25" step="any" value="0">
+            </label>
+            <div class="lab__presets" role="group" aria-label="Scenario presets">
+              <button class="btn btn--ghost btn--sm" type="button" data-preset="actual">What actually happened</button>
+              <button class="btn btn--ghost btn--sm" type="button" data-preset="entry">Reset to entry</button>
+            </div>
+          </form>
+
+          <div class="lab__out">
+            <div class="result" id="lab-result"></div>
+            <div class="panel lab__panel">
+              <div class="panel__head">
+                <h3>Option value vs stock price</h3>
+                <div class="legend">
+                  <span><i style="background:#22d3a6"></i>Today's settings</span>
+                  <span><i class="legend__dash"></i>At expiry</span>
+                </div>
+              </div>
+              <svg class="lab__chart" id="lab-chart" viewBox="0 0 640 240" role="img"></svg>
+            </div>
+            <div class="lab__grid">
+              <div class="panel lab__panel">
+                <div class="panel__head"><h3>Greeks right now</h3></div>
+                <ul class="lab-greeks" id="lab-greeks"></ul>
+              </div>
+              <div class="panel lab__panel">
+                <div class="panel__head"><h3>What drove the change</h3><span class="muted small">$ per contract</span></div>
+                <ul class="drivers" id="lab-drivers"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="muted small replay__note">Black-Scholes estimates with a 5% interest rate, starting from each replay's entry. Real prices also depend on bid-ask spreads, skew and dividends.</p>
+      </div>
+    </section>
+
     <!-- Features -->
-    <section class="section section--alt" id="features">
+    <section class="section" id="features">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow">Why AlphOpt</p>
@@ -205,7 +266,7 @@
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V11M13 17V7M18 17v-4"/></svg></div>
             <h3>Honest track record</h3>
-            <p>Every past signal stays on the record, winners and losers alike, so you can judge the system on its results.</p>
+            <p>Every signal stays on the record, winners and losers alike. Our replays show three losses out of seven, <a class="link" href="#cases">with the Greeks that caused them</a>.</p>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
@@ -217,7 +278,7 @@
     </section>
 
     <!-- Pricing -->
-    <section class="section" id="pricing">
+    <section class="section section--alt" id="pricing">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow">Pricing</p>
@@ -233,7 +294,7 @@
             <p class="plan__price"><span class="plan__amt" data-monthly="0" data-yearly="0">$0</span><span class="muted">/mo</span></p>
             <p class="muted">Get a feel for AI signals.</p>
             <ul>
-              <li>3 stock signals per day</li>
+              <li>3 options signals per day</li>
               <li>Delayed by 30 minutes</li>
               <li>Signal explanations</li>
               <li>Public track record</li>
@@ -244,11 +305,12 @@
             <span class="plan__badge">Most popular</span>
             <h3>Pro</h3>
             <p class="plan__price"><span class="plan__amt" data-monthly="29" data-yearly="24">$29</span><span class="muted">/mo</span></p>
-            <p class="muted">For active stock &amp; options investors.</p>
+            <p class="muted">For active options traders.</p>
             <ul>
-              <li>All stock &amp; options signals</li>
+              <li>All options signals</li>
               <li>Real-time delivery</li>
               <li>Suggested strikes &amp; expiries</li>
+              <li>Greeks lab for every signal</li>
               <li>Watchlist alerts (push &amp; email)</li>
               <li>Position-sizing helper</li>
             </ul>
@@ -273,7 +335,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="section section--alt" id="faq">
+    <section class="section" id="faq">
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow">FAQ</p>
@@ -286,7 +348,11 @@
           </details>
           <details>
             <summary>Do I need to understand options to use it?</summary>
-            <p>No. You can stick to stock signals. When you're ready for options, every options card explains the contract in plain language: what you pay, the most you can lose, and what the stock needs to do for the trade to work.</p>
+            <p>No. Every card explains the contract in plain language: what you pay, the most you can lose, and what the stock needs to do for the trade to work. The Greeks lab lets you try “what if the stock drops?” or “what if I hold a week?” before you buy.</p>
+          </details>
+          <details>
+            <summary>Are the replays real trades?</summary>
+            <p>The events and stock prices are real: actual daily closes, volumes and ranges from the time. The trades are replays: we applied AlphOpt's rules (+50% target, −35% stop, five sessions at most, checked at each close) to those events. AlphOpt had not launched yet and did not publish these signals. Option premiums and Greeks are model estimates, not recorded quotes. Losses stay in, so you can judge the rules on all of it.</p>
           </details>
           <details>
             <summary>How does the AI choose signals?</summary>
@@ -333,6 +399,7 @@
           <a href="#how">How it works</a>
           <a href="#signals">Signals</a>
           <a href="#cases">Replays</a>
+          <a href="#lab">Greeks lab</a>
           <a href="#pricing">Pricing</a>
           <a href="#faq">FAQ</a>
         </nav>
