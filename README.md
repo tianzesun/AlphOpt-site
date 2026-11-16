@@ -20,6 +20,7 @@ Opening `index.html` directly in a browser also works.
 ```
 index.html            Page markup (hero, how it works, signal board, replays, Greeks lab, features, pricing, FAQ, waitlist)
 css/styles.css        All styles; design tokens at the top (:root)
+js/i18n.js            English / Chinese text and the language switch
 js/main.js            Replay data and engine, Black-Scholes pricing, and every interactive section
 assets/favicon.svg    Logo mark
 assets/og-image.png   1200x630 link-preview image
@@ -35,6 +36,14 @@ Every signal on the site comes from the `REPLAYS` array in `js/main.js`: the her
 - **Adding a replay:** add an entry with real closes around the event, then check the site's wording: the record line updates itself, but copy such as "three losses out of seven" does not.
 
 The replays are labelled as replays everywhere: AlphOpt had not launched and did not publish these signals.
+
+## Languages (English / 中文)
+
+The 中文 / EN button in the nav switches the whole page between English and Simplified Chinese without reloading. The choice is saved in `localStorage`; first-time visitors whose browser language is Chinese start in Chinese, and `?lang=zh` or `?lang=en` in the URL forces one.
+
+- **Page text:** elements in `index.html` carry `data-i18n="key"` (or `data-i18n-html` for markup, `data-i18n-attr` for attributes). The English stays in the HTML; the Chinese is in `ZH_STATIC` in `js/i18n.js`.
+- **Generated text:** strings built in `js/main.js` go through `t("key", vars)`, defined in `STRINGS.en` / `STRINGS.zh` in `js/i18n.js`.
+- **Replays:** each entry in `REPLAYS` has a `zh` object (name, news, why, lesson). Translate it when adding a replay.
 
 ## Customizing
 

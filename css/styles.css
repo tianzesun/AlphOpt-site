@@ -15,7 +15,7 @@
   --radius: 14px;
   --radius-lg: 22px;
   --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
@@ -112,6 +112,15 @@ button { font: inherit; cursor: pointer; }
 }
 .nav.is-scrolled { border-bottom-color: var(--border); }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.nav__inner .brand { margin-right: auto; }
+.lang-toggle {
+  margin-left: 1.25rem; padding: 0.35rem 0.7rem; min-width: 3.2rem;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 999px;
+  font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+}
+.lang-toggle:hover { border-color: var(--brand); }
+.lang-toggle { order: 1; }
+.nav__toggle { order: 2; }
 .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-size: 1.25rem; font-weight: 500; }
 .brand strong { color: var(--brand); font-weight: 800; }
 .nav__links { display: flex; align-items: center; gap: 1.75rem; font-size: 0.95rem; white-space: nowrap; }
@@ -451,6 +460,7 @@ button { font: inherit; cursor: pointer; }
 /* Seven nav links plus the button need about 930px, so switch to the menu below that. */
 @media (max-width: 980px) {
   .nav__toggle { display: flex; }
+  .lang-toggle { margin: 0 0.5rem 0 0; }
   .nav__links {
     position: absolute; top: 68px; left: 0; right: 0;
     flex-direction: column; align-items: stretch; gap: 0; padding: 0.5rem 1.25rem 1.25rem;
