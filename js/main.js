@@ -91,10 +91,15 @@ function initNav() {
 }
 
 /* ---------- Hero ---------- */
-// The hero card deliberately shows a losing replay (Tesla, Oct 2024: the stock ended flat but the
-// call lost 37%), so the first result visitors see is a loss and its lesson, not a cherry-picked win.
+// The hero cycles through five replays, opening on a loss (Tesla: the stock ended flat but the call
+// lost 37%). Three lose and two gain, close to the site's overall record, so visitors never see only winners.
+const HERO_CASES = [["TSLA", "2024-10-23"], ["AAPL", "2024-06-10"], ["MSFT", "2025-01-29"], ["AMZN", "2024-08-01"], ["QQQ", "2024-08-05"]];
+let heroIndex = 0;
+
 function renderHero() {
-  const r = REPLAYS.find((x) => x.ticker === "TSLA" && x.newsDate === "2024-10-23");
+  const [ticker, newsDate] = HERO_CASES[heroIndex];
+  const r = REPLAYS.find((x) => x.ticker === ticker && x.newsDate === newsDate);
+  $("#hero-count").textContent = t("hero.count", { i: heroIndex + 1, n: HERO_CASES.length });
   const { start, sessions, first, last } = runReplay(r);
   const pnl = (last.price - first.price) * 100;
   const cls = pnl < 0 ? "down" : "up";
@@ -119,6 +124,22 @@ function renderHero() {
     el("span", {}, t("exitOn", { exit: t("exit." + last.exit), date: shortDate(last.date) })),
     el("strong", { class: cls }, t("hypo", { pct: signed(last.ret * 100, 0) })));
   $("#hero-why").replaceChildren(el("strong", {}, t("replay.lesson")), tr(r, "lesson"));
+}
+
+// Previous / next buttons, plus the left and right arrow keys while focus is in the card.
+function initHeroNav() {
+  const go = (step) => {
+    heroIndex = (heroIndex + step + HERO_CASES.length) % HERO_CASES.length;
+    renderHero();
+  };
+  $("#hero-prev").addEventListener("click", () => go(-1));
+  $("#hero-next").addEventListener("click", () => go(1));
+  $(".hero__visual").addEventListener("keydown", (e) => {
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    go(step);
+  });
 }
 
 /* ---------- How it works ---------- */
@@ -879,6 +900,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#year").textContent = new Date().getFullYear();
   initNav();
   renderHero();
+  initHeroNav();
   renderSteps();
   initBoard();
   initReplays();

@@ -160,6 +160,10 @@ button { font: inherit; cursor: pointer; }
 }
 @keyframes float { 50% { transform: rotate(1.5deg) translateY(-10px); } }
 .phone__bar { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--muted); padding: 0.25rem 0.4rem 0.9rem; }
+.hero-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 0.8rem; }
+.hero-nav__btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+.hero-nav__btn:hover { border-color: var(--brand); color: var(--brand); }
+.hero-nav__count { min-width: 3.5rem; text-align: center; font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
 .phone__note { text-align: center; font-size: 0.72rem; color: var(--muted); margin: 0.7rem 0 0; }
 .phone__note a { color: var(--brand); font-weight: 600; }
 

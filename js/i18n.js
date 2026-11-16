@@ -36,6 +36,8 @@ const ZH_STATIC = {
   "hero.p2": "希腊值通俗易懂",
   "hero.p3": "亏损照实呈现",
   "hero.p4": "不提供交易推荐",
+  "hero.prev": "上一个案例研究",
+  "hero.next": "下一个案例研究",
   "hero.card": "AlphOpt 案例研究",
   "hero.note": '这是对过往事件的假设性回放，仅供教育用途，并非推荐。<a href="#cases">查看全部案例研究 →</a>',
 
@@ -224,6 +226,7 @@ const STRINGS = {
     "tag.Target": "TARGET", "tag.Stop": "STOP", "tag.Time": "TIME",
     "exitOn": "{exit}, {date}",
     "hero.date": "Case study · {date}",
+    "hero.count": "{i} / {n}",
     "hero.chart": "{ticker} daily closes, {from} to {to}",
     "hero.caption": "Daily closes · start {d1} at {p1}, end {d2} at {p2}",
     "entry": "Entry", "target": "Target", "stop": "Stop", "exit": "Exit",
