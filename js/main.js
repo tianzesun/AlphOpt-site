@@ -651,6 +651,84 @@ function initLab() {
   reset();
 }
 
+/* ---------- Covered calls ---------- */
+// Three covered calls on closes already in REPLAYS, one for each outcome: the call expires,
+// the shares are called away, or the stock falls. Premiums are Black-Scholes estimates from an
+// assumed IV, held to expiry and settled at the closing price. The GIC rate is illustrative.
+const GIC_RATE = 0.03;
+const COVERED = [
+  { ticker: "SPY", from: "2025-03-12", to: "2025-04-02", strike: 575, iv: 0.22,
+    lesson: "The call expired worthless, so the premium was kept on top of a small rise in the shares. But the shares stayed fully exposed: the next day, after the U.S. tariff announcement, SPY fell 4.9%, more than four times the premium.",
+    zh: { lesson: "期权到期作废，因此在股票小幅上涨之外还保留了权利金。但股票的风险敞口丝毫未减：次日美国宣布关税后，SPY 下跌 4.9%，是权利金的四倍多。" } },
+  { ticker: "META", from: "2023-01-12", to: "2023-02-10", strike: 145, iv: 0.5,
+    lesson: "The stock jumped after earnings, so the shares were sold at the $145 strike and the gain stopped there. Holding the shares alone made almost three times as much: the cap cost most of the rally.",
+    zh: { lesson: "财报后股价大涨，股票以 $145 的行权价被买走，收益到此为止。仅持有股票的收益几乎是三倍：收益上限让你错过了大部分涨幅。" } },
+  { ticker: "NVDA", from: "2025-01-02", to: "2025-01-31", strike: 145, iv: 0.5,
+    lesson: "The call expired worthless and the premium was kept, but it made up for less than a third of the fall after the DeepSeek sell-off. A covered call cushions a drop; it does not protect you from one.",
+    zh: { lesson: "期权到期作废，权利金得以保留，但它只抵消了 DeepSeek 抛售后跌幅的不到三分之一。备兑看涨只能缓冲下跌，并不能保护你免受下跌的影响。" } },
+];
+
+function coveredRun(c) {
+  const r = REPLAYS.find((x) => x.ticker === c.ticker && x.closes.some(([d]) => d === c.from) && x.closes.some(([d]) => d === c.to));
+  const i0 = r.closes.findIndex(([d]) => d === c.from), i1 = r.closes.findIndex(([d]) => d === c.to);
+  const s0 = r.closes[i0][1], sT = r.closes[i1][1];
+  const days = Math.round((Date.parse(c.to) - Date.parse(c.from)) / DAY_MS);
+  const premium = blackScholes({ spot: s0, strike: c.strike, dte: days, iv: c.iv, put: false }).price;
+  const called = sT > c.strike;
+  const gain = (called ? c.strike - s0 : sT - s0) + premium;
+  return { r, path: r.closes.slice(i0, i1 + 1).map(([, v]) => v), s0, sT, days, premium, called,
+    outcome: called ? "called" : sT >= s0 ? "kept" : "fell",
+    ccRet: gain / s0, ccUsd: gain * 100, stockRet: sT / s0 - 1, stockUsd: (sT - s0) * 100, gicRet: (GIC_RATE * days) / 365 };
+}
+
+// Daily closes with the strike as a dashed line, scaled so both always fit.
+function coveredChart(path, strike, ticker) {
+  const [w, h, pad] = [300, 110, 10];
+  const min = Math.min(...path, strike), max = Math.max(...path, strike);
+  const x = (i) => (i / (path.length - 1)) * w;
+  const y = (v) => h - pad - ((v - min) / (max - min || 1)) * (h - pad * 2);
+  const svg = document.createElementNS(SVG_NS, "svg");
+  for (const [k, v] of Object.entries({ class: "cc-card__chart", viewBox: `0 0 ${w} ${h}`, preserveAspectRatio: "none", role: "img",
+    "aria-label": t("cc.chart", { ticker, strike }) })) svg.setAttribute(k, v);
+  const line = document.createElementNS(SVG_NS, "path");
+  line.setAttribute("d", path.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" "));
+  for (const [k, v] of Object.entries({ fill: "none", stroke: "#e8ecf5", "stroke-width": 2, "vector-effect": "non-scaling-stroke" })) line.setAttribute(k, v);
+  const level = document.createElementNS(SVG_NS, "line");
+  for (const [k, v] of Object.entries({ x1: 0, x2: w, y1: y(strike), y2: y(strike), stroke: "#fbbf24", "stroke-dasharray": "5 5", "vector-effect": "non-scaling-stroke" })) level.setAttribute(k, v);
+  svg.append(level, line);
+  return svg;
+}
+
+function renderCovered() {
+  const runs = COVERED.map((c) => ({ c, ...coveredRun(c) }));
+  const pct = (v, d = 1) => `${signed(v * 100, d)}%`;
+  const whole = (n) => "$" + Math.round(n).toLocaleString("en-CA");
+  const cls = (v) => (v < 0 ? "down" : "up");
+  const row = (dt, dd) => el("div", {}, el("dt", {}, dt), el("dd", {}, dd));
+  const result = (label, value, c) => el("div", {}, el("span", {}, label), el("strong", { class: c }, value));
+
+  $("#cc-cards").replaceChildren(...runs.map((x) => el("article", { class: "cc-card" },
+    el("span", { class: `cc-card__badge cc-card__badge--${x.outcome}` }, t("cc.outcome." + x.outcome)),
+    el("div", { class: "cc-card__head" }, el("b", {}, x.c.ticker), el("span", { class: "muted small" }, tr(x.r, "name"))),
+    el("p", { class: "muted small cc-card__when" }, t("cc.when", { days: x.days, from: longDate(x.c.from), to: longDate(x.c.to) })),
+    coveredChart(x.path, x.c.strike, x.c.ticker),
+    el("p", { class: "cc-card__legend small" }, el("i"), t("cc.strike", { strike: x.c.strike })),
+    el("dl", { class: "cc-card__steps" },
+      row(t("cc.bought"), t("cc.boughtVal", { price: money(x.s0), total: whole(x.s0 * 100) })),
+      row(t("cc.sold"), t("cc.soldVal", { strike: x.c.strike, date: shortDate(x.c.to), prem: money(x.premium), total: whole(x.premium * 100) })),
+      row(t("cc.expiry"), t(x.called ? "cc.calledVal" : "cc.expiredVal", { price: money(x.sT), strike: x.c.strike }))),
+    el("div", { class: "cc-card__results" },
+      result(t("cc.resCC"), `${t("hypo", { pct: signed(x.ccRet * 100, 1) })} · ${usd(x.ccUsd)}`, cls(x.ccRet)),
+      result(t("cc.resStock"), `${pct(x.stockRet)} · ${usd(x.stockUsd)}`, cls(x.stockRet)),
+      result(t("cc.resGic", { rate: GIC_RATE * 100 }), pct(x.gicRet, 2), "")),
+    el("p", { class: "cc-card__lesson" }, tr(x.c, "lesson")))));
+
+  const ccs = runs.map((x) => x.ccRet), gics = runs.map((x) => x.gicRet), days = runs.map((x) => x.days);
+  $("#cmp-examples").textContent = t("cmp.examples", { lo: Math.min(...days), hi: Math.max(...days) });
+  $("#cc-range").textContent = t("cmp.range", { lo: pct(Math.min(...ccs)), hi: pct(Math.max(...ccs)) });
+  $("#gic-range").textContent = t("cmp.gicRange", { lo: pct(Math.min(...gics), 2), hi: pct(Math.max(...gics), 2), rate: GIC_RATE * 100 });
+}
+
 /* ---------- Waitlist ---------- */
 // Formspree form ID (the part after /f/ in the form's endpoint URL).
 const FORMSPREE_ID = "xljbelzj";
@@ -735,6 +813,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReplays();
   initReplayLinks();
   initLab();
+  renderCovered();
   initWaitlist();
   initReveal();
   // Redraw everything built in JavaScript when the language changes (the lab redraws itself).
@@ -743,6 +822,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSteps();
     renderBoard();
     renderReplayTabs();
+    renderCovered();
     $("#waitlist-msg").textContent = "";
   });
 });

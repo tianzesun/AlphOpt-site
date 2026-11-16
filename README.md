@@ -39,6 +39,10 @@ Every case study on the site comes from the `REPLAYS` array in `js/main.js`: the
 
 The replays are labelled as hypothetical, historical examples everywhere: AlphOpt did not exist at the time, and no one was advised to make these trades.
 
+## Covered calls
+
+The covered-call explainer (`COVERED` and `renderCovered` in `js/main.js`) reuses closes from `REPLAYS`, so each example needs a replay that contains both its start and expiry dates. Keep one example for each outcome (expired, called away, stock fell), keep the GIC comparison factual, and never describe the strategy as low risk or as beating a GIC.
+
 ## Languages (English / 中文)
 
 The 中文 / EN button in the nav switches the whole page between English and Simplified Chinese without reloading. The choice is saved in `localStorage`; first-time visitors whose browser language is Chinese start in Chinese, and `?lang=zh` or `?lang=en` in the URL forces one.
@@ -62,6 +66,7 @@ AlphOpt is not registered with any securities regulator, so the site must stay e
 - Paid plans may only sell education and tools (courses, labs, simulators), never trade ideas. Prices are shown as planned launch prices until a real checkout exists; before selling, add full billing, renewal, cancellation and refund terms (Ontario consumer protection law) and update the privacy policy for payment data.
 - Hypothetical results stay next to their disclosures; no headline returns or profit totals in marketing copy or images.
 - Waitlist sign-ups need the consent checkbox (CASL). The privacy policy must match what is actually collected.
+- Sign-ups are **paused** until a mailing address is published: CASL requires one in every consent request. To reopen, follow the comment in the waitlist section of `index.html`.
 
 ## Deploy
 

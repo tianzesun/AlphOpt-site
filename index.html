@@ -36,12 +36,12 @@
       <nav class="nav__links" id="nav-links" aria-label="Primary" data-i18n-attr="aria-label:nav.primary">
         <a href="#how" data-i18n="nav.how">How it works</a>
         <a href="#signals" data-i18n="nav.signals">Case studies</a>
-        <a href="#cases" data-i18n="nav.cases">Replays</a>
+        <a href="#covered" data-i18n="nav.covered">Covered calls</a>
         <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
         <a href="#features" data-i18n="nav.features">Features</a>
         <a href="#plans" data-i18n="nav.plans">Plans</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
-        <a class="btn btn--sm btn--primary" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
+        <a class="btn btn--sm btn--primary" href="#waitlist" data-i18n="cta.join">Coming soon</a>
       </nav>
       <button class="lang-toggle" id="lang-toggle" type="button" lang="zh-CN" aria-label="切换到中文">中文</button>
     </div>
@@ -62,7 +62,7 @@
             price and Greeks responded, close by close, in plain English. It is built for learning, not for telling you what to trade.
           </p>
           <div class="hero__cta">
-            <a class="btn btn--primary btn--lg" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
+            <a class="btn btn--primary btn--lg" href="#waitlist" data-i18n="cta.join">Coming soon</a>
             <a class="btn btn--ghost btn--lg" href="#signals" data-i18n="hero.explore">Explore case studies →</a>
           </div>
           <ul class="hero__points">
@@ -247,8 +247,43 @@
       </div>
     </section>
 
+    <!-- Covered calls -->
+    <section class="section" id="covered">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow" data-i18n="cc.eyebrow">Strategy explainer</p>
+          <h2 data-i18n="cc.h2">Covered calls: income, with a catch</h2>
+          <p class="muted" data-i18n="cc.sub">A covered call means owning 100 shares and selling someone the right to buy them from you at a set price (the strike) by a set date. You collect a premium up front. In return, you keep the stock's downside and give up any gain above the strike. The three real examples below show each possible outcome.</p>
+        </header>
+        <ol class="cc-how">
+          <li data-i18n="cc.how1">Own 100 shares. One option contract covers 100 shares, so this takes real money: about $55,900 for SPY in March 2025.</li>
+          <li data-i18n="cc.how2">Sell one call with a strike above today's price and collect the premium. It is yours to keep whatever happens next.</li>
+          <li data-i18n="cc.how3">At expiry, one of three things has happened: the stock stayed below the strike, rose above it, or fell.</li>
+        </ol>
+        <div class="cc-cards" id="cc-cards"></div>
+
+        <div class="panel cc-compare">
+          <div class="panel__head"><h3 data-i18n="cmp.h3">Covered call vs GIC</h3></div>
+          <div class="ledger-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th scope="col"></th><th scope="col" data-i18n="cmp.cc">Covered call</th><th scope="col" data-i18n="cmp.gic">GIC</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" data-i18n="cmp.money">Your money</th><td data-i18n="cmp.moneyCC">Not protected: you own shares that can fall in value</td><td data-i18n="cmp.moneyGIC">Principal is guaranteed; eligible GICs at CDIC member institutions are insured up to $100,000 per insurance category</td></tr>
+                <tr><th scope="row" data-i18n="cmp.return">Return</th><td data-i18n="cmp.returnCC">The premium plus the stock's change, capped at the strike; can be negative</td><td data-i18n="cmp.returnGIC">A fixed rate, set when you buy</td></tr>
+                <tr><th scope="row" data-i18n="cmp.risk">Biggest risk</th><td data-i18n="cmp.riskCC">A large drop in the stock</td><td data-i18n="cmp.riskGIC">Inflation, and money locked in until maturity</td></tr>
+                <tr><th scope="row" id="cmp-examples">In the examples above</th><td id="cc-range"></td><td id="gic-range"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="muted small replay__note" data-i18n="cc.note">Hypothetical, educational examples. Stock prices are actual daily closes (Yahoo Finance). Call premiums are Black-Scholes estimates from an assumed implied volatility (22% for SPY, 50% for META and NVIDIA), not recorded quotes. The examples ignore commissions, bid-ask spreads, dividends, early assignment and taxes, and were chosen to show each possible outcome, not as a representative sample. The GIC rate is illustrative, not a quote. Covered calls can lose money and do not always beat a GIC. This is not a recommendation to use this strategy.</p>
+      </div>
+    </section>
+
     <!-- Features -->
-    <section class="section" id="features">
+    <section class="section section--alt" id="features">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="feat.eyebrow">Why AlphOpt</p>
@@ -294,12 +329,12 @@
     </section>
 
     <!-- Plans -->
-    <section class="section section--alt" id="plans">
+    <section class="section" id="plans">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="plans.eyebrow">Plans</p>
           <h2 data-i18n="plans.h2">Learn free. Go deeper when you're ready.</h2>
-          <p class="muted" data-i18n="plans.sub">Planned launch pricing. Nothing is for sale yet: join the waitlist to hear when AlphOpt opens.</p>
+          <p class="muted" data-i18n="plans.sub">Planned launch pricing. Nothing is for sale yet, and sign-ups for launch news open soon.</p>
         </header>
         <div class="plans">
           <article class="plan">
@@ -311,7 +346,7 @@
               <li data-i18n="plans.free2">Greeks lab for single options</li>
               <li data-i18n="plans.free3">Plain-English Greeks explanations</li>
             </ul>
-            <a class="btn btn--ghost btn--block" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
+            <a class="btn btn--ghost btn--block" href="#waitlist" data-i18n="cta.join">Coming soon</a>
           </article>
           <article class="plan plan--featured">
             <h3 data-i18n="plans.learner">Learner</h3>
@@ -324,7 +359,7 @@
               <li data-i18n="plans.l4">Practice simulator with virtual money, no real trades</li>
               <li data-i18n="plans.l5">A new case study on a past market event each month</li>
             </ul>
-            <a class="btn btn--primary btn--block" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
+            <a class="btn btn--primary btn--block" href="#waitlist" data-i18n="cta.join">Coming soon</a>
           </article>
         </div>
         <p class="plans__note" data-i18n="plans.note">No plan includes trade recommendations, signals, alerts or advice tailored to you. You pay for lessons and tools, not for ideas about what to trade. Prices are in Canadian dollars, plus applicable taxes, and may change before launch. Full terms, including cancellation and refunds, will be shown before you can buy.</p>
@@ -332,7 +367,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="section" id="faq">
+    <section class="section section--alt" id="faq">
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow" data-i18n="nav.faq">FAQ</p>
@@ -368,6 +403,10 @@
             <p data-i18n-html="faq.a7">Only the email address you give us to join the waitlist, with a record of your consent. Your language choice is saved in your own browser. There are no ads, analytics or tracking cookies. See the <a href="privacy.html">privacy policy</a>.</p>
           </details>
           <details>
+            <summary data-i18n="faq.q9">Are covered calls low risk?</summary>
+            <p data-i18n="faq.a9">Not in the way a GIC is. You own the shares, so you carry almost all of the stock's downside: the premium offsets only a small part of a fall, and your gain is capped at the strike. A covered call can lose money, and it does not always beat a GIC. The covered-call examples on this page show all three outcomes.</p>
+          </details>
+          <details>
             <summary data-i18n="faq.q8">Will AlphOpt cost money?</summary>
             <p data-i18n="faq.a8">The case studies and the basic Greeks lab will stay free. A paid Learner plan is planned for launch, with a structured course, advanced tools and a practice simulator. It is not on sale yet. Paying never buys trade recommendations: every plan is education only.</p>
           </details>
@@ -378,9 +417,11 @@
     <!-- Waitlist -->
     <section class="section cta" id="waitlist">
       <div class="container container--narrow center">
-        <h2 data-i18n="wait.h2">Be the first to try AlphOpt</h2>
-        <p class="lead" data-i18n="wait.lead">Join the waitlist to hear when AlphOpt's options-education app launches.</p>
-        <form class="waitlist" id="waitlist-form" novalidate>
+        <h2 data-i18n="wait.h2">AlphOpt is coming soon</h2>
+        <p class="lead" data-i18n="wait.lead">Sign-ups for launch news are paused for now and will open soon. Please check back.</p>
+        <!-- Sign-ups are paused until a mailing address is added (CASL). To reopen: remove "hidden" from the form
+             and the privacy line below, add the address to the operator line, and restore the CTA and lead text. -->
+        <form class="waitlist" id="waitlist-form" novalidate hidden>
           <label class="visually-hidden" for="email" data-i18n="wait.email">Email address</label>
           <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
           <!-- Honeypot: hidden from people, filled in by bots; Formspree discards these. -->
@@ -393,8 +434,8 @@
           <input type="hidden" name="language" id="consent-lang" value="en">
         </form>
         <p class="waitlist__msg" id="waitlist-msg" role="status"></p>
-        <p class="muted small" data-i18n="wait.privacy">We use your email only for AlphOpt launch updates and never sell or share it. Sign-ups are stored by Formspree, a U.S. service, so your email may be processed in the United States.</p>
-        <p class="muted small" data-i18n-html="wait.sender">AlphOpt is operated by Aydenait · [mailing address] · <a href="mailto:contact@aydenait.com">contact@aydenait.com</a></p>
+        <p class="muted small" data-i18n="wait.privacy" hidden>We use your email only for AlphOpt launch updates and never sell or share it. Sign-ups are stored by Formspree, a U.S. service, so your email may be processed in the United States.</p>
+        <p class="muted small" data-i18n-html="wait.sender">AlphOpt is operated by Aydenait · <a href="mailto:contact@aydenait.com">contact@aydenait.com</a></p>
       </div>
     </section>
   </main>
@@ -410,6 +451,7 @@
           <a href="#how" data-i18n="nav.how">How it works</a>
           <a href="#signals" data-i18n="nav.signals">Case studies</a>
           <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
+          <a href="#covered" data-i18n="nav.covered">Covered calls</a>
           <a href="#plans" data-i18n="nav.plans">Plans</a>
           <a href="#faq" data-i18n="nav.faq">FAQ</a>
           <a href="privacy.html" data-i18n="nav.privacy">Privacy</a>
