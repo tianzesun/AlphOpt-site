@@ -91,9 +91,10 @@ function initNav() {
 }
 
 /* ---------- Hero ---------- */
-// The hero card shows one real replay (NVIDIA's May 2023 guidance beat) rather than sample data.
+// The hero card deliberately shows a losing replay (Tesla, Oct 2024: the stock ended flat but the
+// call lost 37%), so the first result visitors see is a loss and its lesson, not a cherry-picked win.
 function renderHero() {
-  const r = REPLAYS.find((x) => x.ticker === "NVDA" && x.newsDate === "2023-05-24");
+  const r = REPLAYS.find((x) => x.ticker === "TSLA" && x.newsDate === "2024-10-23");
   const { start, sessions, first, last } = runReplay(r);
   const pnl = (last.price - first.price) * 100;
   const cls = pnl < 0 ? "down" : "up";
@@ -117,9 +118,7 @@ function renderHero() {
   $("#hero-result").replaceChildren(
     el("span", {}, t("exitOn", { exit: t("exit." + last.exit), date: shortDate(last.date) })),
     el("strong", { class: cls }, t("hypo", { pct: signed(last.ret * 100, 0) })));
-  const why = tr(r, "why").filter((w) => !Array.isArray(w));
-  $("#hero-why").replaceChildren(el("strong", {}, t("why")),
-    (I18N.lang === "zh" ? why : why.map((w) => w.charAt(0).toLowerCase() + w.slice(1))).join(t("whySep")) + t("whyEnd"));
+  $("#hero-why").replaceChildren(el("strong", {}, t("replay.lesson")), tr(r, "lesson"));
 }
 
 /* ---------- How it works ---------- */
