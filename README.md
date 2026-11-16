@@ -18,7 +18,7 @@ Opening `index.html` directly in a browser also works.
 ## Structure
 
 ```
-index.html            Page markup (hero, how it works, case study library, replays, Greeks lab, features, FAQ, waitlist)
+index.html            Page markup (hero, how it works, case study library, replays, Greeks lab, features, plans, FAQ, waitlist)
 privacy.html          Privacy policy (English and Chinese)
 terms.html            Terms of use (English and Chinese)
 css/styles.css        All styles; design tokens at the top (:root)
@@ -59,7 +59,7 @@ The 中文 / EN button in the nav switches the whole page between English and Si
 AlphOpt is not registered with any securities regulator, so the site must stay educational:
 
 - No trade recommendations, signals, alerts or "what to buy" wording, and nothing tailored to a visitor's situation.
-- No paid plans or pricing.
+- Paid plans may only sell education and tools (courses, labs, simulators), never trade ideas. Prices are shown as planned launch prices until a real checkout exists; before selling, add full billing, renewal, cancellation and refund terms (Ontario consumer protection law) and update the privacy policy for payment data.
 - Hypothetical results stay next to their disclosures; no headline returns or profit totals in marketing copy or images.
 - Waitlist sign-ups need the consent checkbox (CASL). The privacy policy must match what is actually collected.
 
