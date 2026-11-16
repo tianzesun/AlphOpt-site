@@ -35,6 +35,7 @@ Every case study on the site comes from the `REPLAYS` array in `js/main.js`: the
 - **Real data:** each replay holds a real news event and the stock's actual daily closes from Yahoo Finance, as traded at the time (before later splits). The "why" reasons come from that data too.
 - **Model estimates:** option premiums and Greeks come from Black-Scholes (`blackScholes`) using the per-session `iv` values. These are assumptions, except SPY, which uses VIX closes. They are not recorded quotes.
 - **Rules:** `runReplay` applies the same exit rules to every replay (`RULES`: +50% target, −35% stop, five sessions at most, checked at each close). Results, including losses, are computed rather than chosen.
+- **Both sides:** each replay's `sides` (and `zh.sides`) lists the case for the stock rising and falling, using only facts known at the close on the entry date. Never add hindsight, and never pick a winner.
 - **Adding a replay:** add an entry with real closes around the event, then check the site's wording: the record line updates itself, but copy such as "three losses out of seven" does not.
 
 The replays are labelled as hypothetical, historical examples everywhere: AlphOpt did not exist at the time, and no one was advised to make these trades.
