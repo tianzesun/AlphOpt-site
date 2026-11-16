@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title data-i18n="meta.title">AlphOpt — AI options signals, Greeks explained</title>
-  <meta name="description" data-i18n-attr="content:meta.desc" content="AlphOpt reads the news, price action and options market with AI and turns it into clear options signals: the contract, entry, target and stop, with the Greeks in plain English.">
-  <meta property="og:title" content="AlphOpt — AI options signals, Greeks explained">
-  <meta property="og:description" content="Clear, explainable AI options signals, with the Greeks in plain English.">
+  <title data-i18n="meta.title">AlphOpt — Learn options through real market events</title>
+  <meta name="description" data-i18n-attr="content:meta.desc" content="AlphOpt is an options-education tool. Replay real market events, see how option prices and the Greeks responded, and experiment in the Greeks lab. Educational only, not investment advice.">
+  <meta property="og:title" content="AlphOpt — Learn options through real market events">
+  <meta property="og:description" content="Real market events, replayed to show how options and the Greeks behave. Educational only, not investment advice.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tianzesun.github.io/AlphOpt-site/">
   <meta property="og:image" content="https://tianzesun.github.io/AlphOpt-site/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="AlphOpt: real headlines, the Greeks explained. A CRWD put replay that hit its target for +205%.">
+  <meta property="og:image:alt" content="AlphOpt: learn options through real market events. Educational only, not investment advice.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://tianzesun.github.io/AlphOpt-site/">
   <meta name="theme-color" content="#0a0e17">
@@ -35,17 +35,18 @@
       </button>
       <nav class="nav__links" id="nav-links" aria-label="Primary" data-i18n-attr="aria-label:nav.primary">
         <a href="#how" data-i18n="nav.how">How it works</a>
-        <a href="#signals" data-i18n="nav.signals">Signals</a>
+        <a href="#signals" data-i18n="nav.signals">Case studies</a>
         <a href="#cases" data-i18n="nav.cases">Replays</a>
         <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
         <a href="#features" data-i18n="nav.features">Features</a>
-        <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
-        <a class="btn btn--sm btn--primary" href="#waitlist" data-i18n="cta.early">Get early access</a>
+        <a class="btn btn--sm btn--primary" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
       </nav>
       <button class="lang-toggle" id="lang-toggle" type="button" lang="zh-CN" aria-label="切换到中文">中文</button>
     </div>
   </header>
+
+  <p class="edu-banner" data-i18n="banner">Educational content only. Not investment advice, and not a recommendation to buy or sell any security.</p>
 
   <main id="main">
     <!-- Hero -->
@@ -53,30 +54,29 @@
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="container hero__grid">
         <div class="hero__copy">
-          <p class="eyebrow" data-i18n-html="hero.eyebrow"><span class="pulse" aria-hidden="true"></span> AI options signals · Greeks explained</p>
-          <h1 data-i18n-html="hero.h1">Know <span class="grad">what to trade</span> and <span class="grad">why</span>, in seconds.</h1>
+          <p class="eyebrow" data-i18n-html="hero.eyebrow"><span class="pulse" aria-hidden="true"></span> Options education · Real market events</p>
+          <h1 data-i18n-html="hero.h1">Learn <span class="grad">how options really move</span>, one real event at a time.</h1>
           <p class="lead" data-i18n="hero.lead">
-            When the news hits, AlphOpt's AI reads price action, volume, volatility and the option chain,
-            then hands you a short list of options signals. Each names the contract, the entry, target and stop,
-            and explains the Greeks in plain English.
+            AlphOpt replays real market events, from earnings surprises to market sell-offs, and shows how an option's
+            price and Greeks responded, close by close, in plain English. It is built for learning, not for telling you what to trade.
           </p>
           <div class="hero__cta">
-            <a class="btn btn--primary btn--lg" href="#waitlist" data-i18n="cta.early">Get early access</a>
-            <a class="btn btn--ghost btn--lg" href="#signals" data-i18n="hero.past">See past signals →</a>
+            <a class="btn btn--primary btn--lg" href="#waitlist" data-i18n="cta.join">Join the waitlist</a>
+            <a class="btn btn--ghost btn--lg" href="#signals" data-i18n="hero.explore">Explore case studies →</a>
           </div>
           <ul class="hero__points">
-            <li data-i18n="hero.p1">No charts to decode</li>
-            <li data-i18n="hero.p2">Every signal explained</li>
-            <li data-i18n="hero.p3">Greeks in plain English</li>
-            <li data-i18n="hero.p4">Risk shown up front</li>
+            <li data-i18n="hero.p1">Real historical events</li>
+            <li data-i18n="hero.p2">Greeks in plain English</li>
+            <li data-i18n="hero.p3">Losses shown, not hidden</li>
+            <li data-i18n="hero.p4">No trade recommendations</li>
           </ul>
         </div>
 
         <div class="hero__visual">
-          <article class="phone" aria-label="Replayed AlphOpt signal" data-i18n-attr="aria-label:hero.card">
+          <article class="phone" aria-label="AlphOpt case study" data-i18n-attr="aria-label:hero.card">
             <div class="phone__bar">
-              <span id="hero-date">Signal replay</span>
-              <span class="tag" id="hero-tag">REPLAY</span>
+              <span id="hero-date">Case study</span>
+              <span class="tag" id="hero-tag">HISTORICAL</span>
             </div>
             <div class="sig-hero">
               <div class="sig-hero__head">
@@ -92,13 +92,9 @@
               <div class="hero-result" id="hero-result"></div>
               <p class="sig-hero__why" id="hero-why"></p>
             </div>
-            <p class="phone__note" data-i18n-html="hero.note">Replay of a past event, not a live signal. <a href="#cases">See all replays →</a></p>
+            <p class="phone__note" data-i18n-html="hero.note">Hypothetical replay of a past event, for education only. Not a recommendation. <a href="#cases">See all case studies →</a></p>
           </article>
         </div>
-      </div>
-
-      <div class="ticker" aria-label="Signal replay results" data-i18n-attr="aria-label:ticker.label">
-        <div class="ticker__track" id="ticker-track"></div>
       </div>
     </section>
 
@@ -107,45 +103,45 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="how.eyebrow">How it works</p>
-          <h2 data-i18n="how.h2">From headline to options signal in three steps</h2>
-          <p class="muted" data-i18n="how.sub">Each step below shows what it did on a real event: the CrowdStrike outage of July 19, 2024.</p>
+          <h2 data-i18n="how.h2">Every case study follows the same three steps</h2>
+          <p class="muted" data-i18n="how.sub">Each step below shows how it works on a real event: the CrowdStrike outage of July 19, 2024.</p>
         </header>
         <ol class="steps">
           <li class="step">
             <div class="step__num">1</div>
-            <h3 data-i18n="how.s1">Scan</h3>
-            <p data-i18n="how.s1p">Our models watch price, volume, options flow, implied volatility, earnings calendars and news sentiment across U.S. equities and their option chains.</p>
+            <h3 data-i18n="how.s1">The event</h3>
+            <p data-i18n="how.s1p">We start from a real headline and the stock's actual daily prices, volume and trading range at the time.</p>
             <div class="step__ex" id="step-ex-1"></div>
           </li>
           <li class="step">
             <div class="step__num">2</div>
-            <h3 data-i18n="how.s2">Score and pick</h3>
-            <p data-i18n="how.s2p">Each setup is scored on confidence and risk/reward, and weak or crowded ideas are dropped. For the ones left, the AI picks a strike and expiry whose Greeks fit the expected move.</p>
+            <h3 data-i18n="how.s2">An example contract</h3>
+            <p data-i18n="how.s2p">We pick an example option and apply the same fixed rules to every case: a +50% target, a −35% stop and five sessions at most. The rules are a teaching device, not a strategy we recommend.</p>
             <div class="step__ex" id="step-ex-2"></div>
           </li>
           <li class="step">
             <div class="step__num">3</div>
-            <h3 data-i18n="how.s3">Act</h3>
-            <p data-i18n="how.s3p">You get a ready-to-read card: ticker, direction, suggested strike and expiry, entry, target, stop, the Greeks, and the reasons behind it. The final call is always yours.</p>
+            <h3 data-i18n="how.s3">The lesson</h3>
+            <p data-i18n="how.s3p">We estimate the option's value at each close with the Black-Scholes model and show which Greeks drove the gain or loss, so you can see how options behave.</p>
             <div class="step__ex" id="step-ex-3"></div>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- Signal board -->
+    <!-- Case study library -->
     <section class="section section--alt" id="signals">
       <div class="container">
         <header class="section__head">
-          <p class="eyebrow" data-i18n="board.eyebrow">Signal board</p>
-          <h2 data-i18n="board.h2">Every replayed signal, at a glance</h2>
-          <p class="muted" data-i18n-html="board.sub">Filter by result or direction, then open any card for the full replay with its Greeks. <em>Replays of past events, not live recommendations.</em></p>
+          <p class="eyebrow" data-i18n="board.eyebrow">Case study library</p>
+          <h2 data-i18n="board.h2">Every case study, at a glance</h2>
+          <p class="muted" data-i18n-html="board.sub">Filter by outcome or direction, then open any card for the full replay with its Greeks. <em>Hypothetical, historical examples for education only, not recommendations.</em></p>
         </header>
 
-        <div class="filters" role="toolbar" aria-label="Filter signals" data-i18n-attr="aria-label:board.filter">
+        <div class="filters" role="toolbar" aria-label="Filter case studies" data-i18n-attr="aria-label:board.filter">
           <div class="seg" data-filter="result">
             <button class="seg__btn is-active" data-value="all" aria-pressed="true" data-i18n="board.all">All</button>
-            <button class="seg__btn" data-value="win" aria-pressed="false" data-i18n="board.wins">Wins</button>
+            <button class="seg__btn" data-value="win" aria-pressed="false" data-i18n="board.wins">Gains</button>
             <button class="seg__btn" data-value="loss" aria-pressed="false" data-i18n="board.losses">Losses</button>
           </div>
           <div class="seg" data-filter="dir">
@@ -157,33 +153,35 @@
             <span class="muted small" data-i18n="board.sortBy">Sort by</span>
             <select id="sort-select">
               <option value="date" data-i18n="board.newest">Newest</option>
-              <option value="pnl" data-i18n="board.pnl">P&amp;L</option>
+              <option value="pnl" data-i18n="board.pnl">Outcome</option>
               <option value="ticker" data-i18n="board.ticker">Ticker</option>
             </select>
           </label>
         </div>
 
         <div class="board" id="board" aria-live="polite"></div>
-        <p class="board__empty muted" id="board-empty" hidden data-i18n="board.empty">No signals match these filters.</p>
+        <p class="board__empty muted" id="board-empty" hidden data-i18n="board.empty">No case studies match these filters.</p>
       </div>
     </section>
 
-    <!-- Signal replays -->
+    <!-- Replays -->
     <section class="section" id="cases">
       <div class="container">
         <header class="section__head">
-          <p class="eyebrow" data-i18n="cases.eyebrow">Signal replays</p>
-          <h2 data-i18n="cases.h2">Real headlines, replayed in AlphOpt</h2>
-          <p class="muted" data-i18n="cases.sub">Pick an event to see the alert, the contract, the Greeks and how the position moved, close by close.</p>
+          <p class="eyebrow" data-i18n="cases.eyebrow">Replays</p>
+          <h2 data-i18n="cases.h2">Real headlines, replayed close by close</h2>
+          <p class="muted" data-i18n="cases.sub">Pick an event to see the example contract, its Greeks and how its value moved, close by close.</p>
         </header>
-        <p class="replay-record" id="replay-record" aria-label="Replay record" data-i18n-attr="aria-label:cases.record"></p>
-        <div class="replay-tabs" role="tablist" aria-label="Signal replays" id="replay-tabs" data-i18n-attr="aria-label:cases.tabs"></div>
+        <p class="replay-record" id="replay-record" aria-label="Case study outcomes" data-i18n-attr="aria-label:cases.record"></p>
+        <div class="replay-tabs" role="tablist" aria-label="Case studies" id="replay-tabs" data-i18n-attr="aria-label:cases.tabs"></div>
         <div class="replay" id="replay" role="tabpanel" aria-live="polite"></div>
         <p class="muted small replay__note" data-i18n="cases.note">
-          Replays of past events using AlphOpt's signal rules; AlphOpt had not launched and did not publish these signals.
-          Stock prices, volumes and ranges are actual daily data as traded at the time, before later stock splits (Yahoo Finance). Every replay uses the same rules, and losses are kept on the record.
+          Hypothetical, educational replays of past events. AlphOpt did not exist at the time, and no one was advised to make these trades.
+          Stock prices, volumes and ranges are actual daily data as traded at the time, before later stock splits (Yahoo Finance).
+          Every replay uses the same fixed rules, chosen for illustration, and losses are included.
           Option premiums and Greeks are Black-Scholes estimates (5% rate) from the implied volatility shown: the VIX close for SPY, and an assumption for the others, not a recorded quote.
-          Exits are checked at each close, so real fills, spreads and intraday moves would differ. Per contract = 100 shares. Past results do not guarantee future results.
+          Hypothetical results have inherent limitations: they are prepared with hindsight and do not reflect real trading, bid-ask spreads, commissions or taxes, so real results would differ.
+          Per contract = 100 shares. Past results do not predict future results.
         </p>
       </div>
     </section>
@@ -193,8 +191,8 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="lab.eyebrow">Greeks lab</p>
-          <h2 data-i18n="lab.h2">See what moves your option before you buy it</h2>
-          <p class="muted" data-i18n="lab.sub">Pick a contract from the replays, then move the stock, the clock and volatility. Watch its price and Greeks respond, and see which Greek made or lost the money.</p>
+          <h2 data-i18n="lab.h2">See what moves an option's price</h2>
+          <p class="muted" data-i18n="lab.sub">Pick a contract from the case studies, then move the stock, the clock and volatility. Watch its price and Greeks respond, and see which Greek drove the change.</p>
         </header>
         <div class="lab">
           <form class="lab__controls" id="lab-form">
@@ -216,7 +214,7 @@
             </label>
             <div class="lab__presets" role="group" aria-label="Scenario presets" data-i18n-attr="aria-label:lab.presets">
               <button class="btn btn--ghost btn--sm" type="button" data-preset="actual" data-i18n="lab.actual">What actually happened</button>
-              <button class="btn btn--ghost btn--sm" type="button" data-preset="entry" data-i18n="lab.reset">Reset to entry</button>
+              <button class="btn btn--ghost btn--sm" type="button" data-preset="entry" data-i18n="lab.reset">Reset to start</button>
             </div>
           </form>
 
@@ -244,7 +242,7 @@
             </div>
           </div>
         </div>
-        <p class="muted small replay__note" data-i18n="lab.note">Black-Scholes estimates with a 5% interest rate, starting from each replay's entry. Real prices also depend on bid-ask spreads, skew and dividends.</p>
+        <p class="muted small replay__note" data-i18n="lab.note">A simplified model for learning: Black-Scholes estimates with a 5% interest rate, starting from each case study's first close. Real option prices also depend on bid-ask spreads, skew, dividends and early exercise.</p>
       </div>
     </section>
 
@@ -253,106 +251,49 @@
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="feat.eyebrow">Why AlphOpt</p>
-          <h2 data-i18n="feat.h2">Built for investors who don't live in front of a screen</h2>
+          <h2 data-i18n="feat.h2">Built to help you understand options, not to tell you what to trade</h2>
         </header>
         <div class="features">
           <article class="feature">
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
+            <h3 data-i18n="feat.1">Real events, real prices</h3>
+            <p data-i18n="feat.1p">Every case study is built on a real headline and the stock's actual daily prices, so each lesson matches how the market really behaved.</p>
+            <a class="feature__proof" href="#cases" data-open-replay="2024-07-19" data-i18n="feat.1a">See the CrowdStrike case study →</a>
+          </article>
+          <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
-            <h3 data-i18n="feat.1">Explainable AI</h3>
-            <p data-i18n="feat.1p">No black box. Every signal lists the factors that drove it, so you can learn the "why" and decide whether you agree.</p>
-            <a class="feature__proof" href="#cases" data-open-replay="2024-07-19" data-i18n="feat.1a">See why the CRWD put fired →</a>
+            <h3 data-i18n="feat.2">Greeks in plain English</h3>
+            <p data-i18n="feat.2p">Delta, gamma, theta and vega translated into plain language: what each one did to the option's value, in dollars.</p>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
-            <h3 data-i18n="feat.2">Options made simple</h3>
-            <p data-i18n="feat.2p">We suggest a specific strike and expiry, and translate the Greeks into plain language: how much you can lose, and what has to happen to win.</p>
-            <a class="feature__proof" href="#lab" data-i18n="feat.2a">Move the stock in the Greeks lab →</a>
+            <h3 data-i18n="feat.3">Interactive Greeks lab</h3>
+            <p data-i18n="feat.3p">Move the stock, the clock and volatility, and watch an option reprice. Build intuition before you ever risk money.</p>
+            <a class="feature__proof" href="#lab" data-i18n="feat.3a">Open the Greeks lab →</a>
           </article>
           <article class="feature">
-            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
-            <h3 data-i18n="feat.3">Risk first</h3>
-            <p data-i18n="feat.3p">Each card shows the stop, maximum loss and risk/reward ratio before anything else. Position sizing hints help keep any single idea small.</p>
-            <a class="feature__proof" href="#cases" data-open-replay="2023-02-01" data-i18n="feat.3a">See the stop that capped META's loss →</a>
-          </article>
-          <article class="feature">
-            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
-            <h3 data-i18n="feat.4">Smart alerts</h3>
-            <p data-i18n="feat.4p">Get notified when a new signal matches your watchlist, or when an open idea hits its target or stop.</p>
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+            <h3 data-i18n="feat.4">Risk made visible</h3>
+            <p data-i18n="feat.4p">Every case shows the most the option could lose, and how quickly time decay and falling volatility can wear its value down.</p>
+            <a class="feature__proof" href="#cases" data-open-replay="2023-02-01" data-i18n="feat.4a">See how theta and IV hurt META's call →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V11M13 17V7M18 17v-4"/></svg></div>
-            <h3 data-i18n="feat.5">Honest track record</h3>
-            <p data-i18n="feat.5p">Every signal stays on the record, winners and losers alike. Our replays show three losses out of seven, with the Greeks that caused them.</p>
+            <h3 data-i18n="feat.5">Losses kept in</h3>
+            <p data-i18n="feat.5p">The case studies keep the losers in: three losses out of seven, with the Greeks that caused them.</p>
             <a class="feature__proof" href="#signals" data-i18n="feat.5a">See all seven, losses included →</a>
           </article>
           <article class="feature">
-            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
-            <h3 data-i18n="feat.6">Web &amp; mobile</h3>
-            <p data-i18n="feat.6p">Check the day's list over coffee on your phone, then dig into details on desktop. Your watchlist and alerts follow you.</p>
+            <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <h3 data-i18n="feat.6">No recommendations</h3>
+            <p data-i18n="feat.6p">AlphOpt never tells you what to buy or sell, never asks about your finances, and never connects to your brokerage account.</p>
           </article>
         </div>
-      </div>
-    </section>
-
-    <!-- Pricing -->
-    <section class="section section--alt" id="pricing">
-      <div class="container">
-        <header class="section__head">
-          <p class="eyebrow" data-i18n="price.eyebrow">Pricing</p>
-          <h2 data-i18n="price.h2">Start free. Upgrade when it earns its keep.</h2>
-          <div class="billing" role="group" aria-label="Billing period" data-i18n-attr="aria-label:price.period">
-            <button class="billing__btn is-active" data-billing="monthly" aria-pressed="true" data-i18n="price.monthly">Monthly</button>
-            <button class="billing__btn" data-billing="yearly" aria-pressed="false" data-i18n-html="price.yearly">Yearly <span class="tag">2 months free</span></button>
-          </div>
-        </header>
-        <div class="plans">
-          <article class="plan">
-            <h3>Starter</h3>
-            <p class="plan__price"><span class="plan__amt" data-monthly="0" data-yearly="0">$0</span><span class="muted" data-i18n="price.mo">/mo</span></p>
-            <p class="muted" data-i18n="price.starter.p">Get a feel for AI signals.</p>
-            <ul>
-              <li data-i18n="price.starter.1">3 options signals per day</li>
-              <li data-i18n="price.starter.2">Delayed by 30 minutes</li>
-              <li data-i18n="price.starter.3">Signal explanations</li>
-              <li data-i18n="price.starter.4">Public track record</li>
-            </ul>
-            <a class="btn btn--ghost btn--block" href="#waitlist" data-i18n="price.starter.cta">Join free</a>
-          </article>
-          <article class="plan plan--featured">
-            <span class="plan__badge" data-i18n="price.popular">Most popular</span>
-            <h3>Pro</h3>
-            <p class="plan__price"><span class="plan__amt" data-monthly="29" data-yearly="24">$29</span><span class="muted" data-i18n="price.mo">/mo</span></p>
-            <p class="muted" data-i18n="price.pro.p">For active options traders.</p>
-            <ul>
-              <li data-i18n="price.pro.1">All options signals</li>
-              <li data-i18n="price.pro.2">Real-time delivery</li>
-              <li data-i18n="price.pro.3">Suggested strikes &amp; expiries</li>
-              <li data-i18n="price.pro.4">Greeks lab for every signal</li>
-              <li data-i18n="price.pro.5">Watchlist alerts (push &amp; email)</li>
-              <li data-i18n="price.pro.6">Position-sizing helper</li>
-            </ul>
-            <a class="btn btn--primary btn--block" href="#waitlist" data-i18n="cta.early">Get early access</a>
-          </article>
-          <article class="plan">
-            <h3>Elite</h3>
-            <p class="plan__price"><span class="plan__amt" data-monthly="79" data-yearly="66">$79</span><span class="muted" data-i18n="price.mo">/mo</span></p>
-            <p class="muted" data-i18n="price.elite.p">Deeper data for power users.</p>
-            <ul>
-              <li data-i18n="price.elite.1">Everything in Pro</li>
-              <li data-i18n="price.elite.2">Multi-leg options strategies</li>
-              <li data-i18n="price.elite.3">Custom scanners &amp; filters</li>
-              <li data-i18n="price.elite.4">Signal export &amp; API access</li>
-              <li data-i18n="price.elite.5">Priority support</li>
-            </ul>
-            <a class="btn btn--ghost btn--block" href="#waitlist" data-i18n="price.join">Join waitlist</a>
-          </article>
-        </div>
-        <p class="muted small center" data-i18n="price.note">Prices in USD. Cancel any time.</p>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section class="section" id="faq">
+    <section class="section section--alt" id="faq">
       <div class="container container--narrow">
         <header class="section__head">
           <p class="eyebrow" data-i18n="nav.faq">FAQ</p>
@@ -360,28 +301,32 @@
         </header>
         <div class="faq">
           <details>
-            <summary data-i18n="faq.q1">Is AlphOpt financial advice?</summary>
-            <p data-i18n="faq.a1">No. AlphOpt provides research signals and educational information. It does not know your finances, goals or risk tolerance. Always do your own research, and consider speaking with a licensed advisor before investing.</p>
+            <summary data-i18n="faq.q1">Is AlphOpt investment advice?</summary>
+            <p data-i18n="faq.a1">No. AlphOpt is an educational tool that explains how options and the Greeks behave, using historical examples. It does not recommend buying or selling any security, does not consider your finances, goals or risk tolerance, and is not a substitute for advice from a registered professional.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q2">Do I need to understand options to use it?</summary>
-            <p data-i18n="faq.a2">No. Every card explains the contract in plain language: what you pay, the most you can lose, and what the stock needs to do for the trade to work. The Greeks lab lets you try “what if the stock drops?” or “what if I hold a week?” before you buy.</p>
+            <summary data-i18n="faq.q2">Is AlphOpt registered with a securities regulator?</summary>
+            <p data-i18n="faq.a2">No. AlphOpt is not registered as an adviser or dealer with any securities regulator, in Canada, the United States or elsewhere. It provides general education only and does not advise anyone on buying or selling securities. For advice about your own situation, speak with a registered adviser.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q3">Are the replays real trades?</summary>
-            <p data-i18n="faq.a3">The events and stock prices are real: actual daily closes, volumes and ranges from the time. The trades are replays: we applied AlphOpt's rules (+50% target, −35% stop, five sessions at most, checked at each close) to those events. AlphOpt had not launched yet and did not publish these signals. Option premiums and Greeks are model estimates, not recorded quotes. Losses stay in, so you can judge the rules on all of it.</p>
+            <summary data-i18n="faq.q3">Will AlphOpt tell me what to trade?</summary>
+            <p data-i18n="faq.a3">No. AlphOpt does not publish trade ideas, signals or alerts. The case studies are historical examples chosen to teach how options behave, not trades to copy.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q4">How does the AI choose signals?</summary>
-            <p data-i18n="faq.a4">Models trained on historical market data score each setup using technical patterns, options-market activity, volatility, and news and earnings context. Only setups that clear confidence and risk/reward thresholds are published, each with the top factors behind it.</p>
+            <summary data-i18n="faq.q4">Are the case studies real trades?</summary>
+            <p data-i18n="faq.a4">No. The events and stock prices are real: actual daily closes, volumes and ranges from the time. The trades are hypothetical: we applied the same fixed teaching rules (+50% target, −35% stop, five sessions at most, checked at each close) with hindsight. No one placed them, and AlphOpt did not exist at the time. Option premiums and Greeks are model estimates, not recorded quotes.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q5">Does AlphOpt place trades for me?</summary>
-            <p data-i18n="faq.a5">No. AlphOpt never touches your brokerage account. You read the signal and decide whether to act on it with your own broker.</p>
+            <summary data-i18n="faq.q5">Are options risky?</summary>
+            <p data-i18n="faq.a5">Yes. Options are complex and can lose their entire value quickly, sometimes in a single day, and many people lose money trading them. Before trading options, read the options risk disclosure your broker provides and make sure you understand it.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q6">Which markets are covered?</summary>
-            <p data-i18n="faq.a6">At launch, AlphOpt covers U.S.-listed stocks and ETFs and their listed options. More markets are on the roadmap.</p>
+            <summary data-i18n="faq.q6">Do I need to understand options already?</summary>
+            <p data-i18n="faq.a6">No. Each case explains the contract in plain language: what it cost, the most it could lose, and what the stock needed to do. The Greeks lab lets you explore “what if the stock drops?” or “what if a week passes?”</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q7">What data do you collect?</summary>
+            <p data-i18n-html="faq.a7">Only the email address you give us to join the waitlist, with a record of your consent. Your language choice is saved in your own browser. There are no ads, analytics or tracking cookies. See the <a href="privacy.html">privacy policy</a>.</p>
           </details>
         </div>
       </div>
@@ -390,18 +335,22 @@
     <!-- Waitlist -->
     <section class="section cta" id="waitlist">
       <div class="container container--narrow center">
-        <h2 data-i18n="wait.h2">Get the next signal when it fires</h2>
-        <p class="lead" data-i18n="wait.lead">Join the waitlist for early access to AlphOpt and a free month of Pro.</p>
-        <p class="replay-record waitlist__record" id="waitlist-record" aria-label="Replay record" data-i18n-attr="aria-label:cases.record"></p>
+        <h2 data-i18n="wait.h2">Be the first to try AlphOpt</h2>
+        <p class="lead" data-i18n="wait.lead">Join the waitlist to hear when AlphOpt's options-education app launches.</p>
         <form class="waitlist" id="waitlist-form" novalidate>
           <label class="visually-hidden" for="email" data-i18n="wait.email">Email address</label>
           <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
           <!-- Honeypot: hidden from people, filled in by bots; Formspree discards these. -->
           <input class="visually-hidden" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="btn btn--primary" type="submit" data-i18n="price.join">Join waitlist</button>
+          <button class="btn btn--primary" type="submit" data-i18n="wait.join">Join waitlist</button>
+          <label class="consent">
+            <input type="checkbox" id="consent" name="consent" value="launch-emails-v1" required>
+            <span data-i18n-html="wait.consent">I agree to receive emails from AlphOpt about its launch, and I confirm I am 18 or older. I can unsubscribe at any time. See the <a href="privacy.html">privacy policy</a>.</span>
+          </label>
+          <input type="hidden" name="language" id="consent-lang" value="en">
         </form>
         <p class="waitlist__msg" id="waitlist-msg" role="status"></p>
-        <p class="muted small" data-i18n="wait.privacy">We'll only use your email to send AlphOpt launch updates. Unsubscribe any time.</p>
+        <p class="muted small" data-i18n="wait.privacy">We use your email only for AlphOpt launch updates and never sell or share it. Sign-ups are stored by Formspree, a U.S. service, so your email may be processed in the United States.</p>
       </div>
     </section>
   </main>
@@ -415,17 +364,18 @@
         </a>
         <nav class="footer__links" aria-label="Footer" data-i18n-attr="aria-label:footer.nav">
           <a href="#how" data-i18n="nav.how">How it works</a>
-          <a href="#signals" data-i18n="nav.signals">Signals</a>
-          <a href="#cases" data-i18n="nav.cases">Replays</a>
+          <a href="#signals" data-i18n="nav.signals">Case studies</a>
           <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
-          <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
           <a href="#faq" data-i18n="nav.faq">FAQ</a>
+          <a href="privacy.html" data-i18n="nav.privacy">Privacy</a>
+          <a href="terms.html" data-i18n="nav.terms">Terms</a>
         </nav>
       </div>
       <p class="disclaimer" data-i18n-html="footer.disclaimer">
-        <strong>Risk disclosure:</strong> Investing in stocks and options involves substantial risk of loss and is not suitable for every investor.
-        Options can expire worthless, and you may lose your entire investment. AlphOpt provides information for educational and research purposes only
-        and is not investment, tax or legal advice. Past performance does not guarantee future results. The signals shown on this site are replays of past events: they show how those events would have played out under AlphOpt's rules and are not signals AlphOpt actually published. Option premiums and Greeks in them are model estimates.
+        <strong>Important:</strong> AlphOpt is an educational tool. Nothing on this site is investment, tax or legal advice, or a recommendation or solicitation to buy or sell any security or option.
+        AlphOpt is not registered as an adviser or dealer with any securities regulator. Options involve substantial risk, are not suitable for every investor, and can expire worthless.
+        The case studies are hypothetical replays of past events prepared with hindsight; they do not reflect actual trading, and past results do not predict future results.
+        Company names and tickers belong to their owners, who are not affiliated with AlphOpt and do not endorse it.
       </p>
       <p class="muted small">© <span id="year"></span> AlphOpt. <span data-i18n="footer.rights">All rights reserved.</span></p>
     </div>

@@ -120,27 +120,6 @@ function renderHero() {
   const why = tr(r, "why").filter((w) => !Array.isArray(w));
   $("#hero-why").replaceChildren(el("strong", {}, t("why")),
     (I18N.lang === "zh" ? why : why.map((w) => w.charAt(0).toLowerCase() + w.slice(1))).join(t("whySep")) + t("whyEnd"));
-
-  const track = $("#ticker-track");
-  const items = REPLAYS.map((x) => {
-    const { first, last } = runReplay(x);
-    const pnl = (last.price - first.price) * 100;
-    return el("span", { class: "ticker__item" },
-      el("b", {}, x.ticker),
-      el("span", { class: x.dir === "bull" ? "up" : "down" }, `${x.dir === "bull" ? "▲" : "▼"} ${t(x.put ? "PUT" : "CALL")}`),
-      el("span", { class: "muted" }, longDate(x.newsDate)),
-      el("span", { class: pnl < 0 ? "down" : "up" }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`)
-    );
-  });
-  // Seven replays are narrower than wide screens, so each marquee half holds the list twice.
-  const half = [...items, ...items.map((n) => n.cloneNode(true))];
-  half.slice(items.length).forEach((n) => n.setAttribute("aria-hidden", "true"));
-  // Duplicate the list so the CSS marquee loops seamlessly.
-  track.replaceChildren(...half, ...half.map((n) => {
-    const clone = n.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    return clone;
-  }));
 }
 
 /* ---------- How it works ---------- */
@@ -425,12 +404,6 @@ function renderReplay(r) {
 
   const phone = el("article", { class: "phone", "aria-label": t("replay.aria", { ticker: r.ticker }) },
     el("div", { class: "phone__bar" }, el("span", {}, longDate(r.entryDate)), el("span", { class: "tag" }, t("replay.tag"))),
-    el("div", { class: "push" },
-      el("img", { src: "assets/favicon.svg", alt: "", width: 36, height: 36 }),
-      el("div", {},
-        el("div", { class: "push__top" }, el("span", {}, "AlphOpt"), el("span", {}, t("replay.atClose"))),
-        el("p", { class: "push__title" }, `${r.dir === "bull" ? "▲" : "▼"} ${r.ticker} ${contract}`),
-        el("p", { class: "push__body" }, t("replay.push", { dir: t(r.dir === "bull" ? "replay.bullish" : "replay.bearish"), price: money(first.price) })))),
     el("div", { class: "sig-hero" },
       el("div", { class: "sig-hero__head" },
         el("div", {}, el("div", { class: "sig-hero__ticker" }, r.ticker), el("div", { class: "muted small" }, contract)),
@@ -502,14 +475,10 @@ function renderReplayTabs() {
   });
   const results = REPLAYS.map((r) => { const { first, last } = runReplay(r); return (last.price - first.price) * 100; });
   const wins = results.filter((v) => v > 0).length;
-  const net = results.reduce((a, b) => a + b, 0);
-  for (const id of ["#replay-record", "#waitlist-record"]) {
-    $(id).replaceChildren(
-      el("span", {}, el("strong", {}, REPLAYS.length), t("record.replays")),
-      el("span", {}, el("strong", { class: "up" }, wins), t("record.wins")),
-      el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), t("record.losses")),
-      el("span", {}, t("record.net"), el("strong", { class: net < 0 ? "down" : "up" }, usd(net)), t("record.per")));
-  }
+  $("#replay-record").replaceChildren(
+    el("span", {}, el("strong", {}, REPLAYS.length), t("record.replays")),
+    el("span", {}, el("strong", { class: "up" }, wins), t("record.wins")),
+    el("span", {}, el("strong", { class: "down" }, REPLAYS.length - wins), t("record.losses")));
   $("#replay-tabs").replaceChildren(...tabs);
   renderReplay(REPLAYS[currentReplay]);
 }
@@ -683,21 +652,6 @@ function initLab() {
   reset();
 }
 
-/* ---------- Pricing toggle ---------- */
-function initBilling() {
-  $$(".billing__btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const period = btn.dataset.billing;
-      $$(".billing__btn").forEach((b) => {
-        const active = b === btn;
-        b.classList.toggle("is-active", active);
-        b.setAttribute("aria-pressed", String(active));
-      });
-      $$(".plan__amt").forEach((amt) => { amt.textContent = "$" + amt.dataset[period]; });
-    });
-  });
-}
-
 /* ---------- Waitlist ---------- */
 // Formspree form ID (the part after /f/ in the form's endpoint URL).
 const FORMSPREE_ID = "xljbelzj";
@@ -722,6 +676,16 @@ function initWaitlist() {
       return;
     }
     input.removeAttribute("aria-invalid");
+    // Express consent is required before we store an email (Canada's anti-spam law, CASL).
+    const consent = $("#consent");
+    if (!consent.checked) {
+      consent.setAttribute("aria-invalid", "true");
+      show(t("wait.consent"), false);
+      consent.focus();
+      return;
+    }
+    consent.removeAttribute("aria-invalid");
+    $("#consent-lang").value = I18N.lang;
 
     if (!FORMSPREE_ID) {
       show(t("wait.soon"), false);
@@ -749,7 +713,7 @@ function initWaitlist() {
 
 /* ---------- Scroll reveal ---------- */
 function initReveal() {
-  const targets = $$(".section__head, .step, .feature, .plan, .faq details");
+  const targets = $$(".section__head, .step, .feature, .faq details");
   if (!("IntersectionObserver" in window)) return;
   targets.forEach((t) => t.classList.add("reveal"));
   const io = new IntersectionObserver((entries) => {
@@ -772,7 +736,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initReplays();
   initReplayLinks();
   initLab();
-  initBilling();
   initWaitlist();
   initReveal();
   // Redraw everything built in JavaScript when the language changes (the lab redraws itself).
