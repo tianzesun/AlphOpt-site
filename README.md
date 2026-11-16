@@ -62,7 +62,6 @@ AlphOpt is not registered with any securities regulator, so the site must stay e
 - No paid plans or pricing.
 - Hypothetical results stay next to their disclosures; no headline returns or profit totals in marketing copy or images.
 - Waitlist sign-ups need the consent checkbox (CASL). The privacy policy must match what is actually collected.
-- Legal pages contain a `[contact email]` placeholder that must be replaced before collecting sign-ups.
 
 ## Deploy
 
