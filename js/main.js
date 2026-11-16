@@ -111,12 +111,12 @@ function renderHero() {
 
   const stat = (label, value, c = "") => el("div", {}, el("span", { class: "muted small" }, label), el("strong", { class: c }, value));
   $("#hero-stats").replaceChildren(
-    stat(t("entry"), money(first.price)),
-    stat(t("target"), money(first.price * (1 + RULES.target)), "up"),
-    stat(t("stop"), money(first.price * (1 + RULES.stop)), "down"));
+    stat(t("ex.entry"), money(first.price)),
+    stat(t("ex.target"), money(first.price * (1 + RULES.target)), "up"),
+    stat(t("ex.stop"), money(first.price * (1 + RULES.stop)), "down"));
   $("#hero-result").replaceChildren(
     el("span", {}, t("exitOn", { exit: t("exit." + last.exit), date: shortDate(last.date) })),
-    el("strong", { class: cls }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`));
+    el("strong", { class: cls }, t("hypo", { pct: signed(last.ret * 100, 0) })));
   const why = tr(r, "why").filter((w) => !Array.isArray(w));
   $("#hero-why").replaceChildren(el("strong", {}, t("why")),
     (I18N.lang === "zh" ? why : why.map((w) => w.charAt(0).toLowerCase() + w.slice(1))).join(t("whySep")) + t("whyEnd"));
@@ -145,8 +145,8 @@ function renderSteps() {
   ]));
   $("#step-ex-3").replaceChildren(...list(t("step.alerted"), [
     [t("step.entryTarget"), `${money(first.price)} → ${money(first.price * (1 + RULES.target))}`],
-    [t("stop"), money(first.price * (1 + RULES.stop)), "down"],
-    [t("step.result"), `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`, pnl < 0 ? "down" : "up"],
+    [t("ex.stop"), money(first.price * (1 + RULES.stop)), "down"],
+    [t("step.result"), t("hypo", { pct: signed(last.ret * 100, 0) }), pnl < 0 ? "down" : "up"],
   ]));
 }
 
@@ -177,11 +177,11 @@ function signalCard(r, run) {
     ),
     spark,
     el("div", { class: "card__setup" }, contractOf(r)),
-    el("div", { class: "card__row" }, el("span", {}, t("entry")), el("strong", {}, money(first.price))),
-    el("div", { class: "card__row" }, el("span", {}, t("target")), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
-    el("div", { class: "card__row" }, el("span", {}, t("stop")), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop)))),
+    el("div", { class: "card__row" }, el("span", {}, t("ex.entry")), el("strong", {}, money(first.price))),
+    el("div", { class: "card__row" }, el("span", {}, t("ex.target")), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
+    el("div", { class: "card__row" }, el("span", {}, t("ex.stop")), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop)))),
     el("div", { class: "card__result" },
-      el("strong", { class: cls }, `${signed(last.ret * 100, 0)}% · ${usd(pnl)}`),
+      el("strong", { class: cls }, t("hypo", { pct: signed(last.ret * 100, 0) })),
       el("span", {}, t("exitOn", { exit: t("exit." + last.exit), date: shortDate(last.date) }))
     ),
     el("div", { class: "card__foot" },
@@ -242,8 +242,8 @@ const REPLAYS = [
     news: { src: "U.S. tariff announcement · Apr 2, 2025 · after the close", text: "The White House announces a 10% baseline tariff on imports plus much higher rates on dozens of countries. The S&P 500 has its worst day since 2020." },
     why: ["Fell 4.9% to $536.70", "Closed at the day's low", "VIX jumped from 21.5 to 30.0", "Volume 1.9× its recent daily average"],
     iv: [0.3002, 0.4531, 0.4698, 0.5233, 0.3362, 0.4072],
-    lesson: "China retaliated the next morning and SPY fell another 5.9%. Delta paid, and the VIX surging to 45 lifted the put further through vega. Three sessions after the exit, a tariff pause sent SPY up 10.5%, so holding past the target would have given the whole gain back.",
-    zh: {"name": "SPDR 标普500 ETF", "ivSource": "VIX 收盘值", "news": {"src": "美国关税公告 · 2025年4月2日 · 收盘后", "text": "白宫宣布对进口商品征收 10% 的基准关税，并对数十个国家征收高得多的税率。标普500指数录得自2020年以来最大单日跌幅。"}, "why": ["下跌 4.9% 至 $536.70", "收于当日最低点", "VIX 从 21.5 跳升至 30.0", "成交量为近期日均的 1.9 倍"], "lesson": "次日早上中国宣布反制，SPY 又下跌 5.9%。Delta 带来收益，VIX 飙升至 45 又通过 Vega 进一步推高看跌期权价格。离场三个交易日后，关税暂缓令 SPY 上涨 10.5%，若到达目标后继续持有，全部收益都会回吐。"},
+    lesson: "China retaliated the next morning and SPY fell another 5.9%. Delta paid, and the VIX surging to 45 lifted the put further through vega. Three sessions after the exit, a tariff pause sent SPY up 10.5%, enough to erase the put's whole gain: a reminder of how quickly an option's value can reverse.",
+    zh: {"name": "SPDR 标普500 ETF", "ivSource": "VIX 收盘值", "news": {"src": "美国关税公告 · 2025年4月2日 · 收盘后", "text": "白宫宣布对进口商品征收 10% 的基准关税，并对数十个国家征收高得多的税率。标普500指数录得自2020年以来最大单日跌幅。"}, "why": ["下跌 4.9% 至 $536.70", "收于当日最低点", "VIX 从 21.5 跳升至 30.0", "成交量为近期日均的 1.9 倍"], "lesson": "次日早上中国宣布反制，SPY 又下跌 5.9%。Delta 带来收益，VIX 飙升至 45 又通过 Vega 进一步推高看跌期权价格。离场三个交易日后，关税暂缓令 SPY 上涨 10.5%，足以抹去这份看跌期权的全部收益：这说明期权的价值可以多快地逆转。"},
     closes: [["2025-03-12", 558.87], ["2025-03-13", 551.42], ["2025-03-14", 562.81], ["2025-03-17", 567.15], ["2025-03-18", 561.02], ["2025-03-19", 567.13], ["2025-03-20", 565.49], ["2025-03-21", 563.98], ["2025-03-24", 574.08], ["2025-03-25", 575.46], ["2025-03-26", 568.59], ["2025-03-27", 567.08], ["2025-03-28", 555.66], ["2025-03-31", 559.39], ["2025-04-01", 560.97], ["2025-04-02", 564.52], ["2025-04-03", 536.7], ["2025-04-04", 505.28], ["2025-04-07", 504.38], ["2025-04-08", 496.48], ["2025-04-09", 548.62], ["2025-04-10", 524.58], ["2025-04-11", 533.94], ["2025-04-14", 539.12], ["2025-04-15", 537.61]] },
   { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bear", put: true, strike: 110, expiry: "2025-02-21",
     newsDate: "2025-01-27", entryDate: "2025-01-27",
@@ -410,9 +410,9 @@ function renderReplay(r) {
         dirBadge(r.dir)),
       el("div", { class: "news" }, el("div", { class: "news__src" }, news.src), el("p", {}, news.text)),
       el("div", { class: "sig-hero__stats", style: "margin-top:0.9rem" },
-        el("div", {}, el("span", { class: "muted small" }, t("entry")), el("strong", {}, money(first.price))),
-        el("div", {}, el("span", { class: "muted small" }, t("target")), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
-        el("div", {}, el("span", { class: "muted small" }, t("stop")), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop))))),
+        el("div", {}, el("span", { class: "muted small" }, t("ex.entry")), el("strong", {}, money(first.price))),
+        el("div", {}, el("span", { class: "muted small" }, t("ex.target")), el("strong", { class: "up" }, money(first.price * (1 + RULES.target)))),
+        el("div", {}, el("span", { class: "muted small" }, t("ex.stop")), el("strong", { class: "down" }, money(first.price * (1 + RULES.stop))))),
       el("ul", { class: "why-list" }, ...tr(r, "why").map((w) => Array.isArray(w) ? el("li", { class: w[1] }, w[0]) : el("li", {}, w)))));
 
   const greekRow = (sym, name, key, fmt) =>
@@ -463,7 +463,7 @@ function renderReplayTabs() {
     const selected = i === currentReplay;
     const tab = el("button", { class: "replay-tab", type: "button", role: "tab", "aria-selected": String(selected), "aria-controls": "replay", tabindex: selected ? "0" : "-1" },
       el("span", {}, el("b", {}, r.ticker), el("small", {}, `${longDate(r.newsDate)} · ${t(r.put ? "Put" : "Call")}`)),
-      el("strong", { class: pnl < 0 ? "down" : "up" }, usd(pnl)));
+      el("strong", { class: pnl < 0 ? "down" : "up" }, `${signed(last.ret * 100, 0)}%`));
     tab.addEventListener("click", () => {
       $$(".replay-tab").forEach((b) => {
         b.setAttribute("aria-selected", String(b === tab));

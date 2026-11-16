@@ -178,7 +178,7 @@
         <p class="muted small replay__note" data-i18n="cases.note">
           Hypothetical, educational replays of past events. AlphOpt did not exist at the time, and no one was advised to make these trades.
           Stock prices, volumes and ranges are actual daily data as traded at the time, before later stock splits (Yahoo Finance).
-          Every replay uses the same fixed rules, chosen for illustration, and losses are included.
+          The events were hand-picked as well-known examples for their teaching value and are not a representative sample of market conditions. Every replay uses the same fixed rules, chosen for illustration, and losses are included.
           Option premiums and Greeks are Black-Scholes estimates (5% rate) from the implied volatility shown: the VIX close for SPY, and an assumption for the others, not a recorded quote.
           Hypothetical results have inherent limitations: they are prepared with hindsight and do not reflect real trading, bid-ask spreads, commissions or taxes, so real results would differ.
           Per contract = 100 shares. Past results do not predict future results.
@@ -314,7 +314,7 @@
           </details>
           <details>
             <summary data-i18n="faq.q4">Are the case studies real trades?</summary>
-            <p data-i18n="faq.a4">No. The events and stock prices are real: actual daily closes, volumes and ranges from the time. The trades are hypothetical: we applied the same fixed teaching rules (+50% target, −35% stop, five sessions at most, checked at each close) with hindsight. No one placed them, and AlphOpt did not exist at the time. Option premiums and Greeks are model estimates, not recorded quotes.</p>
+            <p data-i18n="faq.a4">No. The events and stock prices are real: actual daily closes, volumes and ranges from the time. The trades are hypothetical: we applied the same fixed teaching rules (+50% target, −35% stop, five sessions at most, checked at each close) with hindsight. No one placed them, and AlphOpt did not exist at the time. The events were chosen for their teaching value, not as a representative sample. Option premiums and Greeks are model estimates, not recorded quotes.</p>
           </details>
           <details>
             <summary data-i18n="faq.q5">Are options risky?</summary>
@@ -345,12 +345,13 @@
           <button class="btn btn--primary" type="submit" data-i18n="wait.join">Join waitlist</button>
           <label class="consent">
             <input type="checkbox" id="consent" name="consent" value="launch-emails-v1" required>
-            <span data-i18n-html="wait.consent">I agree to receive emails from AlphOpt about its launch, and I confirm I am 18 or older. I can unsubscribe at any time. See the <a href="privacy.html">privacy policy</a>.</span>
+            <span data-i18n-html="wait.consent">I agree to receive emails from Aydenait, which operates AlphOpt, about AlphOpt's launch, and I confirm I am 18 or older. I can unsubscribe at any time. See the <a href="privacy.html">privacy policy</a>.</span>
           </label>
           <input type="hidden" name="language" id="consent-lang" value="en">
         </form>
         <p class="waitlist__msg" id="waitlist-msg" role="status"></p>
         <p class="muted small" data-i18n="wait.privacy">We use your email only for AlphOpt launch updates and never sell or share it. Sign-ups are stored by Formspree, a U.S. service, so your email may be processed in the United States.</p>
+        <p class="muted small" data-i18n-html="wait.sender">AlphOpt is operated by Aydenait · [mailing address] · <a href="mailto:contact@aydenait.com">contact@aydenait.com</a></p>
       </div>
     </section>
   </main>
@@ -377,7 +378,7 @@
         The case studies are hypothetical replays of past events prepared with hindsight; they do not reflect actual trading, and past results do not predict future results.
         Company names and tickers belong to their owners, who are not affiliated with AlphOpt and do not endorse it.
       </p>
-      <p class="muted small">© <span id="year"></span> AlphOpt. <span data-i18n="footer.rights">All rights reserved.</span></p>
+      <p class="muted small">© <span id="year"></span> Aydenait. <span data-i18n="footer.rights">AlphOpt is operated by Aydenait. All rights reserved.</span></p>
     </div>
   </footer>
 
