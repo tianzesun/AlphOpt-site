@@ -122,9 +122,9 @@ function renderHero() {
 }
 
 /* ---------- How it works ---------- */
-// Fill each step's example from the CRWD replay so the numbers match the rest of the page.
+// Fill each step's example from the NVIDIA DeepSeek replay so the numbers match the rest of the page.
 function renderSteps() {
-  const r = REPLAYS.find((x) => x.ticker === "CRWD");
+  const r = REPLAYS.find((x) => x.ticker === "NVDA" && x.newsDate === "2025-01-27");
   const { start, first, last } = runReplay(r);
   const prev = r.closes[start - 1][1];
   const pnl = (last.price - first.price) * 100;
@@ -260,14 +260,6 @@ const REPLAYS = [
     lesson: "The call was up 34% after one day but short of the +50% target. The stock then gave back the rally and ended almost flat (−0.4%), yet the call lost 37%: delta reversed and theta charged about $30 a day. Gains on short-dated calls can vanish fast.",
     zh: {"name": "特斯拉", "news": {"src": "特斯拉 2024 年第三季度财报 · 2024年10月23日 · 收盘后", "text": "利润超出预期，埃隆·马斯克预测 2025 年汽车销量增长 20–30%。股价大涨 22%，创 2013 年以来最佳单日表现。"}, "why": ["财报跳空：收涨 21.9% 至 $260.48", "收盘接近最高点（位于当日区间顶部 8%）", "成交量为近期日均的 2.8 倍", ["短期合约：距到期 22 天，行权价相差 7.5%", "warn"]], "lesson": "看涨期权一天后上涨 34%，但未达到 +50% 的目标。随后股价回吐涨幅，最终几乎持平（−0.4%），看涨期权却亏损 37%：Delta 反转，Theta 每天消耗约 $30。短期看涨期权的收益可能迅速消失。"},
     closes: [["2024-10-01", 258.02], ["2024-10-02", 249.02], ["2024-10-03", 240.66], ["2024-10-04", 250.08], ["2024-10-07", 240.83], ["2024-10-08", 244.5], ["2024-10-09", 241.05], ["2024-10-10", 238.77], ["2024-10-11", 217.8], ["2024-10-14", 219.16], ["2024-10-15", 219.57], ["2024-10-16", 221.33], ["2024-10-17", 220.89], ["2024-10-18", 220.7], ["2024-10-21", 218.85], ["2024-10-22", 217.97], ["2024-10-23", 213.65], ["2024-10-24", 260.48], ["2024-10-25", 269.19], ["2024-10-28", 262.51], ["2024-10-29", 259.52], ["2024-10-30", 257.55], ["2024-10-31", 249.85], ["2024-11-01", 248.98], ["2024-11-04", 242.84]] },
-  { ticker: "CRWD", name: "CrowdStrike Holdings", dir: "bear", put: true, strike: 290, expiry: "2024-08-16",
-    newsDate: "2024-07-19", entryDate: "2024-07-19",
-    news: { src: "Global IT outage · July 19, 2024 · before the open", text: "A faulty CrowdStrike Falcon update crashes about 8.5 million Windows computers, grounding flights and disrupting banks and hospitals." },
-    why: ["Fell 11.1% to $304.96 on the outage", "Volume 13.3× its recent daily average", "Already down 9.1% in the three sessions before", "Fallout (customer claims, lawsuits) still unknown"],
-    iv: [0.55, 0.65, 0.63, 0.62, 0.6, 0.58],
-    lesson: "Two Greeks paid at once: negative delta profited from Monday's 13% drop, and rising fear lifted IV, so vega added to the gain.",
-    zh: {"name": "CrowdStrike", "news": {"src": "全球 IT 宕机 · 2024年7月19日 · 开盘前", "text": "CrowdStrike Falcon 的一次错误更新导致约 850 万台 Windows 电脑崩溃，航班停飞，银行和医院的业务受到干扰。"}, "why": ["受宕机影响下跌 11.1% 至 $304.96", "成交量为近期日均的 13.3 倍", "此前三个交易日已累计下跌 9.1%", "后续影响（客户索赔、诉讼）仍不明朗"], "lesson": "两个希腊值同时带来收益：负 Delta 从周一 13% 的跌幅中获利，恐慌情绪推高隐含波动率，Vega 进一步增加了收益。"},
-    closes: [["2024-07-01", 392.15], ["2024-07-02", 385.05], ["2024-07-03", 387.18], ["2024-07-05", 389.68], ["2024-07-08", 390.71], ["2024-07-09", 385.88], ["2024-07-10", 374.45], ["2024-07-11", 370.43], ["2024-07-12", 371.32], ["2024-07-15", 377.37], ["2024-07-16", 369.05], ["2024-07-17", 354.94], ["2024-07-18", 343.05], ["2024-07-19", 304.96], ["2024-07-22", 263.91], ["2024-07-23", 268.88], ["2024-07-24", 258.14], ["2024-07-25", 254.15], ["2024-07-26", 256.16]] },
   { ticker: "NVDA", name: "NVIDIA Corp.", dir: "bull", put: false, strike: 400, expiry: "2023-06-16",
     newsDate: "2023-05-24", entryDate: "2023-05-25",
     news: { src: "NVIDIA Q1 FY2024 results · May 24, 2023 · after the close", text: "Guides next-quarter revenue to about $11 billion, roughly $4 billion above analyst estimates, on AI data-centre demand." },
@@ -276,14 +268,6 @@ const REPLAYS = [
     lesson: "Delta did the work. The stock's $21 rise outweighed five calendar days of theta and a small IV dip; buying after the event, when IV had already come down, kept vega from hurting much.",
     zh: {"name": "英伟达", "news": {"src": "英伟达 2024 财年第一季度财报 · 2023年5月24日 · 收盘后", "text": "受 AI 数据中心需求推动，公司预计下季度营收约 110 亿美元，比分析师预期高出约 40 亿美元。"}, "why": ["财报跳空站稳：收涨 24.4% 至 $379.80", "成交量为近期日均的 3.7 倍", "超预期的是业绩指引，而不只是盈利", ["收于区间中部，低于 $394.80 的最高点", "warn"]], "lesson": "Delta 发挥了主要作用。股价上涨 $21，抵消了五个日历日的 Theta 损耗和隐含波动率的小幅回落；在事件之后、隐含波动率已回落时买入，让 Vega 的拖累很小。"},
     closes: [["2023-05-01", 289.1], ["2023-05-02", 282.1], ["2023-05-03", 278.02], ["2023-05-04", 275.62], ["2023-05-05", 286.8], ["2023-05-08", 291.51], ["2023-05-09", 285.71], ["2023-05-10", 288.85], ["2023-05-11", 285.78], ["2023-05-12", 283.4], ["2023-05-15", 289.53], ["2023-05-16", 292.13], ["2023-05-17", 301.78], ["2023-05-18", 316.78], ["2023-05-19", 312.64], ["2023-05-22", 311.76], ["2023-05-23", 306.88], ["2023-05-24", 305.38], ["2023-05-25", 379.8], ["2023-05-26", 389.46], ["2023-05-30", 401.11], ["2023-05-31", 378.34], ["2023-06-01", 397.7], ["2023-06-02", 393.27]] },
-  { ticker: "KRE", name: "SPDR S&P Regional Banking ETF", dir: "bear", put: true, strike: 50, expiry: "2023-04-21",
-    newsDate: "2023-03-08", entryDate: "2023-03-09",
-    news: { src: "SVB Financial · Mar 8, 2023 · after the close", text: "Silicon Valley Bank sells $21 billion of securities at a $1.8 billion loss and seeks to raise $2.25 billion, sparking fears of deposit runs at regional banks." },
-    why: ["Fell 8.1% to $53.02 as SVB's losses spread to regional banks", "Closed at the day's low", "Volume 7.5× its recent daily average", "Fifth drop in six sessions"],
-    iv: [0.4, 0.5, 0.65, 0.6, 0.6, 0.55],
-    lesson: "Delta and vega together: regulators shut SVB the next day, KRE fell another 4.4%, and rising fear pushed IV up, doubling a cheap put in one session.",
-    zh: {"name": "SPDR 标普地区银行 ETF", "news": {"src": "SVB 金融集团 · 2023年3月8日 · 收盘后", "text": "硅谷银行以 18 亿美元的亏损出售 210 亿美元证券，并寻求融资 22.5 亿美元，引发市场对地区银行挤兑的担忧。"}, "why": ["SVB 的亏损波及地区银行，下跌 8.1% 至 $53.02", "收于当日最低点", "成交量为近期日均的 7.5 倍", "六个交易日内第五次下跌"], "lesson": "Delta 与 Vega 共同发力：监管机构次日关闭 SVB，KRE 再跌 4.4%，恐慌情绪推高隐含波动率，一份便宜的看跌期权在一个交易日内翻倍。"},
-    closes: [["2023-02-15", 64.01], ["2023-02-16", 62.88], ["2023-02-17", 63.2], ["2023-02-21", 61.73], ["2023-02-22", 61.43], ["2023-02-23", 61.67], ["2023-02-24", 61.68], ["2023-02-27", 61.66], ["2023-02-28", 61.56], ["2023-03-01", 61.19], ["2023-03-02", 59.64], ["2023-03-03", 60.38], ["2023-03-06", 59.93], ["2023-03-07", 58.0], ["2023-03-08", 57.7], ["2023-03-09", 53.02], ["2023-03-10", 50.69], ["2023-03-13", 44.45], ["2023-03-14", 45.38], ["2023-03-15", 44.64], ["2023-03-16", 46.21], ["2023-03-17", 43.44], ["2023-03-20", 43.56], ["2023-03-21", 46.07]] },
   { ticker: "META", name: "Meta Platforms", dir: "bull", put: false, strike: 195, expiry: "2023-02-17",
     newsDate: "2023-02-01", entryDate: "2023-02-02",
     news: { src: "Meta Q4 2022 results · Feb 1, 2023 · after the close", text: "Calls 2023 its “year of efficiency”, cuts its expense outlook and adds $40 billion to its share buyback." },
@@ -292,6 +276,54 @@ const REPLAYS = [
     lesson: "The stock slipped only 1.4%, yet the call lost about half its value: delta, theta and a dip in IV all worked against it. Short-dated calls need the move to come fast, and the stop kept it from running toward zero.",
     zh: {"name": "Meta Platforms", "news": {"src": "Meta 2022 年第四季度财报 · 2023年2月1日 · 收盘后", "text": "将 2023 年定为“效率之年”，下调支出预期，并增加 400 亿美元股票回购。"}, "why": ["财报跳空站稳：收涨 23.3% 至 $188.77", "成交量为近期日均的 5.2 倍", ["收于区间中部，远低于 $197.16 的最高点", "warn"], ["短期合约：距到期 15 天，Theta 损耗大", "warn"]], "lesson": "股价仅下跌 1.4%，看涨期权却损失约一半价值：Delta、Theta 和隐含波动率回落同时不利。短期看涨期权需要行情尽快到来，止损避免了它继续跌向零。"},
     closes: [["2023-01-12", 136.71], ["2023-01-13", 136.98], ["2023-01-17", 135.36], ["2023-01-18", 133.02], ["2023-01-19", 136.15], ["2023-01-20", 139.37], ["2023-01-23", 143.27], ["2023-01-24", 143.14], ["2023-01-25", 141.5], ["2023-01-26", 147.3], ["2023-01-27", 151.74], ["2023-01-30", 147.06], ["2023-01-31", 148.97], ["2023-02-01", 153.12], ["2023-02-02", 188.77], ["2023-02-03", 186.53], ["2023-02-06", 186.06], ["2023-02-07", 191.62], ["2023-02-08", 183.43], ["2023-02-09", 177.92], ["2023-02-10", 174.15]] },
+  { ticker: "QQQ", name: "Invesco QQQ Trust", dir: "bear", put: true, strike: 420, expiry: "2024-08-30",
+    newsDate: "2024-08-05", entryDate: "2024-08-05",
+    news: { src: "Global market sell-off · Aug 5, 2024 · before the open", text: "Japan's Nikkei falls 12.4%, its worst day since 1987, as a Bank of Japan rate hike and weak U.S. jobs data unwind trades funded in yen. The VIX briefly tops 65." },
+    why: ["Fell 3.0% to $435.37", "Volume 2.0× its recent daily average", ["Closed well off the low (63% of the day's range)", "warn"], ["IV spiked in the sell-off, so puts were expensive", "warn"]],
+    iv: [0.32, 0.27, 0.27, 0.23, 0.21, 0.2],
+    lesson: "Buying puts in a panic means paying peak prices for fear. QQQ bounced 1.0% the next day and implied volatility fell from 32% to 27%, so delta and vega both worked against the put, and it hit the −35% stop in one session. A week later QQQ was 3.7% above the entry.",
+    zh: {"name": "景顺纳斯达克100 ETF", "news": {"src": "全球市场抛售 · 2024年8月5日 · 开盘前", "text": "日本央行加息叠加疲弱的美国就业数据，引发以日元融资的交易平仓，日经指数暴跌 12.4%，创 1987 年以来最大单日跌幅。VIX 一度突破 65。"}, "why": ["下跌 3.0% 至 $435.37", "成交量为近期日均的 2.0 倍", ["收盘远离最低点（位于当日区间的 63%）", "warn"], ["抛售中隐含波动率飙升，看跌期权价格昂贵", "warn"]], "lesson": "在恐慌中买入看跌期权，等于以最高价为恐惧买单。QQQ 次日反弹 1.0%，隐含波动率从 32% 降至 27%，Delta 和 Vega 同时对看跌期权不利，一个交易日内就触及 −35% 的止损。一周后，QQQ 比入场时高出 3.7%。"},
+    closes: [["2024-07-15", 496.15], ["2024-07-16", 496.34], ["2024-07-17", 481.77], ["2024-07-18", 479.49], ["2024-07-19", 475.24], ["2024-07-22", 482.32], ["2024-07-23", 480.62], ["2024-07-24", 463.38], ["2024-07-25", 458.27], ["2024-07-26", 462.97], ["2024-07-29", 463.9], ["2024-07-30", 457.53], ["2024-07-31", 471.07], ["2024-08-01", 459.66], ["2024-08-02", 448.75], ["2024-08-05", 435.37], ["2024-08-06", 439.53], ["2024-08-07", 434.77], ["2024-08-08", 448.07], ["2024-08-09", 450.41], ["2024-08-12", 451.38], ["2024-08-13", 462.58], ["2024-08-14", 462.73], ["2024-08-15", 474.42], ["2024-08-16", 475.03], ["2024-08-19", 481.27], ["2024-08-20", 480.26]] },
+  { ticker: "IWM", name: "iShares Russell 2000 ETF", dir: "bull", put: false, strike: 245, expiry: "2024-11-29",
+    newsDate: "2024-11-05", entryDate: "2024-11-06",
+    news: { src: "U.S. election · Nov 5, 2024 · results overnight", text: "Donald Trump wins the U.S. presidential election. Small-company stocks, seen as gaining most from tax cuts and lighter regulation, lead the rally: IWM jumps 5.8%." },
+    why: ["Jumped 5.8% to $237.22", "Closed near the high (top 7% of the day's range)", "Volume 3.5× its recent daily average", ["Already up 3.0% in the three sessions before", "warn"]],
+    iv: [0.22, 0.21, 0.21, 0.2, 0.2, 0.2],
+    lesson: "The big move came overnight, before the call was bought, so the call needed the rally to continue. IWM was up 1.9% three sessions later and the call gained 23%, but the next day gave it back: four sessions after entry IWM was just 0.1% higher, and time decay had pushed the call to the −35% stop.",
+    zh: {"name": "iShares 罗素2000 ETF", "news": {"src": "美国大选 · 2024年11月5日 · 结果于隔夜公布", "text": "唐纳德·特朗普赢得美国总统大选。被视为最能受益于减税和放松监管的小型公司股票领涨：IWM 大涨 5.8%。"}, "why": ["大涨 5.8% 至 $237.22", "收盘接近最高点（位于当日区间顶部 7%）", "成交量为近期日均的 3.5 倍", ["此前三个交易日已累计上涨 3.0%", "warn"]], "lesson": "大涨发生在隔夜、买入看涨期权之前，因此这份期权需要涨势延续。三个交易日后 IWM 上涨 1.9%，看涨期权上涨 23%，但次日涨幅全部回吐：入场四个交易日后 IWM 仅高出 0.1%，时间损耗把看涨期权推到了 −35% 的止损。"},
+    closes: [["2024-10-16", 226.74], ["2024-10-17", 226.12], ["2024-10-18", 225.65], ["2024-10-21", 222.1], ["2024-10-22", 221.26], ["2024-10-23", 219.24], ["2024-10-24", 219.72], ["2024-10-25", 218.89], ["2024-10-28", 222.46], ["2024-10-29", 221.74], ["2024-10-30", 221.44], ["2024-10-31", 217.76], ["2024-11-01", 218.98], ["2024-11-04", 220.09], ["2024-11-05", 224.23], ["2024-11-06", 237.22], ["2024-11-07", 236.38], ["2024-11-08", 238.12], ["2024-11-11", 241.7], ["2024-11-12", 237.46], ["2024-11-13", 235.11], ["2024-11-14", 231.94], ["2024-11-15", 228.48], ["2024-11-18", 228.93], ["2024-11-19", 230.63], ["2024-11-20", 230.93], ["2024-11-21", 234.44]] },
+  { ticker: "AAPL", name: "Apple Inc.", dir: "bull", put: false, strike: 215, expiry: "2024-07-05",
+    newsDate: "2024-06-10", entryDate: "2024-06-11",
+    news: { src: "Apple WWDC · June 10, 2024", text: "Apple unveils Apple Intelligence, its AI features, including ChatGPT in Siri. The stock slips 1.9% on the day, then jumps 7.3% the next to a record high." },
+    why: ["Jumped 7.3% to a record $207.15", "Closed at the day's high", "Volume 3.3× its recent daily average", ["Short-dated: 24 days to expiry, strike 3.8% away", "warn"]],
+    iv: [0.25, 0.24, 0.23, 0.22, 0.22, 0.21],
+    lesson: "Delta did the work, helped by gamma: Apple rose another 2.9% the next day, and as it climbed the call's delta grew from 0.31 to 0.47, so the call gained 78% and hit the target in one session. That same leverage works just as fast in reverse.",
+    zh: {"name": "苹果", "news": {"src": "苹果 WWDC · 2024年6月10日", "text": "苹果发布 AI 功能 Apple Intelligence，并将 ChatGPT 接入 Siri。股价当天下跌 1.9%，次日大涨 7.3%，创历史新高。"}, "why": ["大涨 7.3% 至创纪录的 $207.15", "收于当日最高点", "成交量为近期日均的 3.3 倍", ["短期合约：距到期 24 天，行权价相差 3.8%", "warn"]], "lesson": "Delta 发挥了主要作用，Gamma 又起到放大效果：苹果次日再涨 2.9%，随着股价上涨，看涨期权的 Delta 从 0.31 升至 0.47，期权上涨 78%，一个交易日内就触及目标。同样的杠杆在反方向也会同样迅速地起作用。"},
+    closes: [["2024-05-20", 191.04], ["2024-05-21", 192.35], ["2024-05-22", 190.9], ["2024-05-23", 186.88], ["2024-05-24", 189.98], ["2024-05-28", 189.99], ["2024-05-29", 190.29], ["2024-05-30", 191.29], ["2024-05-31", 192.25], ["2024-06-03", 194.03], ["2024-06-04", 194.35], ["2024-06-05", 195.87], ["2024-06-06", 194.48], ["2024-06-07", 196.89], ["2024-06-10", 193.12], ["2024-06-11", 207.15], ["2024-06-12", 213.07], ["2024-06-13", 214.24], ["2024-06-14", 212.49], ["2024-06-17", 216.67], ["2024-06-18", 214.29], ["2024-06-20", 209.68], ["2024-06-21", 207.49], ["2024-06-24", 208.14], ["2024-06-25", 209.07]] },
+  { ticker: "AMZN", name: "Amazon.com Inc.", dir: "bear", put: true, strike: 160, expiry: "2024-08-23",
+    newsDate: "2024-08-01", entryDate: "2024-08-02",
+    news: { src: "Amazon Q2 2024 results · Aug 1, 2024 · after the close", text: "Sales and the third-quarter forecast come in below expectations, and Amazon signals heavy AI spending. The stock falls 8.8% the next day as weak U.S. jobs data hits the whole market." },
+    why: ["Fell 8.8% to $167.90", "Volume 3.3× its recent daily average", "Weak U.S. jobs report hit the whole market the same day", ["Closed well off the low (top 11% of the day's range)", "warn"]],
+    iv: [0.4, 0.45, 0.4, 0.36, 0.33, 0.31],
+    lesson: "The global sell-off the next session did the work: Amazon fell another 4.1% on August 5, the put's delta grew from −0.28 to −0.45, and the jump in fear lifted implied volatility, so the put gained 93% and hit its target. By August 12 the stock had recovered most of that day's fall.",
+    zh: {"name": "亚马逊", "news": {"src": "亚马逊 2024 年第二季度财报 · 2024年8月1日 · 收盘后", "text": "销售额和第三季度业绩指引低于预期，亚马逊还表示将大举投入 AI。次日疲弱的美国就业数据拖累整个市场，股价下跌 8.8%。"}, "why": ["下跌 8.8% 至 $167.90", "成交量为近期日均的 3.3 倍", "同日疲弱的美国就业报告拖累整个市场", ["收盘远离最低点（位于当日区间顶部 11%）", "warn"]], "lesson": "下一个交易日的全球抛售带来了收益：8 月 5 日亚马逊再跌 4.1%，看跌期权的 Delta 从 −0.28 增至 −0.45，恐慌情绪推高隐含波动率，期权上涨 93% 并触及目标。到 8 月 12 日，股价已收复当天的大部分跌幅。"},
+    closes: [["2024-07-12", 194.49], ["2024-07-15", 192.72], ["2024-07-16", 193.02], ["2024-07-17", 187.93], ["2024-07-18", 183.75], ["2024-07-19", 183.13], ["2024-07-22", 182.55], ["2024-07-23", 186.41], ["2024-07-24", 180.83], ["2024-07-25", 179.85], ["2024-07-26", 182.5], ["2024-07-29", 183.2], ["2024-07-30", 181.71], ["2024-07-31", 186.98], ["2024-08-01", 184.07], ["2024-08-02", 167.9], ["2024-08-05", 161.02], ["2024-08-06", 161.93], ["2024-08-07", 162.77], ["2024-08-08", 165.8], ["2024-08-09", 166.94], ["2024-08-12", 166.8], ["2024-08-13", 170.23], ["2024-08-14", 170.1], ["2024-08-15", 177.59], ["2024-08-16", 177.06]] },
+  { ticker: "MSFT", name: "Microsoft Corp.", dir: "bear", put: true, strike: 400, expiry: "2025-02-21",
+    newsDate: "2025-01-29", entryDate: "2025-01-30",
+    news: { src: "Microsoft Q2 FY2025 results · Jan 29, 2025 · after the close", text: "Growth at Azure, Microsoft's cloud business, slows to 31%, a little below expectations, while spending on AI data centres keeps climbing." },
+    why: ["Fell 6.2% to $414.99", "Closed near the low (bottom 19% of the day's range)", "Volume 2.5× its recent daily average", ["22 days to expiry, strike 3.6% away", "warn"]],
+    iv: [0.26, 0.24, 0.24, 0.23, 0.23, 0.22],
+    lesson: "The stock barely moved after the drop: four sessions later it was 0.4% lower. With no further fall, delta had little to work with while theta cost about $18 a day and implied volatility eased, and the put hit the −35% stop. A put needs the next move, not the last one.",
+    zh: {"name": "微软", "news": {"src": "微软 2025 财年第二季度财报 · 2025年1月29日 · 收盘后", "text": "微软云业务 Azure 的增速放缓至 31%，略低于预期，而 AI 数据中心的支出仍在攀升。"}, "why": ["下跌 6.2% 至 $414.99", "收盘接近最低点（位于当日区间底部 19%）", "成交量为近期日均的 2.5 倍", ["距到期 22 天，行权价相差 3.6%", "warn"]], "lesson": "大跌之后股价几乎不动：四个交易日后仅低 0.4%。没有进一步下跌，Delta 无从发挥，而 Theta 每天消耗约 $18，隐含波动率也有所回落，看跌期权触及 −35% 的止损。看跌期权需要的是下一次下跌，而不是已经发生的那次。"},
+    closes: [["2025-01-08", 424.56], ["2025-01-10", 418.95], ["2025-01-13", 417.19], ["2025-01-14", 415.67], ["2025-01-15", 426.31], ["2025-01-16", 424.58], ["2025-01-17", 429.03], ["2025-01-21", 428.5], ["2025-01-22", 446.2], ["2025-01-23", 446.71], ["2025-01-24", 444.06], ["2025-01-27", 434.56], ["2025-01-28", 447.2], ["2025-01-29", 442.33], ["2025-01-30", 414.99], ["2025-01-31", 415.06], ["2025-02-03", 410.92], ["2025-02-04", 412.37], ["2025-02-05", 413.29], ["2025-02-06", 415.82], ["2025-02-07", 409.75], ["2025-02-10", 412.22], ["2025-02-11", 411.44], ["2025-02-12", 409.04], ["2025-02-13", 410.54], ["2025-02-14", 408.43]] },
+  { ticker: "AMD", name: "Advanced Micro Devices", dir: "bear", put: true, strike: 140, expiry: "2024-11-22",
+    newsDate: "2024-10-29", entryDate: "2024-10-30",
+    news: { src: "AMD Q3 2024 results · Oct 29, 2024 · after the close", text: "Data-centre sales more than double, but the fourth-quarter forecast only matches expectations, disappointing investors who had bid the stock up ahead of the report." },
+    why: ["Fell 10.6% to $148.60", "Closed near the low (bottom 10% of the day's range)", "Volume 2.3× its recent daily average", "Had risen 8.3% in the three sessions before"],
+    iv: [0.5, 0.48, 0.47, 0.46, 0.46, 0.45],
+    lesson: "The put was up 47% after two sessions, just short of the +50% target, as AMD kept sliding. Then the stock rebounded around the U.S. election, and at the five-session time limit the put was down 14%. Under fixed rules, nearly hitting a target counts for nothing.",
+    zh: {"name": "超威半导体", "news": {"src": "AMD 2024 年第三季度财报 · 2024年10月29日 · 收盘后", "text": "数据中心销售额增长一倍多，但第四季度业绩指引仅与预期持平，令财报前推高股价的投资者失望。"}, "why": ["下跌 10.6% 至 $148.60", "收盘接近最低点（位于当日区间底部 10%）", "成交量为近期日均的 2.3 倍", "此前三个交易日已累计上涨 8.3%"], "lesson": "随着 AMD 持续下滑，看跌期权在两个交易日后上涨 47%，离 +50% 的目标只差一点。随后股价在美国大选前后反弹，到五个交易日的时间限制时，看跌期权下跌 14%。在固定规则下，差一点触及目标毫无意义。"},
+    closes: [["2024-10-09", 171.02], ["2024-10-10", 164.18], ["2024-10-11", 167.89], ["2024-10-14", 165.27], ["2024-10-15", 156.64], ["2024-10-16", 156.13], ["2024-10-17", 156.25], ["2024-10-18", 155.97], ["2024-10-21", 157.9], ["2024-10-22", 154.09], ["2024-10-23", 152.91], ["2024-10-24", 153.44], ["2024-10-25", 156.23], ["2024-10-28", 159.92], ["2024-10-29", 166.25], ["2024-10-30", 148.6], ["2024-10-31", 144.07], ["2024-11-01", 141.86], ["2024-11-04", 140.71], ["2024-11-05", 141.66], ["2024-11-06", 145.1], ["2024-11-07", 149.82], ["2024-11-08", 147.95], ["2024-11-11", 147.35], ["2024-11-12", 143.63], ["2024-11-13", 139.3], ["2024-11-14", 138.84]] },
 ];
 
 // Standard normal CDF (Abramowitz-Stegun 7.1.26), accurate to about 1e-7.
@@ -651,10 +683,10 @@ function initLab() {
   reset();
 }
 
-/* ---------- Covered calls ---------- */
-// Three covered calls on closes already in REPLAYS, one for each outcome: the call expires,
-// the shares are called away, or the stock falls. Premiums are Black-Scholes estimates from an
-// assumed IV, held to expiry and settled at the closing price. The GIC rate is illustrative.
+/* ---------- Selling options: covered calls and cash-secured puts ---------- */
+// Real closes from REPLAYS, held to expiry and settled at the closing price. Premiums are
+// Black-Scholes estimates from an assumed IV. The puts reuse the covered calls' three windows to
+// show how alike the two strategies are. The GIC rate is illustrative, not a quote.
 const GIC_RATE = 0.03;
 const COVERED = [
   { ticker: "SPY", from: "2025-03-12", to: "2025-04-02", strike: 575, iv: 0.22,
@@ -667,18 +699,46 @@ const COVERED = [
     lesson: "The call expired worthless and the premium was kept, but it made up for less than a third of the fall after the DeepSeek sell-off. A covered call cushions a drop; it does not protect you from one.",
     zh: { lesson: "期权到期作废，权利金得以保留，但它只抵消了 DeepSeek 抛售后跌幅的不到三分之一。备兑看涨只能缓冲下跌，并不能保护你免受下跌的影响。" } },
 ];
+// Each put states its outcome because the lesson is written for it; putRun warns if the data disagree.
+const PUTS = [
+  { ticker: "SPY", from: "2025-03-12", to: "2025-04-02", strike: 540, iv: 0.22, outcome: "kept",
+    lesson: "SPY stayed above the $540 strike, so the put expired worthless and the premium was kept: 0.8% on the $54,000 set aside, a little less than simply owning the shares. Timing mattered: the next day, after the U.S. tariff announcement, SPY fell 4.9% to $536.70, below the strike.",
+    zh: { lesson: "SPY 始终高于 $540 的行权价，因此看跌期权到期作废，权利金得以保留：相对预留的 $54,000 回报 0.8%，略低于直接持有股票。时机很关键：次日美国宣布关税后，SPY 下跌 4.9% 至 $536.70，已低于行权价。" } },
+  { ticker: "META", from: "2023-01-12", to: "2023-02-10", strike: 130, iv: 0.5, outcome: "missed",
+    lesson: "The stock never fell to the $130 strike, so the put expired worthless and earned its 3.4% premium. But the stock rose 27.4% after earnings: selling a put caps your gain at the premium, however far the stock climbs.",
+    zh: { lesson: "股价始终没有跌到 $130 的行权价，看跌期权到期作废，赚取了 3.4% 的权利金。但财报后股价上涨了 27.4%：卖出看跌期权的收益以权利金为上限，无论股价涨多高。" } },
+  { ticker: "NVDA", from: "2025-01-02", to: "2025-01-31", strike: 130, iv: 0.5, outcome: "assigned",
+    lesson: "The stock fell below the $130 strike, so the put was exercised and the shares had to be bought at $130 while they traded at $120.07. Because the strike started 6% below the price, the loss was smaller than holding the shares, but it was still 2.5 times the premium earned.",
+    zh: { lesson: "股价跌破 $130 的行权价，看跌期权被行权，你必须以 $130 买入当时仅值 $120.07 的股票。由于行权价比起始股价低 6%，亏损小于直接持有股票，但仍是所收权利金的 2.5 倍。" } },
+];
+const TONE = { kept: "good", called: "warn", missed: "warn", fell: "bad", assigned: "bad" };
 
-function coveredRun(c) {
+// The stock's closes between the two dates, and the option's premium on the first one.
+function optionWindow(c, put) {
   const r = REPLAYS.find((x) => x.ticker === c.ticker && x.closes.some(([d]) => d === c.from) && x.closes.some(([d]) => d === c.to));
   const i0 = r.closes.findIndex(([d]) => d === c.from), i1 = r.closes.findIndex(([d]) => d === c.to);
   const s0 = r.closes[i0][1], sT = r.closes[i1][1];
   const days = Math.round((Date.parse(c.to) - Date.parse(c.from)) / DAY_MS);
-  const premium = blackScholes({ spot: s0, strike: c.strike, dte: days, iv: c.iv, put: false }).price;
-  const called = sT > c.strike;
-  const gain = (called ? c.strike - s0 : sT - s0) + premium;
-  return { r, path: r.closes.slice(i0, i1 + 1).map(([, v]) => v), s0, sT, days, premium, called,
-    outcome: called ? "called" : sT >= s0 ? "kept" : "fell",
-    ccRet: gain / s0, ccUsd: gain * 100, stockRet: sT / s0 - 1, stockUsd: (sT - s0) * 100, gicRet: (GIC_RATE * days) / 365 };
+  return { r, path: r.closes.slice(i0, i1 + 1).map(([, v]) => v), s0, sT, days,
+    premium: blackScholes({ spot: s0, strike: c.strike, dte: days, iv: c.iv, put }).price,
+    stockRet: sT / s0 - 1, stockUsd: (sT - s0) * 100, gicRet: (GIC_RATE * days) / 365 };
+}
+
+// Own 100 shares and sell a call: above the strike at expiry, the shares are sold at the strike.
+function coveredRun(c) {
+  const w = optionWindow(c, false);
+  const called = w.sT > c.strike;
+  const gain = (called ? c.strike - w.s0 : w.sT - w.s0) + w.premium;
+  return { ...w, called, outcome: called ? "called" : w.sT >= w.s0 ? "kept" : "fell", ret: gain / w.s0, usd: gain * 100 };
+}
+
+// Set aside strike × 100 in cash and sell a put: below the strike at expiry, the shares are bought at the strike.
+function putRun(c) {
+  const w = optionWindow(c, true);
+  const assigned = w.sT < c.strike;
+  if (assigned !== (c.outcome === "assigned")) console.warn(`PUTS: ${c.ticker} outcome "${c.outcome}" does not match the closes`);
+  const gain = w.premium - (assigned ? c.strike - w.sT : 0);
+  return { ...w, assigned, outcome: c.outcome, ret: gain / c.strike, usd: gain * 100 };
 }
 
 // Daily closes with the strike as a dashed line, scaled so both always fit.
@@ -700,33 +760,44 @@ function coveredChart(path, strike, ticker) {
 }
 
 function renderCovered() {
-  const runs = COVERED.map((c) => ({ c, ...coveredRun(c) }));
   const pct = (v, d = 1) => `${signed(v * 100, d)}%`;
   const whole = (n) => "$" + Math.round(n).toLocaleString("en-CA");
   const cls = (v) => (v < 0 ? "down" : "up");
-  const row = (dt, dd) => el("div", {}, el("dt", {}, dt), el("dd", {}, dd));
-  const result = (label, value, c) => el("div", {}, el("span", {}, label), el("strong", { class: c }, value));
+  const hypo = (x) => `${t("hypo", { pct: signed(x.ret * 100, 1) })} · ${usd(x.usd)}`;
+  const shares = (x) => `${pct(x.stockRet)} · ${usd(x.stockUsd)}`;
+  const gic = (x) => [t("cc.resGic", { rate: GIC_RATE * 100 }), pct(x.gicRet, 2), ""];
+  const sold = (c, x) => t("cc.soldVal", { strike: c.strike, date: shortDate(c.to), prem: money(x.premium), total: whole(x.premium * 100) });
+  const card = (c, x, badge, rows, results) => el("article", { class: "cc-card" },
+    el("span", { class: `cc-card__badge cc-card__badge--${TONE[x.outcome]}` }, badge),
+    el("div", { class: "cc-card__head" }, el("b", {}, c.ticker), el("span", { class: "muted small" }, tr(x.r, "name"))),
+    el("p", { class: "muted small cc-card__when" }, t("cc.when", { days: x.days, from: longDate(c.from), to: longDate(c.to) })),
+    coveredChart(x.path, c.strike, c.ticker),
+    el("p", { class: "cc-card__legend small" }, el("i"), t("cc.strike", { strike: c.strike })),
+    el("dl", { class: "cc-card__steps" }, ...rows.map(([dt, dd]) => el("div", {}, el("dt", {}, dt), el("dd", {}, dd)))),
+    el("div", { class: "cc-card__results" }, ...results.map(([label, value, k]) => el("div", {}, el("span", {}, label), el("strong", { class: k }, value)))),
+    el("p", { class: "cc-card__lesson" }, tr(c, "lesson")));
 
-  $("#cc-cards").replaceChildren(...runs.map((x) => el("article", { class: "cc-card" },
-    el("span", { class: `cc-card__badge cc-card__badge--${x.outcome}` }, t("cc.outcome." + x.outcome)),
-    el("div", { class: "cc-card__head" }, el("b", {}, x.c.ticker), el("span", { class: "muted small" }, tr(x.r, "name"))),
-    el("p", { class: "muted small cc-card__when" }, t("cc.when", { days: x.days, from: longDate(x.c.from), to: longDate(x.c.to) })),
-    coveredChart(x.path, x.c.strike, x.c.ticker),
-    el("p", { class: "cc-card__legend small" }, el("i"), t("cc.strike", { strike: x.c.strike })),
-    el("dl", { class: "cc-card__steps" },
-      row(t("cc.bought"), t("cc.boughtVal", { price: money(x.s0), total: whole(x.s0 * 100) })),
-      row(t("cc.sold"), t("cc.soldVal", { strike: x.c.strike, date: shortDate(x.c.to), prem: money(x.premium), total: whole(x.premium * 100) })),
-      row(t("cc.expiry"), t(x.called ? "cc.calledVal" : "cc.expiredVal", { price: money(x.sT), strike: x.c.strike }))),
-    el("div", { class: "cc-card__results" },
-      result(t("cc.resCC"), `${t("hypo", { pct: signed(x.ccRet * 100, 1) })} · ${usd(x.ccUsd)}`, cls(x.ccRet)),
-      result(t("cc.resStock"), `${pct(x.stockRet)} · ${usd(x.stockUsd)}`, cls(x.stockRet)),
-      result(t("cc.resGic", { rate: GIC_RATE * 100 }), pct(x.gicRet, 2), "")),
-    el("p", { class: "cc-card__lesson" }, tr(x.c, "lesson")))));
+  const calls = COVERED.map((c) => [c, coveredRun(c)]);
+  $("#cc-cards").replaceChildren(...calls.map(([c, x]) => card(c, x, t("cc.outcome." + x.outcome), [
+    [t("cc.bought"), t("cc.boughtVal", { price: money(x.s0), total: whole(x.s0 * 100) })],
+    [t("cc.sold"), sold(c, x)],
+    [t("cc.expiry"), t(x.called ? "cc.calledVal" : "cc.expiredVal", { price: money(x.sT), strike: c.strike })],
+  ], [[t("cc.resCC"), hypo(x), cls(x.ret)], [t("cc.resStock"), shares(x), cls(x.stockRet)], gic(x)])));
 
-  const ccs = runs.map((x) => x.ccRet), gics = runs.map((x) => x.gicRet), days = runs.map((x) => x.days);
-  $("#cmp-examples").textContent = t("cmp.examples", { lo: Math.min(...days), hi: Math.max(...days) });
-  $("#cc-range").textContent = t("cmp.range", { lo: pct(Math.min(...ccs)), hi: pct(Math.max(...ccs)) });
-  $("#gic-range").textContent = t("cmp.gicRange", { lo: pct(Math.min(...gics), 2), hi: pct(Math.max(...gics), 2), rate: GIC_RATE * 100 });
+  const puts = PUTS.map((c) => [c, putRun(c)]);
+  $("#csp-cards").replaceChildren(...puts.map(([c, x]) => card(c, x, t("csp.outcome." + x.outcome), [
+    [t("csp.start"), money(x.s0)],
+    [t("csp.cash"), t("csp.cashVal", { total: whole(c.strike * 100), strike: c.strike })],
+    [t("csp.sold"), sold(c, x)],
+    [t("cc.expiry"), t(x.assigned ? "csp.assignedVal" : "csp.expiredVal", { price: money(x.sT), strike: c.strike })],
+  ], [[t("csp.res"), hypo(x), cls(x.ret)], [t("csp.resStock"), shares(x), cls(x.stockRet)], gic(x)])));
+
+  const all = [...calls, ...puts].map(([, x]) => x);
+  const span = (xs, d) => ({ lo: pct(Math.min(...xs), d), hi: pct(Math.max(...xs), d) });
+  $("#cmp-examples").textContent = t("cmp.examples", { lo: Math.min(...all.map((x) => x.days)), hi: Math.max(...all.map((x) => x.days)) });
+  $("#cc-range").textContent = t("cmp.range", span(calls.map(([, x]) => x.ret)));
+  $("#csp-range").textContent = t("cmp.range", span(puts.map(([, x]) => x.ret)));
+  $("#gic-range").textContent = t("cmp.gicRange", { ...span(all.map((x) => x.gicRet), 2), rate: GIC_RATE * 100 });
 }
 
 /* ---------- Waitlist ---------- */

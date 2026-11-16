@@ -39,9 +39,9 @@ Every case study on the site comes from the `REPLAYS` array in `js/main.js`: the
 
 The replays are labelled as hypothetical, historical examples everywhere: AlphOpt did not exist at the time, and no one was advised to make these trades.
 
-## Covered calls
+## Selling options: covered calls and cash-secured puts
 
-The covered-call explainer (`COVERED` and `renderCovered` in `js/main.js`) reuses closes from `REPLAYS`, so each example needs a replay that contains both its start and expiry dates. Keep one example for each outcome (expired, called away, stock fell), keep the GIC comparison factual, and never describe the strategy as low risk or as beating a GIC.
+The strategy explainer (`COVERED`, `PUTS` and `renderCovered` in `js/main.js`) reuses closes from `REPLAYS`, so each example needs a replay that contains both its start and expiry dates. Keep one example for each outcome, keep each put's `outcome` in line with its closes (the console warns if they disagree), keep the GIC comparison factual, show only cash-secured puts, and never describe either strategy as low risk or as beating a GIC.
 
 ## Languages (English / 中文)
 
@@ -62,6 +62,7 @@ The 中文 / EN button in the nav switches the whole page between English and Si
 
 AlphOpt is not registered with any securities regulator, so the site must stay educational:
 
+- Case studies use only SPY, QQQ, IWM, AAPL, AMZN, AMD, META, MSFT, NVDA and TSLA, chosen for options trading volume and presented that way, never as safe or "good" companies.
 - No trade recommendations, signals, alerts or "what to buy" wording, and nothing tailored to a visitor's situation.
 - Paid plans may only sell education and tools (courses, labs, simulators), never trade ideas. Prices are shown as planned launch prices until a real checkout exists; before selling, add full billing, renewal, cancellation and refund terms (Ontario consumer protection law) and update the privacy policy for payment data.
 - Hypothetical results stay next to their disclosures; no headline returns or profit totals in marketing copy or images.

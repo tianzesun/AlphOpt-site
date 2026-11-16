@@ -351,16 +351,28 @@ button { font: inherit; cursor: pointer; }
 .driver__fill--loss { right: 50%; background: var(--down); border-radius: 3px 0 0 3px; }
 .driver--total { padding-top: 0.6rem; border-top: 1px solid var(--border); font-weight: 600; }
 
-/* Covered calls */
+/* Coverage */
+.focus__inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: center; }
+.focus__inner h2 { margin-top: 0.25rem; }
+.focus__list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+.focus__list li { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.9rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.focus__list b { font-family: var(--mono); font-size: 1.15rem; }
+.focus__list span { color: var(--muted); font-size: 0.85rem; }
+
+/* Selling options: covered calls and cash-secured puts */
+.cc-block { margin-top: 2.5rem; }
+.cc-block:first-of-type { margin-top: 0; }
+.cc-block > h3 { font-size: 1.35rem; margin: 0 0 0.4rem; }
+.cc-block > p { color: var(--muted); max-width: 820px; margin: 0 0 1.25rem; }
 .cc-how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 0; margin: 0 0 1.75rem; list-style: none; counter-reset: cc; }
 .cc-how li { counter-increment: cc; position: relative; padding: 1rem 1rem 1rem 3rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--muted); font-size: 0.92rem; }
 .cc-how li::before { content: counter(cc); position: absolute; left: 1rem; top: 1rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--surface-2); color: var(--brand); font-weight: 700; display: grid; place-items: center; font-size: 0.85rem; }
 .cc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 .cc-card { position: relative; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem; }
 .cc-card__badge { align-self: flex-start; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem; }
-.cc-card__badge--kept { background: rgba(34, 211, 166, 0.15); color: var(--brand); }
-.cc-card__badge--called { background: rgba(251, 191, 36, 0.15); color: var(--warn); }
-.cc-card__badge--fell { background: rgba(248, 113, 113, 0.15); color: var(--down); }
+.cc-card__badge--good { background: rgba(34, 211, 166, 0.15); color: var(--brand); }
+.cc-card__badge--warn { background: rgba(251, 191, 36, 0.15); color: var(--warn); }
+.cc-card__badge--bad { background: rgba(248, 113, 113, 0.15); color: var(--down); }
 .cc-card__head { display: flex; align-items: baseline; gap: 0.6rem; }
 .cc-card__head b { font-family: var(--mono); font-size: 1.3rem; }
 .cc-card__when { margin: 0.15rem 0 0.6rem; }
@@ -504,7 +516,7 @@ button { font: inherit; cursor: pointer; }
   .section { padding: 4.5rem 0; }
   .steps, .features { grid-template-columns: 1fr; }
   .plans { grid-template-columns: 1fr; }
-  .cc-how, .cc-cards { grid-template-columns: 1fr; }
+  .cc-how, .cc-cards, .focus__inner { grid-template-columns: 1fr; }
   .replay-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.4rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .replay-tab { flex: 0 0 140px; scroll-snap-align: start; }
   .result { grid-template-columns: repeat(2, 1fr); }

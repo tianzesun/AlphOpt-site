@@ -36,7 +36,7 @@
       <nav class="nav__links" id="nav-links" aria-label="Primary" data-i18n-attr="aria-label:nav.primary">
         <a href="#how" data-i18n="nav.how">How it works</a>
         <a href="#signals" data-i18n="nav.signals">Case studies</a>
-        <a href="#covered" data-i18n="nav.covered">Covered calls</a>
+        <a href="#covered" data-i18n="nav.covered">Selling options</a>
         <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
         <a href="#features" data-i18n="nav.features">Features</a>
         <a href="#plans" data-i18n="nav.plans">Plans</a>
@@ -55,11 +55,11 @@
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="container hero__grid">
         <div class="hero__copy">
-          <p class="eyebrow" data-i18n-html="hero.eyebrow"><span class="pulse" aria-hidden="true"></span> Options education · Real market events</p>
+          <p class="eyebrow" data-i18n-html="hero.eyebrow"><span class="pulse" aria-hidden="true"></span> Options education · Risks first</p>
           <h1 data-i18n-html="hero.h1">Learn <span class="grad">how options really move</span>, one real event at a time.</h1>
           <p class="lead" data-i18n="hero.lead">
             AlphOpt replays real market events, from earnings surprises to market sell-offs, and shows how an option's
-            price and Greeks responded, close by close, in plain English. It is built for learning, not for telling you what to trade.
+            price and Greeks responded, close by close, in plain English, with the risks first. It is built for learning, not for telling you what to trade.
           </p>
           <div class="hero__cta">
             <a class="btn btn--primary btn--lg" href="#waitlist" data-i18n="cta.join">Coming soon</a>
@@ -99,13 +99,37 @@
       </div>
     </section>
 
+    <!-- Coverage -->
+    <section class="section section--alt focus" id="focus">
+      <div class="container focus__inner">
+        <div>
+          <p class="eyebrow" data-i18n="focus.eyebrow">What we cover</p>
+          <h2 data-i18n="focus.h2">Ten names, and what can go wrong with them</h2>
+          <p class="muted" data-i18n="focus.p1">AlphOpt covers only ten U.S. stocks and ETFs, chosen because their options are among the most actively traded, not because we expect them to rise. Their prices are widely reported, so every lesson can be checked.</p>
+          <p class="muted" data-i18n="focus.p2">Every lesson starts with the risks. Being large and well known does not make a stock safe: NVIDIA fell 17% in a single day in January 2025, and options on any of these ten can lose their entire value.</p>
+        </div>
+        <ul class="focus__list" aria-label="Stocks and ETFs covered" data-i18n-attr="aria-label:focus.label">
+          <li><b>SPY</b><span data-i18n="focus.spy">S&amp;P 500 ETF</span></li>
+          <li><b>QQQ</b><span data-i18n="focus.qqq">Nasdaq-100 ETF</span></li>
+          <li><b>AAPL</b><span data-i18n="focus.aapl">Apple</span></li>
+          <li><b>META</b><span>Meta Platforms</span></li>
+          <li><b>NVDA</b><span data-i18n="focus.nvda">NVIDIA</span></li>
+          <li><b>TSLA</b><span data-i18n="focus.tsla">Tesla</span></li>
+          <li><b>AMZN</b><span data-i18n="focus.amzn">Amazon</span></li>
+          <li><b>MSFT</b><span data-i18n="focus.msft">Microsoft</span></li>
+          <li><b>AMD</b><span data-i18n="focus.amd">Advanced Micro Devices</span></li>
+          <li><b>IWM</b><span data-i18n="focus.iwm">Russell 2000 ETF</span></li>
+        </ul>
+      </div>
+    </section>
+
     <!-- How it works -->
     <section class="section" id="how">
       <div class="container">
         <header class="section__head">
           <p class="eyebrow" data-i18n="how.eyebrow">How it works</p>
           <h2 data-i18n="how.h2">Every case study follows the same three steps</h2>
-          <p class="muted" data-i18n="how.sub">Each step below shows how it works on a real event: the CrowdStrike outage of July 19, 2024.</p>
+          <p class="muted" data-i18n="how.sub">Each step below shows how it works on a real event: NVIDIA after the DeepSeek sell-off of January 27, 2025.</p>
         </header>
         <ol class="steps">
           <li class="step">
@@ -247,38 +271,54 @@
       </div>
     </section>
 
-    <!-- Covered calls -->
+    <!-- Selling options: covered calls and cash-secured puts -->
     <section class="section" id="covered">
       <div class="container">
         <header class="section__head">
-          <p class="eyebrow" data-i18n="cc.eyebrow">Strategy explainer</p>
-          <h2 data-i18n="cc.h2">Covered calls: income, with a catch</h2>
-          <p class="muted" data-i18n="cc.sub">A covered call means owning 100 shares and selling someone the right to buy them from you at a set price (the strike) by a set date. You collect a premium up front. In return, you keep the stock's downside and give up any gain above the strike. The three real examples below show each possible outcome.</p>
+          <p class="eyebrow" data-i18n="cc.eyebrow">Strategy explainers</p>
+          <h2 data-i18n="cc.h2">Selling options for income, with a catch</h2>
+          <p class="muted" data-i18n="cc.intro">Covered calls and cash-secured puts both pay you a premium up front for taking on a stock's risk. On the same stock, strike and expiry the two have almost the same payoff, so they share the same catch: a large drop in the stock costs far more than the premium earns, and your gain is capped. The real examples below show each possible outcome for both.</p>
         </header>
-        <ol class="cc-how">
-          <li data-i18n="cc.how1">Own 100 shares. One option contract covers 100 shares, so this takes real money: about $55,900 for SPY in March 2025.</li>
-          <li data-i18n="cc.how2">Sell one call with a strike above today's price and collect the premium. It is yours to keep whatever happens next.</li>
-          <li data-i18n="cc.how3">At expiry, one of three things has happened: the stock stayed below the strike, rose above it, or fell.</li>
-        </ol>
-        <div class="cc-cards" id="cc-cards"></div>
+
+        <div class="cc-block">
+          <h3 data-i18n="cc.h3">Covered calls</h3>
+          <p data-i18n="cc.sub">A covered call means owning 100 shares and selling someone the right to buy them from you at a set price (the strike) by a set date. You collect a premium up front. In return, you keep the stock's downside and give up any gain above the strike. The three real examples below show each possible outcome.</p>
+          <ol class="cc-how">
+            <li data-i18n="cc.how1">Own 100 shares. One option contract covers 100 shares, so this takes real money: about $55,900 for SPY in March 2025.</li>
+            <li data-i18n="cc.how2">Sell one call with a strike above today's price and collect the premium. It is yours to keep whatever happens next.</li>
+            <li data-i18n="cc.how3">At expiry, one of three things has happened: the stock stayed below the strike, rose above it, or fell.</li>
+          </ol>
+          <div class="cc-cards" id="cc-cards"></div>
+        </div>
+
+        <div class="cc-block">
+          <h3 data-i18n="csp.h3">Cash-secured puts</h3>
+          <p data-i18n="csp.sub">A cash-secured put means setting aside enough cash to buy 100 shares and selling someone the right to sell them to you at a set price (the strike) by a set date. You collect a premium up front. In return, if the stock falls below the strike you must buy the shares at the strike, however far the price has dropped, and if the stock soars you earn only the premium. The three real examples below use the same events as the covered calls.</p>
+          <ol class="cc-how">
+            <li data-i18n="csp.how1">Set aside enough cash to buy 100 shares at the strike. For SPY at a $540 strike that was $54,000, tied up until expiry.</li>
+            <li data-i18n="csp.how2">Sell one put with a strike below today's price and collect the premium. It is yours to keep whatever happens next.</li>
+            <li data-i18n="csp.how3">At expiry, one of three things has happened: the stock stayed above the strike, soared, or fell below it and you had to buy the shares.</li>
+          </ol>
+          <div class="cc-cards" id="csp-cards"></div>
+        </div>
 
         <div class="panel cc-compare">
-          <div class="panel__head"><h3 data-i18n="cmp.h3">Covered call vs GIC</h3></div>
+          <div class="panel__head"><h3 data-i18n="cmp.h3">Covered call vs cash-secured put vs GIC</h3></div>
           <div class="ledger-wrap">
             <table class="compare">
               <thead>
-                <tr><th scope="col"></th><th scope="col" data-i18n="cmp.cc">Covered call</th><th scope="col" data-i18n="cmp.gic">GIC</th></tr>
+                <tr><th scope="col"></th><th scope="col" data-i18n="cmp.cc">Covered call</th><th scope="col" data-i18n="cmp.csp">Cash-secured put</th><th scope="col" data-i18n="cmp.gic">GIC</th></tr>
               </thead>
               <tbody>
-                <tr><th scope="row" data-i18n="cmp.money">Your money</th><td data-i18n="cmp.moneyCC">Not protected: you own shares that can fall in value</td><td data-i18n="cmp.moneyGIC">Principal is guaranteed; eligible GICs at CDIC member institutions are insured up to $100,000 per insurance category</td></tr>
-                <tr><th scope="row" data-i18n="cmp.return">Return</th><td data-i18n="cmp.returnCC">The premium plus the stock's change, capped at the strike; can be negative</td><td data-i18n="cmp.returnGIC">A fixed rate, set when you buy</td></tr>
-                <tr><th scope="row" data-i18n="cmp.risk">Biggest risk</th><td data-i18n="cmp.riskCC">A large drop in the stock</td><td data-i18n="cmp.riskGIC">Inflation, and money locked in until maturity</td></tr>
-                <tr><th scope="row" id="cmp-examples">In the examples above</th><td id="cc-range"></td><td id="gic-range"></td></tr>
+                <tr><th scope="row" data-i18n="cmp.money">Your money</th><td data-i18n="cmp.moneyCC">Not protected: you own shares that can fall in value</td><td data-i18n="cmp.moneyCSP">Not protected: if the stock falls below the strike, you must buy the shares at the strike</td><td data-i18n="cmp.moneyGIC">Principal is guaranteed; eligible GICs at CDIC member institutions are insured up to $100,000 per insurance category</td></tr>
+                <tr><th scope="row" data-i18n="cmp.return">Return</th><td data-i18n="cmp.returnCC">The premium plus the stock's change, capped at the strike; can be negative</td><td data-i18n="cmp.returnCSP">The premium at most; if the stock ends below the strike, you lose the difference, less the premium</td><td data-i18n="cmp.returnGIC">A fixed rate, set when you buy</td></tr>
+                <tr><th scope="row" data-i18n="cmp.risk">Biggest risk</th><td data-i18n="cmp.riskCC">A large drop in the stock</td><td data-i18n="cmp.riskCSP">A large drop in the stock</td><td data-i18n="cmp.riskGIC">Inflation, and money locked in until maturity</td></tr>
+                <tr><th scope="row" id="cmp-examples">In the examples above</th><td id="cc-range"></td><td id="csp-range"></td><td id="gic-range"></td></tr>
               </tbody>
             </table>
           </div>
         </div>
-        <p class="muted small replay__note" data-i18n="cc.note">Hypothetical, educational examples. Stock prices are actual daily closes (Yahoo Finance). Call premiums are Black-Scholes estimates from an assumed implied volatility (22% for SPY, 50% for META and NVIDIA), not recorded quotes. The examples ignore commissions, bid-ask spreads, dividends, early assignment and taxes, and were chosen to show each possible outcome, not as a representative sample. The GIC rate is illustrative, not a quote. Covered calls can lose money and do not always beat a GIC. This is not a recommendation to use this strategy.</p>
+        <p class="muted small replay__note" data-i18n="cc.note">Hypothetical, educational examples. Stock prices are actual daily closes (Yahoo Finance). Option premiums are Black-Scholes estimates from an assumed implied volatility (22% for SPY, 50% for META and NVIDIA), not recorded quotes, and ignore volatility skew, which usually makes puts below the stock price more expensive. The examples are held to expiry and ignore commissions, bid-ask spreads, dividends, early assignment, interest on cash and taxes. They were chosen to show each possible outcome, not as a representative sample. Only cash-secured puts are shown: selling puts without the cash to buy the shares can lose more than you set aside. The GIC rate is illustrative, not a quote. Both strategies can lose money and do not always beat a GIC. This is not a recommendation to use either strategy.</p>
       </div>
     </section>
 
@@ -294,7 +334,7 @@
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
             <h3 data-i18n="feat.1">Real events, real prices</h3>
             <p data-i18n="feat.1p">Every case study is built on a real headline and the stock's actual daily prices, so each lesson matches how the market really behaved.</p>
-            <a class="feature__proof" href="#cases" data-open-replay="2024-07-19" data-i18n="feat.1a">See the CrowdStrike case study →</a>
+            <a class="feature__proof" href="#cases" data-open-replay="2025-01-27" data-i18n="feat.1a">See the NVIDIA DeepSeek case study →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
@@ -316,8 +356,8 @@
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V11M13 17V7M18 17v-4"/></svg></div>
             <h3 data-i18n="feat.5">Losses kept in</h3>
-            <p data-i18n="feat.5p">The case studies keep the losers in: three losses out of seven, with the Greeks that caused them.</p>
-            <a class="feature__proof" href="#signals" data-i18n="feat.5a">See all seven, losses included →</a>
+            <p data-i18n="feat.5p">The case studies keep the losers in: seven losses out of eleven, with the Greeks that caused them.</p>
+            <a class="feature__proof" href="#signals" data-i18n="feat.5a">See all eleven, losses included →</a>
           </article>
           <article class="feature">
             <div class="feature__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
@@ -403,8 +443,12 @@
             <p data-i18n-html="faq.a7">Only the email address you give us to join the waitlist, with a record of your consent. Your language choice is saved in your own browser. There are no ads, analytics or tracking cookies. See the <a href="privacy.html">privacy policy</a>.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q9">Are covered calls low risk?</summary>
-            <p data-i18n="faq.a9">Not in the way a GIC is. You own the shares, so you carry almost all of the stock's downside: the premium offsets only a small part of a fall, and your gain is capped at the strike. A covered call can lose money, and it does not always beat a GIC. The covered-call examples on this page show all three outcomes.</p>
+            <summary data-i18n="faq.q10">Which stocks does AlphOpt cover?</summary>
+            <p data-i18n="faq.a10">Ten: SPY, QQQ and IWM (ETFs), plus Apple (AAPL), Amazon (AMZN), AMD, Meta (META), Microsoft (MSFT), NVIDIA (NVDA) and Tesla (TSLA). We chose them because their options are among the most actively traded in the U.S., not because we expect them to rise or consider them good investments. Large, well-known stocks can still fall sharply.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q9">Are covered calls or cash-secured puts low risk?</summary>
+            <p data-i18n="faq.a9">Not in the way a GIC is. With a covered call you own the shares; with a cash-secured put you have promised to buy them at the strike. Either way you carry most of the stock's downside: the premium offsets only a small part of a fall, and your gain is capped. On the same stock, strike and expiry the two have almost the same payoff. Both can lose money, and neither always beats a GIC. The examples on this page show every outcome.</p>
           </details>
           <details>
             <summary data-i18n="faq.q8">Will AlphOpt cost money?</summary>
@@ -451,7 +495,7 @@
           <a href="#how" data-i18n="nav.how">How it works</a>
           <a href="#signals" data-i18n="nav.signals">Case studies</a>
           <a href="#lab" data-i18n="nav.lab">Greeks lab</a>
-          <a href="#covered" data-i18n="nav.covered">Covered calls</a>
+          <a href="#covered" data-i18n="nav.covered">Selling options</a>
           <a href="#plans" data-i18n="nav.plans">Plans</a>
           <a href="#faq" data-i18n="nav.faq">FAQ</a>
           <a href="privacy.html" data-i18n="nav.privacy">Privacy</a>
