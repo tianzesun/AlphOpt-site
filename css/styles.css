@@ -355,6 +355,13 @@ button { font: inherit; cursor: pointer; }
 .driver__fill--loss { right: 50%; background: var(--down); border-radius: 3px 0 0 3px; }
 .driver--total { padding-top: 0.6rem; border-top: 1px solid var(--border); font-weight: 600; }
 
+/* Pro preview */
+.pro-preview { margin-top: 1.75rem; display: grid; grid-template-columns: 1.6fr 1fr auto; gap: 1.5rem; align-items: center; padding: 1.5rem; border: 1px dashed var(--brand); border-radius: var(--radius-lg); background: rgba(34, 211, 166, 0.05); }
+.pro-preview h3 { margin: 0.2rem 0 0.4rem; }
+.pro-preview p.muted { margin: 0; font-size: 0.92rem; }
+.pro-preview__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.pro-preview__list li::before { content: "✓"; color: var(--brand); font-weight: 700; margin-right: 0.5rem; }
+
 /* Both sides */
 .sides__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .sides__col { padding: 0.9rem 1rem; border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border); }
@@ -530,7 +537,7 @@ button { font: inherit; cursor: pointer; }
   .section { padding: 4.5rem 0; }
   .steps, .features { grid-template-columns: 1fr; }
   .plans { grid-template-columns: 1fr; }
-  .cc-how, .cc-cards, .focus__inner, .sides__grid { grid-template-columns: 1fr; }
+  .cc-how, .cc-cards, .focus__inner, .sides__grid, .pro-preview { grid-template-columns: 1fr; }
   .replay-tabs { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.4rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .replay-tab { flex: 0 0 140px; scroll-snap-align: start; }
   .result { grid-template-columns: repeat(2, 1fr); }

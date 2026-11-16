@@ -65,6 +65,7 @@ AlphOpt is not registered with any securities regulator, so the site must stay e
 
 - Case studies use only SPY, QQQ, IWM, AAPL, AMZN, AMD, META, MSFT, NVDA and TSLA, chosen for options trading volume and presented that way, never as safe or "good" companies.
 - No trade recommendations, signals, alerts or "what to buy" wording, and nothing tailored to a visitor's situation.
+- The paid plan is the Pro tool (CA$49.99/month, planned): it analyses scenarios the member enters and must never output buy/sell calls, signals or timing; alerts fire only on conditions the member sets. Before launch, check exchange market-data licensing for showing option prices to paying members.
 - Paid plans may only sell education and tools (courses, labs, simulators), never trade ideas. Prices are shown as planned launch prices until a real checkout exists; before selling, add full billing, renewal, cancellation and refund terms (Ontario consumer protection law) and update the privacy policy for payment data.
 - Hypothetical results stay next to their disclosures; no headline returns or profit totals in marketing copy or images.
 - Waitlist sign-ups need the consent checkbox (CASL). The privacy policy must match what is actually collected.
